@@ -4,7 +4,10 @@ using System.Text;
 
 namespace carRental.DAL.Entities
 {
-    class FirstEntity
+    class Report
     {
+        long carId { get; set; }
+        float mark { get; set; }
+        string report { get; set; }
     }
 }
