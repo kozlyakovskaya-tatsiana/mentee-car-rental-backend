@@ -6,7 +6,7 @@ namespace carRental.DAL.Entities
 {
     class Brand
     {
-        string Id { get; set; }
-        string breandSName { get; set; }
+        public string Id { get; set; }
+        string BrandName { get; set; }
     }
 }

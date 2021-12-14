@@ -7,6 +7,6 @@ namespace carRental.DAL.Entities
     class Country
     {
         public string Id { get; set; }
-        string coutryName { get; set; }
+        string CoutryName { get; set; }
     }
 }
