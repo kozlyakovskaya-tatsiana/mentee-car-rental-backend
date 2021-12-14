@@ -6,7 +6,7 @@ namespace carRental.DAL.Entities
 {
     class Report
     {
-        long carId { get; set; }
+        public string Id { get; set; }
         float mark { get; set; }
         string report { get; set; }
     }

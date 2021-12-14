@@ -6,7 +6,7 @@ namespace carRental.DAL.Entities
 {
     class Place
     {
-        long id { get; set; }
+        public string Id { get; set; }
         Country country { get; set; }
         string city { get; set; }
     }

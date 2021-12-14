@@ -12,6 +12,7 @@ namespace carRental.DAL.Entities
     }
     class carType
     {
+        public string Id { get; set; }
         Brand brand { get; set; }
         string model { get; set; }
         float fuelConsumption { get; set; }

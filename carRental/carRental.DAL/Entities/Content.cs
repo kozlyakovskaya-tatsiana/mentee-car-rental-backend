@@ -6,7 +6,7 @@ namespace carRental.DAL.Entities
 {
     class Content
     {
-        long id { get; set; }
+        public string Id { get; set; }
         string contentType { get; set; }
         byte[] content { get; set; }
     }

@@ -6,7 +6,7 @@ namespace carRental.DAL.Entities
 {
     class Car
     {
-        long id { get; set; }
+        public string Id { get; set; }
         long carTypeId { get; set; }
         long userId { get; set; }
         long placeId { get; set; }
