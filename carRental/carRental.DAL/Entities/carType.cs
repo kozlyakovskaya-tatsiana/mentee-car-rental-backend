@@ -10,7 +10,7 @@ namespace carRental.DAL.Entities
         auto,
         mechanic
     }
-    class carType
+    class CarType
     {
         public string Id { get; set; }
         Brand BrandName { get; set; }
