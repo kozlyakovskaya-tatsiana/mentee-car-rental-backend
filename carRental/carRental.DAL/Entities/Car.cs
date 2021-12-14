@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using carRental.Common;
+using System;
 
 namespace carRental.DAL.Entities
 {
-    class Car
+    public class Car
     {
-        public string Id { get; set; }
-        long CarTypeId { get; set; }
-        long UserId { get; set; }
-        long PlaceId { get; set; }
-        float PricePerHour { get; set; }
-        Content Photo { get; set; }
-        string Coordinates { get; set; }
-        DateTime BusyTime { get; set; }
-        bool IsBlocked { get; set; }
+        public Guid Id { get; set; }
+        public Guid LocationId { get; set; }
+        public Guid CarTypeId { get; set; }
+        public Guid BrandId { get; set; }
+        public string Model { get; set; }
+        public double FuelConsumption { get; set; }
+        public TransmisionType Transmision { get; set; }
+        public int QuatityOfSeats { get; set; }
+        public double PricePerHour { get; set; }
+        public Attachment Photo { get; set; }
+        public Report Report { get; set; }
     }
 }
