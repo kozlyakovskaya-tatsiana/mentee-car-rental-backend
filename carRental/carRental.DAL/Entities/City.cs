@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace carRental.DAL.Entities
 {
@@ -6,7 +7,9 @@ namespace carRental.DAL.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public Guid CountryId { get; set; }
         public Country Country { get; set; }
+        public Guid CountryId { get; set; }
+        public List<Location> Locations { get; set; } = new List<Location>();
+        
     }
 }
