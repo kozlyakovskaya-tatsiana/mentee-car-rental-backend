@@ -4,10 +4,12 @@ using System.Text;
 
 namespace carRental.DAL.Entities
 {
-    class Report
+    public class Report
     {
-        public string Id { get; set; }
-        float Mark { get; set; }
-        string Report { get; set; }
+        public Guid Id { get; set; }
+        public Car Car { get; set; }
+        public Guid CarId { get; set; }
+        public double Mark { get; set; }
+        public string ReportContext { get; set; }
     }
 }
