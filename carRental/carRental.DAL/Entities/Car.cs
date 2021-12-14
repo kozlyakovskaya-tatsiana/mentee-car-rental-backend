@@ -1,4 +1,4 @@
-﻿using carRental.Common;
+﻿using carRental.Common.Types;
 using System;
 
 namespace carRental.DAL.Entities
