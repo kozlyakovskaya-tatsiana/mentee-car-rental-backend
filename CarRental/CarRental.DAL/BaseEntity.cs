@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CarRental.DAL.Interfaces
+namespace CarRental.DAL
 {
-    public interface IEntity
+    public class BaseEntity
     {
         public Guid Id { get; set; }
     }
