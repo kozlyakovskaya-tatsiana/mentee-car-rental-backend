@@ -9,7 +9,7 @@ namespace CarRental.DAL.Entities
         public string Name { get; set; }
         public Country Country { get; set; }
         public Guid CountryId { get; set; }
-        public List<Location> Locations { get; set; } = new List<Location>();
+        public List<Location> Locations { get; set; }
         
     }
 }
