@@ -37,7 +37,12 @@ namespace CarRental.DAL.Contexts
                 .HasOne<User>(user => user.User)
                 .WithMany(report => report.Reports)
                 .HasForeignKey(userid => userid.UserId);
+            modelBuilder.Entity<BookingReport>()
+                .HasOne<Car>(car => car.Car)
+                .WithMany(reports => reports.Reports)
+                .HasForeignKey(carId => carId.CarId);
 
+            
         }
     }
 }
