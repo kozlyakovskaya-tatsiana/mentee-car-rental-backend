@@ -1,20 +1,30 @@
 ﻿using CarRental.Common.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace CarRental.DAL.Entities
 {
-    public class Car
+    public class Car : BaseEntity
     {
-        public Guid Id { get; set; }
-        public Guid LocationId { get; set; }
-        public Guid CarTypeId { get; set; }
-        public Guid BrandId { get; set; }
         public string Model { get; set; }
+        public FuelType Fuel { get; set; }
         public double FuelConsumption { get; set; }
-        public TransmisionType Transmision { get; set; }
-        public int QuatityOfSeats { get; set; }
+        public TransmisionType Transmission { get; set; }
+        public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
-        public Attachment Photo { get; set; }
-        public Report Report { get; set; }
+        public Status Status { get; set; }
+
+        public List<Attachment> Photos { get; set; }
+
+        public List<BookingReport> Reports { get; set; }
+
+        public Location Location { get; set; }
+        public Guid LocationId { get; set; }
+
+        public CarBrand Brand { get; set; }
+        public Guid BrandId { get; set; }
+
+        public RentalPoint RentalPoint { get; set; }
+        public Guid RentalPointId { get; set; }
     }
 }

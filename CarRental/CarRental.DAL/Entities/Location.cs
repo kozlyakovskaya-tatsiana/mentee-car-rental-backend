@@ -2,12 +2,14 @@
 
 namespace CarRental.DAL.Entities
 {
-    public class Location
+    public class Location : BaseEntity
     {
-        public Guid Id { get; set; }
-        public City City { get; set; }
-        public Guid CityId { get; set; }
         public string Address { get; set; }
         public string Coordinates { get; set; }
+
+        public RentalPoint RentalPoint { get; set; }
+
+        public City City { get; set; }
+        public Guid CityId { get; set; }
     }
 }
