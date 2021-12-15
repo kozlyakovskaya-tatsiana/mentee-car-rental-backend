@@ -1,8 +1,9 @@
 ﻿using System;
+using CarRental.DAL.Interfaces;
 
 namespace CarRental.DAL.Entities
 {
-    public class Attachment
+    public class Attachment : IEntity
     {
         public Guid Id { get; set; }
         public Guid CarId { get; set; }

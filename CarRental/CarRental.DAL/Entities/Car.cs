@@ -1,10 +1,11 @@
 ﻿using CarRental.Common.Enums;
 using System;
 using System.Collections.Generic;
+using CarRental.DAL.Interfaces;
 
 namespace CarRental.DAL.Entities
 {
-    public class Car
+    public class Car : IEntity
     {
         public Guid Id { get; set; }
         public Guid LocationId { get; set; }

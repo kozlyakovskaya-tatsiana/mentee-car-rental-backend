@@ -1,8 +1,9 @@
 ﻿using System;
+using CarRental.DAL.Interfaces;
 
 namespace CarRental.DAL.Entities
 {
-    public class Location
+    public class Location : IEntity
     {
         public Guid Id { get; set; }
         public City City { get; set; }
