@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using CarRental.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +40,10 @@ namespace CarRental.DAL.Contexts
                 .WithMany(reports => reports.Reports)
                 .HasForeignKey(carId => carId.CarId);
 
-            
+            modelBuilder.Entity<Car>().HasMany(attachments => attachments.Photos)
+                .WithOne(car => car.Car)
+                .HasForeignKey(carId => carId.CarId);
+
         }
     }
 }
