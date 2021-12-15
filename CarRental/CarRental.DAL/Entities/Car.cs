@@ -1,5 +1,6 @@
 ﻿using CarRental.Common.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace CarRental.DAL.Entities
 {
@@ -14,7 +15,7 @@ namespace CarRental.DAL.Entities
         public TransmisionType Transmision { get; set; }
         public int QuatityOfSeats { get; set; }
         public double PricePerHour { get; set; }
-        public Attachment Photo { get; set; }
-        public Report Report { get; set; }
+        public List<Attachment> Photos { get; set; }
+        public List<Report> Reports { get; set; }
     }
 }

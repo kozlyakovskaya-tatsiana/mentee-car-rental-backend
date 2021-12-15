@@ -8,6 +8,6 @@ namespace CarRental.DAL.Entities
         public Car Car { get; set; }
         public Guid CarId { get; set; }
         public double Mark { get; set; }
-        public string ReportContext { get; set; }
+        public string Context { get; set; }
     }
 }
