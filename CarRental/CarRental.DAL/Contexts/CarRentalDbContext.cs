@@ -1,4 +1,5 @@
-﻿using CarRental.DAL.Entities;
+﻿using System.Runtime.InteropServices;
+using CarRental.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Contexts
@@ -24,6 +25,19 @@ namespace CarRental.DAL.Contexts
                                      "Port=5433;Database=postgres;" +
                                      "Username=postgres;" +
                                      "Password=root");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //TODO
+            modelBuilder.Entity<User>()
+                .HasMany(reports => reports.Reports);
+
+            modelBuilder.Entity<BookingReport>()
+                .HasOne<User>(user => user.User)
+                .WithMany(report => report.Reports)
+                .HasForeignKey(userid => userid.UserId);
+
         }
     }
 }
