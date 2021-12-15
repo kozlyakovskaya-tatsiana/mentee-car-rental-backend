@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using CarRental.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,12 +31,10 @@ namespace CarRental.DAL.Contexts
         {
             //TODO
             modelBuilder.Entity<User>()
-                .HasMany(reports => reports.Reports);
+                .HasMany(reports => reports.Reports)
+                .WithOne(user => user.User)
+                .HasForeignKey(userId => userId.UserId);
 
-            modelBuilder.Entity<BookingReport>()
-                .HasOne<User>(user => user.User)
-                .WithMany(report => report.Reports)
-                .HasForeignKey(userid => userid.UserId);
             modelBuilder.Entity<BookingReport>()
                 .HasOne<Car>(car => car.Car)
                 .WithMany(reports => reports.Reports)
