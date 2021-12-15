@@ -8,6 +8,7 @@ namespace CarRental.DAL.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        //Many to one relation (Many cities for one country)
         public Country Country { get; set; }
         public Guid CountryId { get; set; }
         public List<Location> Locations { get; set; }
