@@ -11,5 +11,6 @@ namespace CarRental.DAL.Entities
         public Guid CityId { get; set; }
         public string Address { get; set; }
         public string Coordinates { get; set; }
+        public Car Car { get; set; }
     }
 }

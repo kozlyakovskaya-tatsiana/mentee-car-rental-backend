@@ -10,8 +10,10 @@ namespace CarRental.DAL.Entities
         public Guid Id { get; set; }
         //One to one relation (One car for one location)
         public Guid LocationId { get; set; }
+        public Location Location { get; set; }
         //Many to one relation (Many cars for one brand)
         public Guid BrandId { get; set; }
+        public CarBrand Brand { get; set; }
         public string Model { get; set; }
         public double FuelConsumption { get; set; }
         public TransmisionType Transmission { get; set; }
