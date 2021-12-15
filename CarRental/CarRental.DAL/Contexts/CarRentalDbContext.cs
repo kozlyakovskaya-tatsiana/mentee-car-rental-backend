@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using CarRental.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,6 +49,11 @@ namespace CarRental.DAL.Contexts
                 .HasMany<Car>(cars => cars.Cars)
                 .WithOne(carBrand => carBrand.Brand)
                 .HasForeignKey(brandId => brandId.BrandId);
+
+            modelBuilder.Entity<RentalPoint>()
+                .HasMany<Car>(cars => cars.Cars)
+                .WithOne(point => point.RentalPoint)
+                .HasForeignKey(rpId => rpId.RentalPointId);
         }
     }
 }
