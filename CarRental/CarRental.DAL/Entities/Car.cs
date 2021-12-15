@@ -18,9 +18,6 @@ namespace CarRental.DAL.Entities
 
         public List<BookingReport> Reports { get; set; }
 
-        public Location Location { get; set; }
-        public Guid LocationId { get; set; }
-
         public CarBrand Brand { get; set; }
         public Guid BrandId { get; set; }
 
