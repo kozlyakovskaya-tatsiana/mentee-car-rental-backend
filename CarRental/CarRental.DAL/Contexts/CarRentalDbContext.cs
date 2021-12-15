@@ -40,10 +40,15 @@ namespace CarRental.DAL.Contexts
                 .WithMany(reports => reports.Reports)
                 .HasForeignKey(carId => carId.CarId);
 
-            modelBuilder.Entity<Car>().HasMany(attachments => attachments.Photos)
+            modelBuilder.Entity<Car>()
+                .HasMany(attachments => attachments.Photos)
                 .WithOne(car => car.Car)
                 .HasForeignKey(carId => carId.CarId);
 
+            modelBuilder.Entity<CarBrand>()
+                .HasMany<Car>(cars => cars.Cars)
+                .WithOne(carBrand => carBrand.Brand)
+                .HasForeignKey(brandId => brandId.BrandId);
         }
     }
 }
