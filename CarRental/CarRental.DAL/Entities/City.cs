@@ -12,6 +12,6 @@ namespace CarRental.DAL.Entities
         public Country Country { get; set; }
         public Guid CountryId { get; set; }
         public List<Location> Locations { get; set; }
-        
+        public List<RentalPoint> RentalPoints { get; set; }
     }
 }

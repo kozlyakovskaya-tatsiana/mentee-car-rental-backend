@@ -21,5 +21,8 @@ namespace CarRental.DAL.Entities
         public List<Attachment> Photos { get; set; }
         // One to many relation (Many  for one car)
         public List<Report> Reports { get; set; }
+        //Many to one relation (Every car has a linked rental point)
+        public Guid RentalPointId { get; set; }
+        public RentalPoint RentalPoint { get; set; }
     }
 }
