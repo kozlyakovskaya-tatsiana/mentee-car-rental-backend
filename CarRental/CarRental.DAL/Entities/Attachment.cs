@@ -7,7 +7,7 @@ namespace CarRental.DAL.Entities
         public string FileFormat { get; set; }
         public byte[] Content { get; set; }
 
-        public Guid CarId { get; set; }
         public Car Car { get; set; }
+        public Guid CarId { get; set; }
     }
 }

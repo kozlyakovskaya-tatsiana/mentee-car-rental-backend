@@ -4,7 +4,6 @@ namespace CarRental.DAL.Entities
 {
     public class Location : BaseEntity
     {
-        
         public string Address { get; set; }
         public string Coordinates { get; set; }
 
