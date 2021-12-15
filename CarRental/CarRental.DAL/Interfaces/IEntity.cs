@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    interface IEntity
+    public interface IEntity
     {
         public Guid Id { get; set; }
     }
