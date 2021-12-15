@@ -15,7 +15,7 @@ namespace CarRental.DAL.Entities
 
         public List<Attachment> Photos { get; set; }
 
-        public List<Report> Reports { get; set; }
+        public List<BookingReport> Reports { get; set; }
 
         public Guid LocationId { get; set; }
         public Location Location { get; set; }
