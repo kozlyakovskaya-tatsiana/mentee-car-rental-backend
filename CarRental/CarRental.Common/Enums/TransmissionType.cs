@@ -1,4 +1,4 @@
-﻿namespace carRental.Common.Types
+﻿namespace CarRental.Common.Enums
 {
     public enum TransmisionType
     {

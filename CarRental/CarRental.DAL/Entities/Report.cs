@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace carRental.DAL.Entities
+namespace CarRental.DAL.Entities
 {
     public class Report
     {

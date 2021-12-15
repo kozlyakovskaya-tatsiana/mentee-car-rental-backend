@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace carRental.DAL.Entities
+namespace CarRental.DAL.Entities
 {
     public class Country
     {

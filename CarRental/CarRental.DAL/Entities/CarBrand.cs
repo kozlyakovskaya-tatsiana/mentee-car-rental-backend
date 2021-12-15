@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace carRental.DAL.Entities
+namespace CarRental.DAL.Entities
 {
     public class CarBrand
     {

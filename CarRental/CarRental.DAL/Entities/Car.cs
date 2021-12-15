@@ -1,7 +1,7 @@
-﻿using carRental.Common.Types;
+﻿using CarRental.Common.Enums;
 using System;
 
-namespace carRental.DAL.Entities
+namespace CarRental.DAL.Entities
 {
     public class Car
     {
