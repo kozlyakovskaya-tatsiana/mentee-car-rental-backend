@@ -5,10 +5,11 @@ namespace CarRental.DAL.Entities
 {
     public class BookingReport : BaseEntity
     {
-        public double Mark { get; set; }
-        public DateTime StartOfferTime { get; set; }
-        public DateTime EndOfferTime { get; set; }
-        public double Price { get; set; }
+        public DateTime StartTimeOfBooking { get; set; }
+        public DateTime EndTimeOfBooking { get; set; }
+        public DateTime BookingRequestDateTime { get; set; }
+        public double TotalPrice { get; set; }
+        public BookingStatus Status { get; set; }
 
         public Car Car { get; set; }
         public Guid CarId { get; set; }

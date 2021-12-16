@@ -1,6 +1,6 @@
 ﻿namespace CarRental.Common.Enums
 {
-    public enum TransmisionType
+    public enum TransmissionType
     {
         Auto,
         Mechanic
