@@ -1,8 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using CarRental.DAL.Entities;
+﻿using CarRental.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarRental.DAL.Contexts
+namespace CarRental.DAL.EFCore
 {
     public sealed class CarRentalDbContext : DbContext
     {
