@@ -6,9 +6,8 @@ namespace CarRental.DAL.EFCore
     public sealed class CarRentalDbContext : DbContext
     {
         public CarRentalDbContext()
-        {
-            Database.EnsureCreated();
-        }
+            :base()
+        { }
 
         public DbSet<CarBrand> CarBrands { get; set; }
         public DbSet<Car> Cars { get; set; }
