@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
+using CarRental.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Repositories
 {
-    public class RentalPointRepository : IGenericRepository<RentalPoint>, IDisposable
+    public class RentalPointRepository : IRentalPointRepository
     {
         private CarRentalDbContext _db;
 

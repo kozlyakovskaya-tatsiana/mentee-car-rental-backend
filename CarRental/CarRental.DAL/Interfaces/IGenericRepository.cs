@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace CarRental.DAL
+namespace CarRental.DAL.Interfaces
 {
     public interface IGenericRepository<TEntity> : IDisposable
         where TEntity : class
