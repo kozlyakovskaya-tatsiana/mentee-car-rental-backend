@@ -1,4 +1,5 @@
 ﻿using System;
+using CarRental.Common.Enums;
 
 namespace CarRental.DAL.Entities
 {
@@ -8,8 +9,7 @@ namespace CarRental.DAL.Entities
         public DateTime EndTimeOfBooking { get; set; }
         public DateTime BookingRequestDateTime { get; set; }
         public double TotalPrice { get; set; }
-
-        // public enum for booking // request, approved, rejectedByUser, regectedByManager
+        public BookingStatus Status { get; set; }
 
         public Car Car { get; set; }
         public Guid CarId { get; set; }
