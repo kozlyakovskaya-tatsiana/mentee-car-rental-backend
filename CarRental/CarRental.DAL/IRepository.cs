@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace CarRental.DAL.Repositories
+namespace CarRental.DAL
 {
-    public interface IRepository<TEntity> : IDisposable
+    public interface IGenericRepository<TEntity> : IDisposable
         where TEntity : class
     {
-        IEnumerable<TEntity> GetEntityList();
         void Create(TEntity item);
         IQueryable<TEntity> GetAll();
         TEntity Get(Guid id);

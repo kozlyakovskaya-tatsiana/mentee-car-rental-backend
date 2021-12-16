@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CarRental.DAL.Entities;
 
-namespace CarRental.DAL.Repositories.Models
+namespace CarRental.DAL.Repositories
 {
-    class RentalPointRepository : IRepository<RentalPoint>, IDisposable
+    class RentalPointRepository : IGenericRepository<RentalPoint>, IDisposable
     {
         private CarRentalDbContext _carRentalDbContext;
         public void Dispose()
