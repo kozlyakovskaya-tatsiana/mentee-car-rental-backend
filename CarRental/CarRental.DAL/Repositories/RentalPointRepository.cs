@@ -1,51 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Repositories
 {
-    class RentalPointRepository : IGenericRepository<RentalPoint>, IDisposable
+    public class RentalPointRepository : IGenericRepository<RentalPoint>, IDisposable
     {
-        private CarRentalDbContext _carRentalDbContext;
-        public void Dispose()
+        private CarRentalDbContext _db;
+
+        public RentalPointRepository(CarRentalDbContext context)
         {
-            _carRentalDbContext.Dispose();
+            _db = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IEnumerable<RentalPoint> GetEntityList()
+
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            _db.Dispose();
         }
 
         public void Create(RentalPoint item)
         {
-            throw new NotImplementedException();
+            if (item != null)
+            {
+                _db.RentalPoints.Add(item);
+            }
         }
 
         public IQueryable<RentalPoint> GetAll()
         {
-            throw new NotImplementedException();
+            return _db.RentalPoints;
         }
 
         public RentalPoint Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _db.RentalPoints.Find(id);
         }
 
         public void Update(RentalPoint item)
         {
-            throw new NotImplementedException();
+            _db.Entry(item).State = EntityState.Modified;
         }
 
         public void Remove(Guid id)
         {
-            throw new NotImplementedException();
+            var rentalPoint = _db.RentalPoints.Find(id);
+            if (rentalPoint != null)
+            {
+                _db.RentalPoints.Remove(rentalPoint);
+            }
         }
 
         public void Save()
         {
-            _carRentalDbContext.SaveChanges();
+            _db.SaveChanges();
         }
     }
 }
