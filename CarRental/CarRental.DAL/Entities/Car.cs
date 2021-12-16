@@ -9,7 +9,7 @@ namespace CarRental.DAL.Entities
         public string Model { get; set; }
         public FuelType Fuel { get; set; }
         public double FuelConsumption { get; set; }
-        public TransmisionType Transmission { get; set; }
+        public TransmissionType Transmission { get; set; }
         public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
         public Status Status { get; set; }
