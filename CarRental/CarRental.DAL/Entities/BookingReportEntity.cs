@@ -3,7 +3,7 @@ using CarRental.Common.Enums;
 
 namespace CarRental.DAL.Entities
 {
-    public class BookingReport : BaseEntity
+    public class BookingReportEntity : BaseEntity
     {
         public DateTime StartTimeOfBooking { get; set; }
         public DateTime EndTimeOfBooking { get; set; }
@@ -11,10 +11,10 @@ namespace CarRental.DAL.Entities
         public double TotalPrice { get; set; }
         public BookingStatus Status { get; set; }
 
-        public Car Car { get; set; }
+        public CarEntity Car { get; set; }
         public Guid CarId { get; set; }
 
-        public User User { get; set; }
+        public UserEntity User { get; set; }
         public Guid UserId { get; set; }
     }
 }
