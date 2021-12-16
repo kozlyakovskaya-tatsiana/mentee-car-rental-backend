@@ -30,34 +30,34 @@ namespace CarRental.DAL.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-                .HasMany<BookingReport>(reports => reports.Reports)
-                .WithOne(user => user.User)
-                .HasForeignKey(userId => userId.UserId);
+                .HasMany<BookingReport>(r => r.Reports)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.UserId);
 
             modelBuilder.Entity<Car>()
-                .HasMany<BookingReport>(bookingReport => bookingReport.Reports)
-                .WithOne(car => car.Car)
-                .HasForeignKey(carId => carId.CarId);
+                .HasMany<BookingReport>(r => r.Reports)
+                .WithOne(c => c.Car)
+                .HasForeignKey(c => c.CarId);
 
             modelBuilder.Entity<Car>()
-                .HasMany<Attachment>(attachments => attachments.Photos)
-                .WithOne(car => car.Car)
-                .HasForeignKey(carId => carId.CarId);
+                .HasMany<Attachment>(a => a.Photos)
+                .WithOne(c => c.Car)
+                .HasForeignKey(c => c.CarId);
 
             modelBuilder.Entity<CarBrand>()
-                .HasMany<Car>(cars => cars.Cars)
-                .WithOne(carBrand => carBrand.Brand)
-                .HasForeignKey(brandId => brandId.BrandId);
+                .HasMany<Car>(c => c.Cars)
+                .WithOne(b => b.Brand)
+                .HasForeignKey(b => b.BrandId);
 
             modelBuilder.Entity<RentalPoint>()
-                .HasMany<Car>(cars => cars.Cars)
-                .WithOne(point => point.RentalPoint)
-                .HasForeignKey(rpId => rpId.RentalPointId);
+                .HasMany<Car>(c => c.Cars)
+                .WithOne(p => p.RentalPoint)
+                .HasForeignKey(p => p.RentalPointId);
 
             modelBuilder.Entity<Location>()
                 .HasOne(rp => rp.RentalPoint)
-                .WithOne(loc => loc.Location)
-                .HasForeignKey<RentalPoint>(locId => locId.LocationId);
+                .WithOne(l => l.Location)
+                .HasForeignKey<RentalPoint>(l => l.LocationId);
 
             modelBuilder.Entity<City>()
                 .HasMany(l => l.Locations)
