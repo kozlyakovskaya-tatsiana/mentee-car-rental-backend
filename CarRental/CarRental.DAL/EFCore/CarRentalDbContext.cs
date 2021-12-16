@@ -19,7 +19,7 @@ namespace CarRental.DAL.Contexts
         public DbSet<Location> Locations { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<RentalPoint> RentalPoints { get; set; }
-        // users
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
