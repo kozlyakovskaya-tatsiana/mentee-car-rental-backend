@@ -59,7 +59,10 @@ namespace CarRental.DAL.Contexts
                 .WithOne(loc => loc.Location)
                 .HasForeignKey<RentalPoint>(locId => locId.LocationId);
 
-
+            modelBuilder.Entity<City>()
+                .HasMany(l => l.Locations)
+                .WithOne(c => c.City)
+                .HasForeignKey(c => c.CityId);
         }
     }
 }
