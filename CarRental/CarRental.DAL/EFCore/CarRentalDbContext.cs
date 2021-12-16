@@ -31,6 +31,8 @@ namespace CarRental.DAL.EFCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
+            modelBuilder.Entity<User>()
                 .HasMany<BookingReport>(r => r.Reports)
                 .WithOne(u => u.User)
                 .HasForeignKey(u => u.UserId);
@@ -42,15 +44,18 @@ namespace CarRental.DAL.EFCore
                 .IsRequired();
 
             modelBuilder.Entity<Car>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<Car>()
                 .HasMany<BookingReport>(r => r.Reports)
                 .WithOne(c => c.Car)
                 .HasForeignKey(c => c.CarId);
-
             modelBuilder.Entity<Car>()
                 .HasMany<Attachment>(a => a.Photos)
                 .WithOne(c => c.Car)
                 .HasForeignKey(c => c.CarId);
 
+            modelBuilder.Entity<CarBrand>()
+                .HasKey(cb => cb.Id);
             modelBuilder.Entity<CarBrand>()
                 .HasMany<Car>(c => c.Cars)
                 .WithOne(b => b.Brand)
@@ -60,6 +65,8 @@ namespace CarRental.DAL.EFCore
                 .IsRequired();
 
             modelBuilder.Entity<RentalPoint>()
+                .HasKey(rp => rp.Id);
+            modelBuilder.Entity<RentalPoint>()
                 .HasMany<Car>(c => c.Cars)
                 .WithOne(p => p.RentalPoint)
                 .HasForeignKey(p => p.RentalPointId);
@@ -67,6 +74,8 @@ namespace CarRental.DAL.EFCore
                 .Property(rp => rp.Name)
                 .IsRequired();
 
+            modelBuilder.Entity<Location>()
+                .HasKey(l => l.Id);
             modelBuilder.Entity<Location>()
                 .HasOne(rp => rp.RentalPoint)
                 .WithOne(l => l.Location)
@@ -76,6 +85,8 @@ namespace CarRental.DAL.EFCore
                 .IsRequired();
 
             modelBuilder.Entity<City>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<City>()
                 .HasMany(l => l.Locations)
                 .WithOne(c => c.City)
                 .HasForeignKey(c => c.CityId);
@@ -83,6 +94,8 @@ namespace CarRental.DAL.EFCore
                 .Property(c => c.Name)
                 .IsRequired();
 
+            modelBuilder.Entity<Country>()
+                .HasKey(c => c.Id);
             modelBuilder.Entity<Country>()
                 .HasMany(ci => ci.Cities)
                 .WithOne(co => co.Country)
@@ -92,8 +105,13 @@ namespace CarRental.DAL.EFCore
                 .IsRequired();
 
             modelBuilder.Entity<BookingReport>()
+                .HasKey(br => br.Id);
+            modelBuilder.Entity<BookingReport>()
                 .Property(br => br.Status)
                 .IsRequired();
+
+            modelBuilder.Entity<Attachment>()
+                .HasKey(a => a.Id);
         }
     }
 }
