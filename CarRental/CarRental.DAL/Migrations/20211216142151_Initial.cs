@@ -7,6 +7,9 @@ namespace CarRental.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:adminpack", ",,");
+
             migrationBuilder.CreateTable(
                 name: "CarBrands",
                 columns: table => new

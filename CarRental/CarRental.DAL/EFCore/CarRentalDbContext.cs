@@ -21,14 +21,17 @@ namespace CarRental.DAL.EFCore
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;" +
-                                     "Port=5432;Database=postgres;" +
-                                     "Username=postgres;" +
-                                     "Password=root;");
+            
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=TestDB;Username=postgres;Password=root;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarRentalDbContext).Assembly);
+
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
             modelBuilder.Entity<User>()
@@ -112,5 +115,6 @@ namespace CarRental.DAL.EFCore
             modelBuilder.Entity<Attachment>()
                 .HasKey(a => a.Id);
         }
+
     }
 }
