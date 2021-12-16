@@ -29,9 +29,8 @@ namespace CarRental.DAL.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //TODO
             modelBuilder.Entity<User>()
-                .HasMany(reports => reports.Reports)
+                .HasMany<BookingReport>(reports => reports.Reports)
                 .WithOne(user => user.User)
                 .HasForeignKey(userId => userId.UserId);
 
@@ -41,7 +40,7 @@ namespace CarRental.DAL.Contexts
                 .HasForeignKey(carId => carId.CarId);
 
             modelBuilder.Entity<Car>()
-                .HasMany(attachments => attachments.Photos)
+                .HasMany<Attachment>(attachments => attachments.Photos)
                 .WithOne(car => car.Car)
                 .HasForeignKey(carId => carId.CarId);
 
@@ -54,6 +53,13 @@ namespace CarRental.DAL.Contexts
                 .HasMany<Car>(cars => cars.Cars)
                 .WithOne(point => point.RentalPoint)
                 .HasForeignKey(rpId => rpId.RentalPointId);
+
+            modelBuilder.Entity<Location>()
+                .HasOne(rp => rp.RentalPoint)
+                .WithOne(loc => loc.Location)
+                .HasForeignKey<RentalPoint>(locId => locId.LocationId);
+
+
         }
     }
 }
