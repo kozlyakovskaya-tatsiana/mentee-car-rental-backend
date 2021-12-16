@@ -63,6 +63,11 @@ namespace CarRental.DAL.Contexts
                 .HasMany(l => l.Locations)
                 .WithOne(c => c.City)
                 .HasForeignKey(c => c.CityId);
+
+            modelBuilder.Entity<Country>()
+                .HasMany(ci => ci.Cities)
+                .WithOne(co => co.Country)
+                .HasForeignKey(co => co.CountryId);
         }
     }
 }
