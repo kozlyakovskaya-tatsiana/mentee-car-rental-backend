@@ -3,7 +3,8 @@
     public enum Status
     {
         Free,
-        TemporaryTaken,
-        Busy
+        Booked,
+        Locked,
+        Unavailable
     }
 }
