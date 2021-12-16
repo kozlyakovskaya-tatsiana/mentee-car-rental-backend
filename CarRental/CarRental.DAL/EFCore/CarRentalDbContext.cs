@@ -6,6 +6,11 @@ namespace CarRental.DAL.Contexts
 {
     public sealed class CarRentalDbContext : DbContext
     {
+        public CarRentalDbContext()
+        {
+            Database.EnsureCreated();
+        }
+
         public DbSet<CarBrand> CarBrands { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<BookingReport> Reports { get; set; }
@@ -14,11 +19,8 @@ namespace CarRental.DAL.Contexts
         public DbSet<Location> Locations { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<RentalPoint> RentalPoints { get; set; }
+        // users
 
-        public CarRentalDbContext()
-        {
-            Database.EnsureCreated();
-        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=localhost;" +
@@ -32,7 +34,7 @@ namespace CarRental.DAL.Contexts
             modelBuilder.Entity<User>()
                 .HasMany<BookingReport>(r => r.Reports)
                 .WithOne(u => u.User)
-                .HasForeignKey(u => u.UserId);
+                .HasForeignKey(u => u.UserId); //onDelete
 
             modelBuilder.Entity<Car>()
                 .HasMany<BookingReport>(r => r.Reports)
