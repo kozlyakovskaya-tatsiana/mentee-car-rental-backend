@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CarRental.DAL.Entities
 {
-    public class Car : BaseEntity
+    public class CarEntity : BaseEntity
     {
         public string Model { get; set; }
         public FuelType Fuel { get; set; }
@@ -14,14 +14,14 @@ namespace CarRental.DAL.Entities
         public double PricePerHour { get; set; }
         public Status Status { get; set; }
 
-        public List<Attachment> Photos { get; set; }
+        public List<AttachmentEntity> Photos { get; set; }
 
-        public List<BookingReport> Reports { get; set; }
+        public List<BookingReportEntity> Reports { get; set; }
 
-        public CarBrand Brand { get; set; }
+        public CarBrandEntity Brand { get; set; }
         public Guid BrandId { get; set; }
 
-        public RentalPoint RentalPoint { get; set; }
+        public RentalPointEntity RentalPoint { get; set; }
         public Guid RentalPointId { get; set; }
     }
 }

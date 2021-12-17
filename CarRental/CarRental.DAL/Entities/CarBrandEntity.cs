@@ -2,9 +2,9 @@
 
 namespace CarRental.DAL.Entities
 {
-    public class CarBrand : BaseEntity
+    public class CarBrandEntity : BaseEntity
     {
         public string Name { get; set; }
-        public List<Car> Cars { get; set; }
+        public List<CarEntity> Cars { get; set; }
     }
 }

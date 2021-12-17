@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace CarRental.DAL.Entities
 {
-    public class City : BaseEntity
+    public class CityEntity : BaseEntity
     {
         public string Name { get; set; }
-        public List<Location> Locations { get; set; }
+        public List<LocationEntity> Locations { get; set; }
 
-        public Country Country { get; set; }
+        public CountryEntity Country { get; set; }
         public Guid CountryId { get; set; }
     }
 }
