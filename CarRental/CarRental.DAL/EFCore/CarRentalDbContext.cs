@@ -30,18 +30,7 @@ namespace CarRental.DAL.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserEntity>()
-                .HasKey(u => u.Id);
-            modelBuilder.Entity<UserEntity>()
-                .HasMany(r => r.Reports)
-                .WithOne(u => u.User)
-                .HasForeignKey(u => u.UserId);
-            modelBuilder.Entity<UserEntity>()
-                .Property(u => u.FirstName)
-                .IsRequired();
-            modelBuilder.Entity<UserEntity>()
-                .Property(u => u.LastName)
-                .IsRequired();
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarRentalDbContext).Assembly);
 
             modelBuilder.Entity<CarEntity>()
                 .HasKey(c => c.Id);
