@@ -11,6 +11,11 @@ namespace CarRental.DAL.Repositories
     {
         private CarRentalDbContext _db;
 
+        public CityRepository(CarRentalDbContext context)
+        {
+            _db = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public void Dispose()
         {
             _db.Dispose();
