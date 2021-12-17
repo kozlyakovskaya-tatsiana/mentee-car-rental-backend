@@ -18,7 +18,10 @@ namespace CarRental.DAL.Repositories
 
         public void Create(City item)
         {
-            _db.Cities.Add(item);
+            if (item != null)
+            {
+                _db.Cities.Add(item);
+            }
         }
 
         public IQueryable<City> GetAll()

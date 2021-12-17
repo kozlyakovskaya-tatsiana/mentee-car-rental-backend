@@ -18,7 +18,10 @@ namespace CarRental.DAL.Repositories
 
         public void Create(Car item)
         {
-            _db.Cars.Add(item);
+            if (item != null)
+            {
+                _db.Cars.Add(item);
+            }
         }
 
         public IQueryable<Car> GetAll()
