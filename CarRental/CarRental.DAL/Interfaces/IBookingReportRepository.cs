@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface IBookingReportRepository : IGenericRepository<BookingReport>
+    public interface IBookingReportRepository : IGenericRepository<BookingReportEntity>
     {
 
     }

@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface ICountryRepository : IGenericRepository<Country>
+    public interface ICountryRepository : IGenericRepository<CountryEntity>
     {
 
     }

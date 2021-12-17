@@ -21,7 +21,7 @@ namespace CarRental.DAL.Repositories
             _db.Dispose();
         }
 
-        public void Create(Country item)
+        public void Create(CountryEntity item)
         {
             if (item != null)
             {
@@ -29,17 +29,17 @@ namespace CarRental.DAL.Repositories
             }
         }
 
-        public IQueryable<Country> GetAll()
+        public IQueryable<CountryEntity> GetAll()
         {
             return _db.Countries;
         }
 
-        public Country Get(Guid id)
+        public CountryEntity Get(Guid id)
         {
             return _db.Countries.Find(id);
         }
 
-        public void Update(Country item)
+        public void Update(CountryEntity item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }

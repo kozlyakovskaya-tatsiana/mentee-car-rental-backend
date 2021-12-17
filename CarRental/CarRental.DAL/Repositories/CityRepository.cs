@@ -21,7 +21,7 @@ namespace CarRental.DAL.Repositories
             _db.Dispose();
         }
 
-        public void Create(City item)
+        public void Create(CityEntity item)
         {
             if (item != null)
             {
@@ -29,17 +29,17 @@ namespace CarRental.DAL.Repositories
             }
         }
 
-        public IQueryable<City> GetAll()
+        public IQueryable<CityEntity> GetAll()
         {
             return _db.Cities;
         }
 
-        public City Get(Guid id)
+        public CityEntity Get(Guid id)
         {
             return _db.Cities.Find(id);
         }
 
-        public void Update(City item)
+        public void Update(CityEntity item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }

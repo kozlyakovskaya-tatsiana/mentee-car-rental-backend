@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface ICarBrandRepository : IGenericRepository<CarBrand>
+    public interface ICarBrandRepository : IGenericRepository<CarBrandEntity>
     {
 
     }

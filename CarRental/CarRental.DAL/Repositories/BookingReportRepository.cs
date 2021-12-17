@@ -21,7 +21,7 @@ namespace CarRental.DAL.Repositories
             _db.Dispose();
         }
 
-        public void Create(BookingReport item)
+        public void Create(BookingReportEntity item)
         {
             if (item != null)
             {
@@ -29,17 +29,17 @@ namespace CarRental.DAL.Repositories
             }
         }
 
-        public IQueryable<BookingReport> GetAll()
+        public IQueryable<BookingReportEntity> GetAll()
         {
             return _db.Reports;
         }
 
-        public BookingReport Get(Guid id)
+        public BookingReportEntity Get(Guid id)
         {
             return _db.Reports.Find(id);
         }
 
-        public void Update(BookingReport item)
+        public void Update(BookingReportEntity item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }

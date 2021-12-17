@@ -21,7 +21,7 @@ namespace CarRental.DAL.Repositories
             _db.Dispose();
         }
 
-        public void Create(CarBrand item)
+        public void Create(CarBrandEntity item)
         {
             if (item != null)
             {
@@ -29,17 +29,17 @@ namespace CarRental.DAL.Repositories
             }
         }
 
-        public IQueryable<CarBrand> GetAll()
+        public IQueryable<CarBrandEntity> GetAll()
         {
             return _db.CarBrands;
         }
 
-        public CarBrand Get(Guid id)
+        public CarBrandEntity Get(Guid id)
         {
             return _db.CarBrands.Find(id);
         }
 
-        public void Update(CarBrand item)
+        public void Update(CarBrandEntity item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }

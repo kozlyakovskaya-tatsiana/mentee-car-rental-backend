@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface ICityRepository : IGenericRepository<City>
+    public interface ICityRepository : IGenericRepository<CityEntity>
     {
 
     }

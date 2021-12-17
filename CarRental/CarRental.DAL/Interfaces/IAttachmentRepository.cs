@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface IAttachmentRepository : IGenericRepository<Attachment>
+    public interface IAttachmentRepository : IGenericRepository<AttachmentEntity>
     {
 
     }

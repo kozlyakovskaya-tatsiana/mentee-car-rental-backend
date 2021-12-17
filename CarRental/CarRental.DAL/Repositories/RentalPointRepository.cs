@@ -22,7 +22,7 @@ namespace CarRental.DAL.Repositories
             _db.Dispose();
         }
 
-        public void Create(RentalPoint item)
+        public void Create(RentalPointEntity item)
         {
             if (item != null)
             {
@@ -30,17 +30,17 @@ namespace CarRental.DAL.Repositories
             }
         }
 
-        public IQueryable<RentalPoint> GetAll()
+        public IQueryable<RentalPointEntity> GetAll()
         {
             return _db.RentalPoints;
         }
 
-        public RentalPoint Get(Guid id)
+        public RentalPointEntity Get(Guid id)
         {
             return _db.RentalPoints.Find(id);
         }
 
-        public void Update(RentalPoint item)
+        public void Update(RentalPointEntity item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }

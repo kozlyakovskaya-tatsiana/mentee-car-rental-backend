@@ -21,7 +21,7 @@ namespace CarRental.DAL.Repositories
             _db.Dispose();
         }
 
-        public void Create(Attachment item)
+        public void Create(AttachmentEntity item)
         {
             if (item != null)
             {
@@ -29,17 +29,17 @@ namespace CarRental.DAL.Repositories
             }
         }
 
-        public IQueryable<Attachment> GetAll()
+        public IQueryable<AttachmentEntity> GetAll()
         {
             return _db.Attachments;
         }
 
-        public Attachment Get(Guid id)
+        public AttachmentEntity Get(Guid id)
         {
             return _db.Attachments.Find(id);
         }
 
-        public void Update(Attachment item)
+        public void Update(AttachmentEntity item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }
