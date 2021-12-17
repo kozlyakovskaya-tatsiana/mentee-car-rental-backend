@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface IUserRepository : IGenericRepository<UserEntity>
+    public interface IUserRepository : IBaseRepository<UserEntity>
     {
 
     }

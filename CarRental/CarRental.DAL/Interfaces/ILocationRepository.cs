@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface ILocationRepository : IGenericRepository<LocationEntity>
+    public interface ILocationRepository : IBaseRepository<LocationEntity>
     {
 
     }

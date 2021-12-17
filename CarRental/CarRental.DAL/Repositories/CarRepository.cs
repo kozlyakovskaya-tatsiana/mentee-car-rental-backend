@@ -41,9 +41,11 @@ namespace CarRental.DAL.Repositories
 
         public void Update(CarEntity item)
         {
+            // relook
             _db.Entry(item).State = EntityState.Modified;
         }
 
+        // Entity Result
         public void Remove(Guid id)
         {
             var car = _db.Cars.Find(id);

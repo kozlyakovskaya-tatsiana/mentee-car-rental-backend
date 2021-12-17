@@ -3,7 +3,7 @@ using CarRental.DAL.Entities;
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface ICarRepository: IGenericRepository<CarEntity>
+    public interface ICarRepository: IBaseRepository<CarEntity>
     {
 
     }

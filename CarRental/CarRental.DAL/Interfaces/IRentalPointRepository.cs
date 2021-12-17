@@ -2,7 +2,7 @@
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface IRentalPointRepository : IGenericRepository<RentalPointEntity>
+    public interface IRentalPointRepository : IBaseRepository<RentalPointEntity>
     {
 
     }
