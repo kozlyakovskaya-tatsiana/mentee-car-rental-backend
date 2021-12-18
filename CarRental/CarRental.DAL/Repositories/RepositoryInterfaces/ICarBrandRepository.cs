@@ -1,4 +1,4 @@
-﻿namespace CarRental.DAL.Interfaces
+﻿namespace CarRental.DAL.Repositories.RepositoryInterfaces
 {
     public interface ICarBrandRepository
     {
