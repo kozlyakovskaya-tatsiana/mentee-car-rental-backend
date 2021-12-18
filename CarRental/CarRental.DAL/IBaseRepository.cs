@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CarRental.DAL
 {
     public interface IBaseRepository<TEntity>
         where TEntity : class
     {
-        TEntity Create(TEntity item);
-        IEnumerable<TEntity> GetAll();
-        TEntity Get(Guid id);
-        TEntity Update(TEntity item);
-        void Remove(Guid id);
+        Task<List<TEntity>> GetAll();
+        Task<TEntity> Get(int id);
+        Task<TEntity> Add(TEntity entity);
+        Task<TEntity> Update(TEntity entity);
+        Task<TEntity> Delete(int id);
     }
 }
