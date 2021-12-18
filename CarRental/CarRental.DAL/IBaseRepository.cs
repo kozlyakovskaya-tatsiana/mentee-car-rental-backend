@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CarRental.DAL.Interfaces
+namespace CarRental.DAL
 {
     public interface IBaseRepository<TEntity>
         where TEntity : class
@@ -11,7 +11,5 @@ namespace CarRental.DAL.Interfaces
         TEntity Get(Guid id);
         TEntity Update(TEntity item);
         void Remove(Guid id);
-        // Unnecessary ?
-        void Save();
     }
 }
