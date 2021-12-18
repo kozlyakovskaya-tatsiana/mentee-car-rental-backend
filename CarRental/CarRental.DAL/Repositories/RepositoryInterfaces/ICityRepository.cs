@@ -1,8 +1,6 @@
-﻿using CarRental.DAL.Entities;
-
-namespace CarRental.DAL.Interfaces
+﻿namespace CarRental.DAL.Interfaces
 {
-    public interface ICityRepository : IBaseRepository<CityEntity>
+    public interface ICityRepository
     {
 
     }

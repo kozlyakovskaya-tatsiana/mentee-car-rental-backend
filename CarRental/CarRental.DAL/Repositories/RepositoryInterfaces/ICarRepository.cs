@@ -1,9 +1,6 @@
-﻿using System;
-using CarRental.DAL.Entities;
-
-namespace CarRental.DAL.Interfaces
+﻿namespace CarRental.DAL.Interfaces
 {
-    public interface ICarRepository: IBaseRepository<CarEntity>
+    public interface ICarRepository
     {
 
     }
