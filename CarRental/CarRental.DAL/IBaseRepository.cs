@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace CarRental.DAL.Interfaces
 {
-    public interface IBaseRepository<TEntity> : IDisposable
+    public interface IBaseRepository<TEntity>
         where TEntity : class
     {
-        // return Created Entity
-        void Create(TEntity item);
-        // IEnumerable
-        IQueryable<TEntity> GetAll();
+        TEntity Create(TEntity item);
+        IEnumerable<TEntity> GetAll();
         TEntity Get(Guid id);
-        // Return updated entity
-        void Update(TEntity item);
+        TEntity Update(TEntity item);
         void Remove(Guid id);
         // Unnecessary ?
         void Save();
