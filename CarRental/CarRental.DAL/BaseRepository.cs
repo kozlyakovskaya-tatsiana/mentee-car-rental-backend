@@ -1,4 +1,5 @@
-﻿using CarRental.DAL.EFCore;
+﻿using System;
+using CarRental.DAL.EFCore;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace CarRental.DAL
             return entity;
         }
 
-        public async Task<TEntity> Delete(int id)
+        public async Task<TEntity> Delete(Guid id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
             if (entity == null)
@@ -36,7 +37,7 @@ namespace CarRental.DAL
             return entity;
         }
 
-        public async Task<TEntity> Get(int id)
+        public async Task<TEntity> Get(Guid id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
