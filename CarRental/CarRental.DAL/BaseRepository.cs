@@ -52,7 +52,7 @@ namespace CarRental.DAL
 
         public async Task<TEntity> Update(TEntity entity)
         {
-            _context.Update(entity);
+            _dbSet.Update(entity);
 
             await _context.SaveChangesAsync();
 
