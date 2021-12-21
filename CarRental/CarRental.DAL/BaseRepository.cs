@@ -26,15 +26,10 @@ namespace CarRental.DAL
             return entity;
         }
 
-        public async Task<TEntity> Delete(Guid id)
+        public async Task<TEntity> Delete(TEntity entity)
         {
-            var entity = await _dbSet.FindAsync(id);
-            if (entity == null)
-            {
-                throw new NullReferenceException();
-            }
-
             _dbSet.Remove(entity);
+
             await _context.SaveChangesAsync();
 
             return entity;
