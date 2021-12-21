@@ -1,4 +1,4 @@
-﻿namespace CarRental.DAL.Repositories.RepositoryInterfaces
+﻿namespace CarRental.DAL.Repositories
 {
     public interface IRentalPointRepository
     {
