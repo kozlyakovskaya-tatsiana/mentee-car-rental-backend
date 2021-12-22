@@ -1,8 +1,7 @@
 ﻿using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
-using CarRental.DAL.Repositories.RepositoryInterfaces;
 
-namespace CarRental.DAL.Repositories.RepositoryImplementation
+namespace CarRental.DAL.Repositories.Implementation
 {
     public class BookingReportRepository : BaseRepository<BookingReportEntity>, IBookingReportRepository
     {
