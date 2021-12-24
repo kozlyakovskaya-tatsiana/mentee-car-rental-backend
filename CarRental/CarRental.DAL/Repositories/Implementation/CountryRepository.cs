@@ -6,6 +6,7 @@ namespace CarRental.DAL.Repositories.Implementation
     public class CountryRepository : BaseRepository<CountryEntity>, ICountryRepository
     {
         public CountryRepository(CarRentalDbContext context) : base(context)
-        { }
+        {
+        }
     }
 }
