@@ -3,10 +3,11 @@ using CarRental.DAL.EFCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using CarRental.DAL.Entities;
 
 namespace CarRental.DAL
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         where TEntity : class
     {
         private readonly CarRentalDbContext _context;
