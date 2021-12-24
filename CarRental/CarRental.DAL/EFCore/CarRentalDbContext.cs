@@ -1,18 +1,28 @@
-﻿using CarRental.DAL.Entities;
+﻿using System;
+using CarRental.DAL.Entities;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace CarRental.DAL.EFCore
 {
-    public sealed class CarRentalDbContext : DbContext
+    public sealed class CarRentalDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
     {
-        public CarRentalDbContext()
+        private readonly ConnectionOptions _connection;
+        public CarRentalDbContext(IOptions<ConnectionOptions> connectionOptions) : base()
         {
+            _connection = connectionOptions.Value;
         }
 
-        public CarRentalDbContext(DbContextOptions<CarRentalDbContext> options)
-            :base(options)
+        public CarRentalDbContext(DbContextOptions<CarRentalDbContext> options,
+            IOptions<ConnectionOptions> connectionOptions)
         {
+            _connection = connectionOptions.Value;
         }
+
 
         public DbSet<CarBrandEntity> CarBrands { get; set; }
         public DbSet<CarEntity> Cars { get; set; }
@@ -22,21 +32,20 @@ namespace CarRental.DAL.EFCore
         public DbSet<LocationEntity> Locations { get; set; }
         public DbSet<AttachmentEntity> Attachments { get; set; }
         public DbSet<RentalPointEntity> RentalPoints { get; set; }
-        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
+
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseNpgsql("Host=localhost;" +
-                                         "Port=5432;Database=TestDB;" +
-                                         "Username=postgres;" +
-                                         "Password=root;");
-            }
+            
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=TestDB;Username=postgres;Password=root;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarRentalDbContext).Assembly);
         }
     }
