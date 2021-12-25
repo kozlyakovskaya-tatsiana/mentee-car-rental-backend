@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models;
+using CarRental.Business.Models.Token;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 
@@ -21,19 +22,8 @@ namespace CarRental.Business.Services.Implementation
             _mapper = mapper;
         }
 
-        public bool IsRefreshExpired(TokenPairModel pair)
-        {
-            var tokens =  _refreshTokenRepository.Get(pair.RefreshToken.Token);
-            return tokens.Result.Expired > DateTime.Now;
-        }
 
-        public async Task<TokenPairModel> UpdateJwToken(UserEntity user, JwtSecurityToken newJwt)
-        {
-            var data = await _refreshTokenRepository.Get(user.Id);
-            await _refreshTokenRepository.Update(data);
-            var result = _mapper.Map<RefreshTokenEntity, TokenPairModel>(data);
-            return result;
-        }
+
 
     }
 }

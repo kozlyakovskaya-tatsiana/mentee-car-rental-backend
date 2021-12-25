@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models;
+using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
 using CarRental.Business.Options;
 using CarRental.DAL;
@@ -22,39 +23,34 @@ namespace CarRental.Business.Services.Implementation
 {
     public class TokenService : ITokenService
     {
-        private readonly IMapper _mapper;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly JwtOptions _jwt;
-        private readonly IUserRepository _userRepository;
 
 
         public TokenService(
             IMapper mapper,
-            IRefreshTokenRepository refreshTokenRepository,
-            IUserRepository userRepository,
             IOptions<JwtOptions> jwt
         )
         {
-            _mapper = mapper;
-            _refreshTokenRepository = refreshTokenRepository;
-            _userRepository = userRepository;
             _jwt = jwt.Value;
         }
 
-        public TokenPairModel GenerateTokenPair(TokenPairModel pair)
+        /*
+        public TokenPairModel UpdateTokenPair(TokenPairModel pair)
         {
-            var userId = pair.AccessToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            var refresh = _refreshTokenRepository.Get(Guid.Parse(userId)).Result;
-
-            if (IsRefreshExpired(refresh))
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(pair.AccessToken);
+            var claims = token.Claims;
+            var userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var refresh = _refreshTokenRepository.Get(Guid.Parse(userId), pair.RefreshToken);
+            if (refresh == null || IsRefreshExpired(refresh.Result))
             {
                 // You refresh token expired, re-login pls
                 throw new Exception();
             }
             else
             {
-                //TODO
-                return null;
+                var newJwt = GenerateJwt(claims);
+                pair.AccessToken = new JwtSecurityTokenHandler().WriteToken(newJwt);
+                return pair;
             }
         }
 
@@ -70,18 +66,16 @@ namespace CarRental.Business.Services.Implementation
             return claims;
         }
 
-        public TokenPairModel Revoke(TokenPairModel pair)
+        public TokenRevokeModel Revoke(TokenRevokeModel pair)
         {
-            // Refresh tokens doesn't exist
-            var id = Guid.Parse(
-                pair.AccessToken.Claims.FirstOrDefault(
-                    x => x.Type == ClaimTypes.NameIdentifier)?.Value
-                ?? throw new InvalidOperationException());
-            _refreshTokenRepository.Revoke(id);
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(pair.AccessToken);
+            var id = token.Claims.FirstOrDefault(
+                x => x.Type == ClaimTypes.NameIdentifier)?.Value 
+                     ?? throw new InvalidOperationException();
+            _refreshTokenRepository.Revoke(Guid.Parse(id));
             return pair;
         }
 
-        // Complete
         public JwtSecurityToken GenerateJwt(IEnumerable<Claim> claims)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
@@ -97,27 +91,23 @@ namespace CarRental.Business.Services.Implementation
         }
 
 
-        // 
         public bool IsRefreshExpired(RefreshTokenEntity refresh)
         {
-            var tokens = _refreshTokenRepository.Get(refresh.Token);
-            return tokens.Result.Expired > DateTime.Now;
+            return refresh.Expired < DateTime.UtcNow;
         }
 
-        // Complete
         public async Task<TokenPairModel> GenerateTokenPair(LoginModel model)
         {
             var user = _userRepository.Get(model.Email);
             var claims = CreateUserClaims(user);
             var jwt = GenerateJwt(claims);
             var refresh = GenerateRefresh(user);
-            // PROBLEM: Doesn't add to database
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
             await _refreshTokenRepository.Add(refresh);
-            var result = new TokenPairModel {AccessToken = jwt, RefreshToken = refresh};
+            var result = new TokenPairModel {AccessToken = encodedJwt, RefreshToken = refresh.Token};
             return result;
         }
 
-        // Complete
         public RefreshTokenEntity GenerateRefresh(UserEntity user)
         {
             var randomNumber = new byte[32];
@@ -131,6 +121,48 @@ namespace CarRental.Business.Services.Implementation
                 UserId = user.Id
             };
             return refreshSecurityToken;
+        }
+        */
+        public string GenerateAccessToken(IEnumerable<Claim> claims)
+        {
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var tokeOptions = new JwtSecurityToken(
+                issuer: _jwt.Issuer,
+                audience: _jwt.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwt.DurationInMinutes),
+                signingCredentials: signinCredentials
+            );
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            return tokenString;
+        }
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key)),
+                ValidateLifetime = true
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+            return principal;
         }
     }
 }
