@@ -3,6 +3,7 @@ using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.API.Models.Responses;
 using CarRental.Business.Models;
+using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
 using CarRental.Business.Options;
 using CarRental.Business.Services;

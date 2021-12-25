@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace carRental.API.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/secured")]
     [ApiController]
     public class SecuredController : ControllerBase
@@ -12,7 +12,7 @@ namespace carRental.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSecuredData()
         {
-            return Ok("This Secured Data is available only for Authenticated Users.");
+            return Ok("Hello world");
         }
     }
 }

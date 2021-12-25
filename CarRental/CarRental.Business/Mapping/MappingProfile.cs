@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarRental.Business.Models;
+using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
 using CarRental.DAL.Entities;
 
