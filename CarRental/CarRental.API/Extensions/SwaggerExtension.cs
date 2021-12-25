@@ -10,16 +10,18 @@ namespace CarRental.API.Extensions
             this IServiceCollection services
             )
         {
-            services.AddSwaggerGen(с =>
+            services.AddSwaggerGen(options =>
             {
-                с.SwaggerDoc("v1", new OpenApiInfo { Title = "My API" });
-                с.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My Music", Version = "v1" });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT containing userid claim",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                 });
+
                 var security =
                     new OpenApiSecurityRequirement
                     {
@@ -36,7 +38,7 @@ namespace CarRental.API.Extensions
                             new List<string>()
                         }
                     };
-                с.AddSecurityRequirement(security);
+                options.AddSecurityRequirement(security);
             });
             return services;
         }
