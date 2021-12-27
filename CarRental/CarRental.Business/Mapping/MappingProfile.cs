@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarRental.Business.Models.Role;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
 using CarRental.DAL.Entities;
@@ -17,6 +18,7 @@ namespace CarRental.Business.Mapping
                 .ForMember(x => x.RefreshToken,
                     xr => xr.MapFrom(az => az.Token));
             CreateMap<LoginModel, UserEntity>();
+            CreateMap<RoleCreateModel, RoleEntity>();
         }
     }
 }
