@@ -19,7 +19,7 @@ namespace CarRental.API.Controllers
         public UserController(
             IMapper mapper,
             IUserService userService
-            )
+        )
         {
             _userService = userService;
             _mapper = mapper;

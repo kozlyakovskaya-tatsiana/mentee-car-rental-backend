@@ -2,7 +2,6 @@
 using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.API.Models.Responses;
-using CarRental.Business.Models;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +14,16 @@ namespace CarRental.API.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+
         public TokenController(
-            ITokenService tokenService, 
+            ITokenService tokenService,
             IMapper mapper
-            )
+        )
         {
             _tokenService = tokenService;
             _mapper = mapper;
         }
+
         [HttpPost("revoke")]
         public async Task<IActionResult> RevokeAllTokens(TokenPairRequest pair)
         {

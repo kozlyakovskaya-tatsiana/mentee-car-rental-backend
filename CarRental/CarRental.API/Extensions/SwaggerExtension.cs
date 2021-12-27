@@ -8,11 +8,11 @@ namespace CarRental.API.Extensions
     {
         public static IServiceCollection AddSwaggerEnvironment(
             this IServiceCollection services
-            )
+        )
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"});
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

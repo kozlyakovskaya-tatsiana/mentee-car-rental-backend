@@ -26,7 +26,7 @@ namespace CarRental.API
             services.Configure<ConnectionOptions>(Configuration.GetSection(ConnectionOptions.SectionName));
 
             services.AddDbCollection(Configuration.GetSection(ConnectionOptions.SectionName).Get<ConnectionOptions>());
-            
+
             services.AddControllers();
 
             services.AddRepositories();
@@ -42,7 +42,6 @@ namespace CarRental.API
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
 
-        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,10 +49,7 @@ namespace CarRental.API
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API"); });
 
             app.UseHttpsRedirection();
 
@@ -63,10 +59,7 @@ namespace CarRental.API
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

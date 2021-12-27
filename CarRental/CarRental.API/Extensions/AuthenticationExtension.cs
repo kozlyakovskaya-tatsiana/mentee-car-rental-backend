@@ -5,7 +5,6 @@ using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CarRental.API.Extensions
@@ -15,13 +14,13 @@ namespace CarRental.API.Extensions
         public static IServiceCollection AddUserAuthentication(
             this IServiceCollection services,
             JwtOptions jwt
-            )
+        )
         {
             services
                 .AddAuthorization()
                 .AddAuthentication(options =>
                 {
-                    options.DefaultAuthenticateScheme = "Bearer";
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(o =>
@@ -43,10 +42,9 @@ namespace CarRental.API.Extensions
                 });
 
             services.AddIdentity<UserEntity, RoleEntity>()
-                    .AddEntityFrameworkStores<CarRentalDbContext>();
+                .AddEntityFrameworkStores<CarRentalDbContext>();
 
             return services;
-
         }
     }
 }

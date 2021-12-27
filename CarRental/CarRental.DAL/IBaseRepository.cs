@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CarRental.DAL.Entities;
 
 namespace CarRental.DAL
 {

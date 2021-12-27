@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,7 @@ namespace CarRental.DAL.Repositories.Implementation
     {
         private readonly DbSet<RefreshTokenEntity> _dbSet;
         private readonly CarRentalDbContext _context;
+
         public RefreshTokenRepository(CarRentalDbContext context) : base(context)
         {
             _context = context;
@@ -30,6 +30,7 @@ namespace CarRental.DAL.Repositories.Implementation
             {
                 _dbSet.Remove(entity);
             }
+
             await _context.SaveChangesAsync();
         }
     }

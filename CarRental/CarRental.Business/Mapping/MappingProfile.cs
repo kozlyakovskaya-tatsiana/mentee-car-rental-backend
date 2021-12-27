@@ -16,7 +16,7 @@ namespace CarRental.Business.Mapping
             CreateMap<RefreshTokenEntity, TokenPairModel>()
                 .ForMember(x => x.RefreshToken,
                     xr => xr.MapFrom(az => az.Token));
-                CreateMap<LoginModel, UserEntity>();
+            CreateMap<LoginModel, UserEntity>();
         }
     }
 }

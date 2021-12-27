@@ -61,13 +61,15 @@ namespace CarRental.Business.Services.Implementation
                 throw new Exception();
             }
 
-            var verifyPassword = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
+            var verifyPassword =
+                _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
             if (verifyPassword == PasswordVerificationResult.Failed)
             {
                 // Wrong password
                 // return Unauthorized();
                 throw new Exception();
             }
+
             var tokenPairModel = await CreateTokenPair(user);
             return tokenPairModel;
         }

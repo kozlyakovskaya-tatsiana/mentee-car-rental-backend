@@ -1,8 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using AutoMapper;
+﻿using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.API.Models.Responses;
-using CarRental.Business.Models;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
 

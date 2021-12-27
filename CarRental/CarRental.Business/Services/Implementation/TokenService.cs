@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using AutoMapper;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Options;
 using CarRental.DAL.Entities;
@@ -21,9 +20,9 @@ namespace CarRental.Business.Services.Implementation
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public TokenService(
-            IOptions<JwtOptions> jwt, 
+            IOptions<JwtOptions> jwt,
             IRefreshTokenRepository refreshTokenRepository
-            )
+        )
         {
             _refreshTokenRepository = refreshTokenRepository;
             _jwt = jwt.Value;
@@ -49,25 +48,24 @@ namespace CarRental.Business.Services.Implementation
             }
         }
 
-        
 
         public TokenRevokeModel Revoke(TokenRevokeModel model)
         {
             var token = new JwtSecurityTokenHandler().ReadJwtToken(model.AccessToken);
             var id = token.Claims.FirstOrDefault(
-                x => x.Type == ClaimTypes.NameIdentifier)?.Value 
+                         x => x.Type == ClaimTypes.NameIdentifier)?.Value
                      ?? throw new InvalidOperationException();
             _refreshTokenRepository.Revoke(Guid.Parse(id));
             return model;
         }
 
-        
+
         public bool IsRefreshExpired(RefreshTokenEntity refresh)
         {
             return refresh.Expired < DateTime.UtcNow;
         }
 
-        
+
         public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));

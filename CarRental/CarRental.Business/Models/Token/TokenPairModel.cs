@@ -1,7 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using CarRental.DAL.Entities;
-
-namespace CarRental.Business.Models.Token
+﻿namespace CarRental.Business.Models.Token
 {
     public class TokenPairModel
     {

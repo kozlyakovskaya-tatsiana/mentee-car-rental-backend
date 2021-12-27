@@ -8,6 +8,7 @@ namespace CarRental.DAL.Repositories.Implementation
     public class UserRepository : BaseRepository<UserEntity>, IUserRepository
     {
         private readonly DbSet<UserEntity> _dbSet;
+
         public UserRepository(CarRentalDbContext context) : base(context)
         {
             _dbSet = context.Users;

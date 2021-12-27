@@ -10,12 +10,9 @@ namespace CarRental.API.Extensions
         public static IServiceCollection AddDbCollection(
             this IServiceCollection services,
             ConnectionOptions connection
-            )
+        )
         {
-            services.AddDbContext<CarRentalDbContext>(s =>
-            {
-                s.UseNpgsql(connection.ConnectionString);
-            });
+            services.AddDbContext<CarRentalDbContext>(s => { s.UseNpgsql(connection.ConnectionString); });
             return services;
         }
     }

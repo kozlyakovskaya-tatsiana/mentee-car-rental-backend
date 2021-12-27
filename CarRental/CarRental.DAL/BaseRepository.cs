@@ -3,7 +3,6 @@ using CarRental.DAL.EFCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using CarRental.DAL.Entities;
 
 namespace CarRental.DAL
 {
@@ -18,6 +17,7 @@ namespace CarRental.DAL
             this._context = context;
             this._dbSet = _context.Set<TEntity>();
         }
+
         public async Task<TEntity> Add(TEntity entity)
         {
             _dbSet.Add(entity);
@@ -54,6 +54,5 @@ namespace CarRental.DAL
 
             return entity;
         }
-
     }
 }
