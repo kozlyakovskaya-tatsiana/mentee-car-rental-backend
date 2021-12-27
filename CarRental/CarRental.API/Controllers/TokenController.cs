@@ -35,7 +35,7 @@ namespace CarRental.API.Controllers
         public async Task<IActionResult> UpdateAccessToken(TokenPairRequest pair)
         {
             var request = _mapper.Map<TokenPairRequest, TokenPairModel>(pair);
-            var newTokens = _tokenService.UpdateTokenPair(request);
+            var newTokens = _tokenService.UpdateAccessToken(request);
             var result = _mapper.Map<TokenPairModel, TokenPairResponse>(newTokens);
             return Ok(result);
         }

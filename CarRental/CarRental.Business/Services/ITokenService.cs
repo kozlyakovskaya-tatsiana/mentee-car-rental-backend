@@ -11,15 +11,9 @@ namespace CarRental.Business.Services
 {
     public interface ITokenService
     {
-        /*
-        public RefreshTokenEntity GenerateRefresh(UserEntity user);
-        public JwtSecurityToken GenerateJwt(IEnumerable<Claim> claims);
-        public bool IsRefreshExpired(RefreshTokenEntity pair);
-        public Task<TokenPairModel> GenerateTokenPair(LoginModel user);
-        public TokenPairModel UpdateTokenPair(TokenPairModel pair);
-        public IEnumerable<Claim> CreateUserClaims(UserEntity user);
-        public TokenRevokeModel Revoke(TokenRevokeModel pair);
-        */
+        public TokenPairModel UpdateAccessToken(TokenPairModel model);
+        public TokenRevokeModel Revoke(TokenRevokeModel model);
+        public bool IsRefreshExpired(RefreshTokenEntity refresh);
         string GenerateAccessToken(IEnumerable<Claim> claims);
         string GenerateRefreshToken();
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
