@@ -33,7 +33,8 @@ namespace CarRental.API
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddScoped<IRoleService, RoleService>();
+            
             services.AddSwaggerEnvironment();
 
             services.AddAutoMapper(typeof(CarRental.API.Mapping.MappingProfile));

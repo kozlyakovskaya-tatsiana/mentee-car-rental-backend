@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
+using CarRental.Business.Identity.Policy;
+using CarRental.Business.Identity.Role;
 using CarRental.Business.Options;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
@@ -17,7 +19,11 @@ namespace CarRental.API.Extensions
         )
         {
             services
-                .AddAuthorization()
+                .AddAuthorization(options =>
+                {
+                    options.AddPolicy(Policy.AdminPolicy, policy =>
+                        policy.RequireRole(Role.AdminRole));
+                })
                 .AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
