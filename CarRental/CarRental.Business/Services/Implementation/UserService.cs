@@ -26,14 +26,15 @@ namespace CarRental.Business.Services.Implementation
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         private readonly JwtOptions _jwtOptions;
+
         public UserService(
             IMapper mapper,
             UserManager<UserEntity> userManager,
-            RoleManager<RoleEntity> roleManager, 
-            ITokenService tokenService, 
-            IRefreshTokenRepository refreshTokenRepository, 
+            RoleManager<RoleEntity> roleManager,
+            ITokenService tokenService,
+            IRefreshTokenRepository refreshTokenRepository,
             IOptions<JwtOptions> jwtOptions
-            )
+        )
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -43,16 +44,36 @@ namespace CarRental.Business.Services.Implementation
             _jwtOptions = jwtOptions.Value;
         }
 
-        async Task<IdentityResult> IUserService.CreateAsync(RegisterModel model)
+        async Task<IdentityResult> IUserService.Register(RegisterModel model)
         {
             var user = _mapper.Map<RegisterModel, UserEntity>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             return result;
         }
 
-        public async Task<TokenPairModel> CreateTokenPair(LoginModel model)
+        public async Task<TokenPairModel> Login(LoginModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // User doesn't exist
+                // return Unauthorized();
+                throw new Exception();
+            }
+
+            var verifyPassword = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
+            if (verifyPassword == PasswordVerificationResult.Failed)
+            {
+                // Wrong password
+                // return Unauthorized();
+                throw new Exception();
+            }
+            var tokenPairModel = await CreateTokenPair(user);
+            return tokenPairModel;
+        }
+
+        public async Task<TokenPairModel> CreateTokenPair(UserEntity user)
+        {
             var claims = GenerateUserClaims(user);
             var access = _tokenService.GenerateAccessToken(claims);
             var refresh = _tokenService.GenerateRefreshToken();
@@ -83,3 +104,4 @@ namespace CarRental.Business.Services.Implementation
             return claims;
         }
     }
+}
