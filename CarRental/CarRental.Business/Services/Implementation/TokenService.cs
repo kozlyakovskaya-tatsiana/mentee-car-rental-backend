@@ -16,7 +16,7 @@ namespace CarRental.Business.Services.Implementation
 {
     public class TokenService : ITokenService
     {
-        private readonly JwtOptions _jwt;
+        private readonly JwtOptions _jwtOptions;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public TokenService(
@@ -25,59 +25,64 @@ namespace CarRental.Business.Services.Implementation
         )
         {
             _refreshTokenRepository = refreshTokenRepository;
-            _jwt = jwt.Value;
+            _jwtOptions = jwt.Value;
         }
-
 
         public TokenPairModel UpdateAccessToken(TokenPairModel model)
         {
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(model.AccessToken);
-            var claims = token.Claims;
-            var userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            var refresh = _refreshTokenRepository.Get(Guid.Parse(userId), model.RefreshToken);
+            var identity = GetPrincipalFromToken(model.AccessToken);
+            var idClaim = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+            var userId = Guid.Parse(idClaim.Value);
+            var refresh = _refreshTokenRepository.Get(userId, model.RefreshToken);
             if (refresh == null || IsRefreshExpired(refresh.Result))
             {
-                // You refresh token expired, re-login pls
+                // Your refresh token expired, re-login pls
                 throw new Exception();
             }
-            else
+            var newAccessToken = GenerateAccessToken(identity.Claims);
+            return new TokenPairModel
             {
-                var newAccessToken = GenerateAccessToken(claims);
-                model.AccessToken = newAccessToken;
-                return model;
-            }
+                AccessToken = newAccessToken,
+                RefreshToken = refresh.Result.Token
+            };
         }
-
 
         public TokenRevokeModel Revoke(TokenRevokeModel model)
         {
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(model.AccessToken);
-            var id = token.Claims.FirstOrDefault(
-                         x => x.Type == ClaimTypes.NameIdentifier)?.Value
-                     ?? throw new InvalidOperationException();
-            _refreshTokenRepository.Revoke(Guid.Parse(id));
+            var identity = GetPrincipalFromToken(model.AccessToken);
+            var idClaim = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            if (idClaim == null)
+            {
+                //Refresh tokens doesn't exist
+                throw new Exception();
+            }
+
+            var id = Guid.Parse(idClaim.Value);
+
+            _refreshTokenRepository.Revoke(id);
+
             return model;
         }
-
-
+        
         public bool IsRefreshExpired(RefreshTokenEntity refresh)
         {
             return refresh.Expired < DateTime.UtcNow;
         }
 
-
         public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
-                issuer: _jwt.Issuer,
-                audience: _jwt.Audience,
+                issuer: _jwtOptions.Issuer,
+                audience: _jwtOptions.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwt.DurationInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(_jwtOptions.DurationInMinutes),
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
             return tokenString;
         }
 
@@ -86,24 +91,26 @@ namespace CarRental.Business.Services.Implementation
             var randomNumber = new byte[32];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
+
             return Convert.ToBase64String(randomNumber);
         }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public ClaimsPrincipal GetPrincipalFromToken(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = true,
-                ValidateIssuer = true,
+                ValidateAudience = _jwtOptions.ValidateAudience,
+                ValidAudience = _jwtOptions.Audience,
+                ValidateIssuer = _jwtOptions.ValidateIssuer,
+                ValidIssuer = _jwtOptions.Issuer,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key)),
                 ValidateLifetime = true
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-                    StringComparison.InvariantCultureIgnoreCase))
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
             return principal;
         }
