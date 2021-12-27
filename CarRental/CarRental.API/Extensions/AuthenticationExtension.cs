@@ -21,7 +21,7 @@ namespace CarRental.API.Extensions
                 .AddAuthorization()
                 .AddAuthentication(options =>
                 {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = "Bearer";
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(o =>
@@ -31,8 +31,8 @@ namespace CarRental.API.Extensions
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
+                        ValidateIssuer = jwt.ValidateIssuer,
+                        ValidateAudience = jwt.ValidateAudience,
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero,
 
