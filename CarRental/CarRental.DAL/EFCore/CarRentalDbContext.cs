@@ -1,27 +1,15 @@
 ﻿using System;
 using CarRental.DAL.Entities;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace CarRental.DAL.EFCore
 {
     public sealed class CarRentalDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
     {
-        private readonly ConnectionOptions _connection;
-        public CarRentalDbContext(IOptions<ConnectionOptions> connectionOptions) : base()
-        {
-            _connection = connectionOptions.Value;
-        }
 
-        public CarRentalDbContext(DbContextOptions<CarRentalDbContext> options,
-            IOptions<ConnectionOptions> connectionOptions)
-        {
-            _connection = connectionOptions.Value;
-        }
+        public CarRentalDbContext(DbContextOptions options) : base(options)
+        { }
 
 
         public DbSet<CarBrandEntity> CarBrands { get; set; }
@@ -34,13 +22,6 @@ namespace CarRental.DAL.EFCore
         public DbSet<RentalPointEntity> RentalPoints { get; set; }
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
 
-        
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=TestDB;Username=postgres;Password=root;");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
