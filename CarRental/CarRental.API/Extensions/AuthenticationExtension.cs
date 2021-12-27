@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using CarRental.Business.Identity.Policy;
 using CarRental.Business.Identity.Role;
@@ -28,12 +28,11 @@ namespace CarRental.API.Extensions
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(o =>
+                .AddJwtBearer(cfg =>
                 {
-                    o.RequireHttpsMetadata = false;
-                    o.SaveToken = false;
-                    o.TokenValidationParameters = new TokenValidationParameters
+                    cfg.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = jwt.ValidateIssuer,

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Entities
 {

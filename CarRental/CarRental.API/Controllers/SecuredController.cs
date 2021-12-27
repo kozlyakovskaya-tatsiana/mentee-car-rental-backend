@@ -1,16 +1,23 @@
 ﻿using System.Threading.Tasks;
+using CarRental.Business.Identity.Policy;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace carRental.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    
     [Route("api/secured")]
     [ApiController]
     public class SecuredController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("auth"), Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetSecuredData()
+        {
+            return Ok("Hello world");
+        }
+
+        [HttpGet("Superadmin"), Authorize(AuthenticationSchemes = "Bearer", Policy = Policy.AdminPolicy)]
+        public async Task<IActionResult> getSuperAdminData()
         {
             return Ok("Hello world");
         }

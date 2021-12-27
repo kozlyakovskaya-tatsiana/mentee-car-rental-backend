@@ -24,7 +24,7 @@ namespace CarRental.API.Controllers
         }
 
 
-        [HttpPost("all")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateRole(RoleCreateRequest request)
         {
             var model = _mapper.Map<RoleCreateRequest, RoleCreateModel>(request);
