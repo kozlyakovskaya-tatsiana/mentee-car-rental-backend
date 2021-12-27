@@ -13,6 +13,8 @@ namespace CarRental.Business.Services
         public Task<IdentityResult> Register(RegisterModel model);
         public Task<TokenPairModel> Login(LoginModel model);
         public Task<TokenPairModel> CreateTokenPair(UserEntity user);
-        public List<Claim> GenerateUserClaims(UserEntity user);
+        public Task<IEnumerable<Claim>> GenerateUserClaims(UserEntity user);
+        public Task<UserEntity> IsUserExist(LoginModel model);
+        public Task<RefreshTokenEntity> AttachNewRefreshToUser(UserEntity user, string refresh);
     }
 }
