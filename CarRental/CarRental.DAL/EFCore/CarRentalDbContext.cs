@@ -10,7 +10,7 @@ namespace CarRental.DAL.EFCore
         }
 
         public CarRentalDbContext(DbContextOptions<CarRentalDbContext> options)
-            :base(options)
+            : base(options)
         {
         }
 
@@ -28,10 +28,12 @@ namespace CarRental.DAL.EFCore
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("Host=localhost;" +
-                                         "Port=5432;Database=TestDB;" +
-                                         "Username=postgres;" +
-                                         "Password=root;");
+                optionsBuilder
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql("Host=localhost;" +
+                               "Port=5432;Database=TestDB;" +
+                               "Username=postgres;" +
+                               "Password=root;");
             }
         }
 

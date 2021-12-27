@@ -8,9 +8,9 @@ namespace CarRental.DAL.Entities
         public double Latitude { get; set; }    
         public double Longitude { get; set; }   
 
-        public RentalPointEntity RentalPoint { get; set; }
+        public virtual RentalPointEntity RentalPoint { get; set; }
 
-        public CityEntity City { get; set; }
+        public virtual CityEntity City { get; set; }
         public Guid CityId { get; set; }
     }
 }

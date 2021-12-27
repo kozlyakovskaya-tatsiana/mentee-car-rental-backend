@@ -7,6 +7,6 @@ namespace CarRental.DAL.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public List<BookingReportEntity> Reports { get; set; }
+        public virtual List<BookingReportEntity> Reports { get; set; }
     }
 }

@@ -14,14 +14,14 @@ namespace CarRental.DAL.Entities
         public double PricePerHour { get; set; }
         public Status Status { get; set; }
 
-        public List<AttachmentEntity> Photos { get; set; }
+        public virtual List<AttachmentEntity> Photos { get; set; }
 
-        public List<BookingReportEntity> Reports { get; set; }
+        public virtual List<BookingReportEntity> Reports { get; set; }
 
-        public CarBrandEntity Brand { get; set; }
+        public virtual CarBrandEntity Brand { get; set; }
         public Guid BrandId { get; set; }
 
-        public RentalPointEntity RentalPoint { get; set; }
+        public virtual RentalPointEntity RentalPoint { get; set; }
         public Guid RentalPointId { get; set; }
     }
 }

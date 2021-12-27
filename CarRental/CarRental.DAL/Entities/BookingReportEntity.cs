@@ -11,10 +11,10 @@ namespace CarRental.DAL.Entities
         public double TotalPrice { get; set; }
         public BookingStatus Status { get; set; }
 
-        public CarEntity Car { get; set; }
+        public virtual CarEntity Car { get; set; }
         public Guid CarId { get; set; }
 
-        public UserEntity User { get; set; }
+        public virtual UserEntity User { get; set; }
         public Guid UserId { get; set; }
     }
 }
