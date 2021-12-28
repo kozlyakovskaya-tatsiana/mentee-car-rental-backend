@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarRental.DAL
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         where TEntity : class
     {
         private readonly CarRentalDbContext _context;
@@ -17,6 +17,7 @@ namespace CarRental.DAL
             this._context = context;
             this._dbSet = _context.Set<TEntity>();
         }
+
         public async Task<TEntity> Add(TEntity entity)
         {
             _dbSet.Add(entity);
@@ -53,6 +54,5 @@ namespace CarRental.DAL
 
             return entity;
         }
-
     }
 }

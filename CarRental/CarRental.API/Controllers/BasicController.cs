@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace carRental.API.Controllers
 {
@@ -11,6 +6,5 @@ namespace carRental.API.Controllers
     [Route("[controller]")]
     public class BasicController : ControllerBase
     {
-        
     }
 }
