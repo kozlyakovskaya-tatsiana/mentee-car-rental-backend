@@ -11,7 +11,6 @@ namespace CarRental.DAL.EFCore
         public CarRentalDbContext(DbContextOptions options) : base(options)
         { }
 
-
         public DbSet<CarBrandEntity> CarBrands { get; set; }
         public DbSet<CarEntity> Cars { get; set; }
         public DbSet<BookingReportEntity> Reports { get; set; }
