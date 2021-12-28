@@ -6,6 +6,7 @@ using CarRental.Business.Options;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -47,7 +48,8 @@ namespace CarRental.API.Extensions
                 });
 
             services.AddIdentity<UserEntity, RoleEntity>()
-                .AddEntityFrameworkStores<CarRentalDbContext>();
+                .AddEntityFrameworkStores<CarRentalDbContext>()
+                .AddDefaultTokenProviders();
 
             return services;
         }
