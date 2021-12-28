@@ -12,6 +12,7 @@ namespace CarRental.API.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;
+
         private readonly IMapper _mapper;
 
         public RoleController(
@@ -23,12 +24,11 @@ namespace CarRental.API.Controllers
             _roleService = roleService;
         }
 
-
         [HttpPost("create")]
         public async Task<IActionResult> CreateRole(RoleCreateRequest request)
         {
             var model = _mapper.Map<RoleCreateRequest, RoleCreateModel>(request);
-            await _roleService.Create(model);
+            await _roleService.CreateRole(model);
             return Ok();
         }
 

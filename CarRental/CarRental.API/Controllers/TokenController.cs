@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.API.Models.Responses;
@@ -12,32 +13,34 @@ namespace CarRental.API.Controllers
     [ApiController]
     public class TokenController : Controller
     {
+        private readonly IAuthService _authService;
         private readonly ITokenService _tokenService;
+
         private readonly IMapper _mapper;
 
         public TokenController(
-            ITokenService tokenService,
-            IMapper mapper
-        )
+            IAuthService authService,
+            IMapper mapper,
+            ITokenService tokenService
+            )
         {
-            _tokenService = tokenService;
+            _authService = authService;
             _mapper = mapper;
+            _tokenService = tokenService;
         }
 
         [HttpPost("revoke")]
-        public async Task<IActionResult> RevokeAllTokens(TokenPairRequest pair)
+        public IActionResult RevokeAllTokens(Guid id)
         {
-            var request = _mapper.Map<TokenPairRequest, TokenRevokeModel>(pair);
-            _tokenService.Revoke(request);
+            _tokenService.Revoke(id);
             return Ok();
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateAccessToken(TokenPairRequest pair)
+        public IActionResult UpdateAccessToken(TokenPairRequest pair)
         {
             var request = _mapper.Map<TokenPairRequest, TokenPairModel>(pair);
-            var newTokens = _tokenService.UpdateAccessToken(request);
-            var result = _mapper.Map<TokenPairModel, TokenPairResponse>(newTokens);
+            var result = _authService.RefreshTokenPair(request);
             return Ok(result);
         }
     }

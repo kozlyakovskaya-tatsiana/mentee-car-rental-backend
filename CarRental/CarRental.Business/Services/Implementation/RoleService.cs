@@ -25,7 +25,7 @@ namespace CarRental.Business.Services.Implementation
             _userManager = userManager;
         }
 
-        public async Task<RoleEntity> Create(RoleCreateModel role)
+        public async Task CreateRole(RoleCreateModel role)
         {
             var newRole = _mapper.Map<RoleCreateModel, RoleEntity>(role);
             var roleResult = await _roleManager.CreateAsync(newRole);
@@ -33,11 +33,9 @@ namespace CarRental.Business.Services.Implementation
             {
                 throw new Exception(roleResult.Errors.First().Description);
             }
-
-            return newRole;
         }
 
-        public async Task<UserEntity> UpdateUserRoles(UserRoleModel model)
+        public async Task UpdateUserRoles(UserRoleModel model)
         {
             var user = _userManager.Users.SingleOrDefault(u => u.UserName == model.UserEmail);
             if (user == null)
@@ -50,7 +48,6 @@ namespace CarRental.Business.Services.Implementation
             {
                 throw new Exception(result.Errors.First().Description);
             }
-            return user;
         }
     }
 }

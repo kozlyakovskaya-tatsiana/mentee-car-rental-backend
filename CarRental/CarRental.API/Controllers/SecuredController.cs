@@ -11,13 +11,13 @@ namespace carRental.API.Controllers
     public class SecuredController : ControllerBase
     {
         [HttpGet("auth"), Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> GetSecuredData()
+        public IActionResult GetSecuredData()
         {
             return Ok("Hello world");
         }
 
         [HttpGet("Superadmin"), Authorize(AuthenticationSchemes = "Bearer", Policy = Policy.AdminPolicy)]
-        public async Task<IActionResult> getSuperAdminData()
+        public IActionResult getSuperAdminData()
         {
             return Ok("Hello world");
         }

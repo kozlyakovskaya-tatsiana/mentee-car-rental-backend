@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Options;
 using CarRental.DAL.Entities;
@@ -28,46 +29,13 @@ namespace CarRental.Business.Services.Implementation
             _jwtOptions = jwt.Value;
         }
 
-        public TokenPairModel UpdateAccessToken(TokenPairModel model)
-        {
-            var identity = GetPrincipalFromToken(model.AccessToken);
-            var idClaim = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-
-            var userId = Guid.Parse(idClaim.Value);
-            var refresh = _refreshTokenRepository.Get(userId, model.RefreshToken);
-            if (refresh == null || IsRefreshExpired(refresh.Result))
-            {
-                // Your refresh token expired, re-login pls
-                throw new Exception();
-            }
-            var newAccessToken = GenerateAccessToken(identity.Claims);
-            return new TokenPairModel
-            {
-                AccessToken = newAccessToken,
-                RefreshToken = refresh.Result.Token
-            };
-        }
-
-        public TokenRevokeModel Revoke(TokenRevokeModel model)
-        {
-            var identity = GetPrincipalFromToken(model.AccessToken);
-            var idClaim = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-            if (idClaim == null)
-            {
-                //Refresh tokens doesn't exist
-                throw new Exception();
-            }
-
-            var id = Guid.Parse(idClaim.Value);
-
-            _refreshTokenRepository.Revoke(id);
-
-            return model;
-        }
         
-        public bool IsRefreshExpired(RefreshTokenEntity refresh)
+
+        public TaskStatus Revoke(Guid id)
         {
-            return refresh.Expired < DateTime.UtcNow;
+            var s = _refreshTokenRepository.Revoke(id);
+
+            return s.Status;
         }
 
         public string GenerateAccessToken(IEnumerable<Claim> claims)
@@ -113,6 +81,11 @@ namespace CarRental.Business.Services.Implementation
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
             return principal;
+        }
+
+        public bool IsRefreshTokenExpired(DateTime expiredTime)
+        {
+            return expiredTime < DateTime.UtcNow;
         }
     }
 }

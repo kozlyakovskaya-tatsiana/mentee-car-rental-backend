@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using CarRental.Business.Models.Token;
-using CarRental.DAL.Entities;
 
 namespace CarRental.Business.Services
 {
     public interface ITokenService
     {
-        public TokenPairModel UpdateAccessToken(TokenPairModel model);
-        public TokenRevokeModel Revoke(TokenRevokeModel model);
-        public bool IsRefreshExpired(RefreshTokenEntity refresh);
-        string GenerateAccessToken(IEnumerable<Claim> claims);
-        string GenerateRefreshToken();
-        ClaimsPrincipal GetPrincipalFromToken(string token);
+        public TaskStatus Revoke(Guid id);
+        public string GenerateAccessToken(IEnumerable<Claim> claims);
+        public string GenerateRefreshToken();
+        public ClaimsPrincipal GetPrincipalFromToken(string token);
+        public bool IsRefreshTokenExpired(DateTime expiredTime);
     }
 }
