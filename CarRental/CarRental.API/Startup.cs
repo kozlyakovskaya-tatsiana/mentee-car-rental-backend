@@ -57,6 +57,8 @@ namespace CarRental.API
 
             app.UseRouting();
 
+            app.ConfigureCustomExceptionMiddleware();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
