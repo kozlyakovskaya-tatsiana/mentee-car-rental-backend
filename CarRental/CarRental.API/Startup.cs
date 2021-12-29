@@ -2,6 +2,7 @@ using CarRental.API.Extensions;
 using CarRental.Business.Options;
 using CarRental.Business.Services;
 using CarRental.Business.Services.Implementation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,11 @@ namespace CarRental.API
 
             services.AddDbCollection(Configuration.GetSection(ConnectionOptions.SectionName).Get<ConnectionOptions>());
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(options =>
+                {
+                    options.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
 
             services.AddRepositories();
 
