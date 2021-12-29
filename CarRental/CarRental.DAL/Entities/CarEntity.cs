@@ -12,7 +12,7 @@ namespace CarRental.DAL.Entities
         public TransmissionType Transmission { get; set; }
         public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
-        public Status Status { get; set; }
+        public CarStatus Status { get; set; }
 
         public virtual List<AttachmentEntity> Photos { get; set; }
 
