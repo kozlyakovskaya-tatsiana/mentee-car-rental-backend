@@ -17,7 +17,6 @@ namespace CarRental.API.Mapping
                         .MapFrom(ur => ur.Email));
             CreateMap<LoginRequest, LoginModel>();
             CreateMap<TokenPairModel, GetTokenPairResponse>();
-            CreateMap<GetTokenPairRequest, TokenRevokeModel>();
             CreateMap<GetTokenPairRequest, TokenPairModel>();
             CreateMap<RoleCreateRequest, RoleCreateModel>();
             CreateMap<AddRoleRequest, UserRoleModel>();
