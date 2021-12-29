@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
-using CarRental.API.Models.Responses;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Mvc;

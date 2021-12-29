@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CarRental.Business.Identity.Policy;
+﻿using CarRental.Business.Identity.Policy;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
