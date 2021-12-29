@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using CarRental.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
-namespace CarRental.API.ExceptionMiddleware
+namespace CarRental.API.Middleware
 {
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -22,25 +23,35 @@ namespace CarRental.API.ExceptionMiddleware
             catch (Exception ex)
             {
                 await HandleExceptionAsync(httpContext, ex);
-
+                
             }
         }
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            switch (exception)
-            {
-                case NullReferenceException _ :
-                    break;
-                default:
-                    break;
-            }
-            await context.Response.WriteAsync(new ErrorDetails()
+
+            var result = new ErrorDetails()
             {
                 StatusCode = context.Response.StatusCode,
-                Message = "Internal Server Error from the custom middleware."
-            }.ToString());
+                Message = exception.Message
+            };
+
+            switch (exception)
+            {
+                case NotFoundException _ :
+                    result.StatusCode = 404;
+                    break;
+                case BadAuthorizeException _ :
+                    result.StatusCode = 400;
+                    break;
+                case TokenExpiredException _ :
+                    result.StatusCode = 401;
+                    break;
+            }
+
+            context.Response.StatusCode = result.StatusCode;
+
+            await context.Response.WriteAsync(result.ToString());
         }
     }
 }
