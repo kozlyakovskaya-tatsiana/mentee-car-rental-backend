@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace CarRental.API.ExceptionMiddleware
+namespace CarRental.API.Middleware
 {
     public class ErrorDetails
     {

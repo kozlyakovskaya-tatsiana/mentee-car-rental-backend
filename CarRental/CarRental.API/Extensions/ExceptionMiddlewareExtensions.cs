@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CarRental.API.Middleware;
+using Microsoft.AspNetCore.Builder;
 
 namespace CarRental.API.Extensions
 {
@@ -6,7 +7,7 @@ namespace CarRental.API.Extensions
     {
         public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
         {
-            app.UseMiddleware<ExceptionMiddleware.ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
         }
     }
 }
