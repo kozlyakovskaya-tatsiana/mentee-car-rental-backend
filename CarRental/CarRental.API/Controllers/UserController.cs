@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
-using CarRental.API.Models.Responses;
-using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +18,7 @@ namespace CarRental.API.Controllers
         public UserController(
             IMapper mapper,
             IAuthService authService
-        )
+            )
         {
             _authService = authService;
             _mapper = mapper;
@@ -39,8 +37,7 @@ namespace CarRental.API.Controllers
         {
             var user = _mapper.Map<LoginRequest, LoginModel>(userLoginRequest);
             var tokenPair = await _authService.Login(user);
-            var result = _mapper.Map<TokenPairModel, TokenPairResponse>(tokenPair);
-            return Ok(result);
+            return Ok(tokenPair);
         }
     }
 }
