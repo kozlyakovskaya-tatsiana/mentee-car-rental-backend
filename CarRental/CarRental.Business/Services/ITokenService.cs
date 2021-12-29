@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using CarRental.Business.Models.Token;
 
 namespace CarRental.Business.Services
 {

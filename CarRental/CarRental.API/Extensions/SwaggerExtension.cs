@@ -40,6 +40,7 @@ namespace CarRental.API.Extensions
                     };
                 options.AddSecurityRequirement(security);
             });
+
             return services;
         }
     }
