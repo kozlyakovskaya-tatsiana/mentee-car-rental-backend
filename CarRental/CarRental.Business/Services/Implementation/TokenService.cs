@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using CarRental.Business.Models.Token;
 using CarRental.Business.Options;
-using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +15,7 @@ namespace CarRental.Business.Services.Implementation
     public class TokenService : ITokenService
     {
         private readonly JwtOptions _jwtOptions;
+
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public TokenService(
@@ -80,6 +78,7 @@ namespace CarRental.Business.Services.Implementation
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
+
             return principal;
         }
 
