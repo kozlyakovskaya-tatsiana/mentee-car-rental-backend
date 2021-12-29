@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CarRental.DAL.EntityConfiguration
 {
-    public class UserEntityConfiguration :IEntityTypeConfiguration<UserEntity>
+    public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {

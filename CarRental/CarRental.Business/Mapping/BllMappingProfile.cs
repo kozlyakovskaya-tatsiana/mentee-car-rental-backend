@@ -6,11 +6,11 @@ using CarRental.DAL.Entities;
 
 namespace CarRental.Business.Mapping
 {
-    public class MappingProfile : Profile
+    public class BllMappingProfile : Profile
     {
         public override string ProfileName => "BLMappings";
 
-        public MappingProfile()
+        public BllMappingProfile()
         {
             CreateMap<RegisterModel, UserEntity>().ForMember(u => u.UserName,
                 opt => opt.MapFrom(ur => ur.Email));

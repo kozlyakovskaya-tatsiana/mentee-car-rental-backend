@@ -1,8 +1,5 @@
 using CarRental.API.Extensions;
 using CarRental.Business.Options;
-using CarRental.Business.Services;
-using CarRental.Business.Services.Implementation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -36,15 +33,12 @@ namespace CarRental.API
 
             services.AddRepositories();
 
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddCarRentalServices();
 
             services.AddSwaggerEnvironment();
 
-            services.AddAutoMapper(typeof(CarRental.API.Mapping.MappingProfile));
-            services.AddAutoMapper(typeof(CarRental.Business.Mapping.MappingProfile));
+            services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile));
+            services.AddAutoMapper(typeof(CarRental.Business.Mapping.BllMappingProfile));
 
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
@@ -53,7 +47,10 @@ namespace CarRental.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API"); });
