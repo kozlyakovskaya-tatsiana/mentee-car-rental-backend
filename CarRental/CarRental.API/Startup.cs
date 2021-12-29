@@ -34,7 +34,7 @@ namespace CarRental.API
             services.AddSwaggerEnvironment();
 
             services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile));
-            services.AddAutoMapper(typeof(CarRental.Business.Mapping.MappingProfile));
+            services.AddAutoMapper(typeof(CarRental.Business.Mapping.BllMappingProfile));
 
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
