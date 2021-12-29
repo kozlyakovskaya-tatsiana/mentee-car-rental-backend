@@ -16,6 +16,7 @@ namespace CarRental.API.Validators
                 .Length(2, 64);
 
             RuleFor(e => e.Email)
+                .NotEmpty().WithMessage("Email should be not empty.")
                 .EmailAddress();
 
             RuleFor(p => p.Password)
