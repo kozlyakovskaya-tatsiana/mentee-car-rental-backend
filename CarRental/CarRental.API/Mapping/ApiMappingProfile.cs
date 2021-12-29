@@ -7,9 +7,9 @@ using CarRental.Business.Models.User;
 
 namespace CarRental.API.Mapping
 {
-    public class MappingProfile : Profile
+    public class ApiMappingProfile : Profile
     {
-        public MappingProfile()
+        public ApiMappingProfile()
         {
             CreateMap<RegisterRequest, RegisterModel>()
                 .ForMember(u => u.Username,
