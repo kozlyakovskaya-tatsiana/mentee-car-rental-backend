@@ -20,14 +20,11 @@ namespace CarRental.API.Controllers
 
         private readonly IMapper _mapper;
 
-        private readonly RegisterValidator _registerValidator;
         public UserController(
             IMapper mapper,
-            IAuthService authService,
-            RegisterValidator registerValidator
+            IAuthService authService
         )
         {
-            _registerValidator = registerValidator;
             _authService = authService;
             _mapper = mapper;
         }
@@ -35,21 +32,6 @@ namespace CarRental.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> SignUp(RegisterRequest userSignUpRequest)
         {
-            // Where to place the method? 
-            var validationResult = await _registerValidator.ValidateAsync(userSignUpRequest);
-            List<string> ValidationMessages = new List<string>();
-
-            var response = new ValidationResponse();
-            if (!validationResult.IsValid)
-            {
-                response.IsValid = false;
-                foreach (ValidationFailure failure in validationResult.Errors)
-                {
-                    ValidationMessages.Add(failure.ErrorMessage);
-                }
-                response.ValidationMessages = ValidationMessages;
-            }
-
             var user = _mapper.Map<RegisterRequest, RegisterModel>(userSignUpRequest);
             await _authService.Register(user);
             return Ok();
