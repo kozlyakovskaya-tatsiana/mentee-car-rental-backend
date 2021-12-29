@@ -12,7 +12,11 @@ namespace CarRental.API.Extensions
             ConnectionOptions connection
         )
         {
-             services.AddDbContext<CarRentalDbContext>(s => { s.UseNpgsql(connection.ConnectionString); });
+             services.AddDbContext<CarRentalDbContext>(s =>
+             {
+                 s.UseNpgsql(connection.ConnectionString);
+             });
+
             return services;
         }
     }

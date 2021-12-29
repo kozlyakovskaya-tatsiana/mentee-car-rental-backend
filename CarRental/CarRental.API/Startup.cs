@@ -1,7 +1,5 @@
 using CarRental.API.Extensions;
 using CarRental.Business.Options;
-using CarRental.Business.Services;
-using CarRental.Business.Services.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -31,10 +29,7 @@ namespace CarRental.API
 
             services.AddRepositories();
 
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddCarRentalServices();
 
             services.AddSwaggerEnvironment();
 
