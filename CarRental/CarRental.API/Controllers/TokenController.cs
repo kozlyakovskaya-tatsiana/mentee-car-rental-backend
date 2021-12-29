@@ -35,9 +35,9 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult UpdateAccessToken(TokenPairRequest pair)
+        public IActionResult UpdateAccessToken(GetTokenPairRequest pair)
         {
-            var request = _mapper.Map<TokenPairRequest, TokenPairModel>(pair);
+            var request = _mapper.Map<GetTokenPairRequest, TokenPairModel>(pair);
             var result = _authService.RefreshTokenPair(request);
             return Ok(result);
         }
