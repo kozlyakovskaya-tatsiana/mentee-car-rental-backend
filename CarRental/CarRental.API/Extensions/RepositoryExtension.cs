@@ -22,6 +22,7 @@ namespace CarRental.API.Extensions
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IRentalPointRepository, RentalPointRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
             return services;
         }
     }

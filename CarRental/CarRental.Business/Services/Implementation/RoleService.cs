@@ -11,8 +11,9 @@ namespace CarRental.Business.Services.Implementation
     public class RoleService : IRoleService
     {
         private readonly RoleManager<RoleEntity> _roleManager;
-        private readonly IMapper _mapper;
         private readonly UserManager<UserEntity> _userManager;
+
+        private readonly IMapper _mapper;
 
         public RoleService(
             RoleManager<RoleEntity> roleManager, 
