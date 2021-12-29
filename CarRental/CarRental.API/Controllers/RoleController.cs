@@ -32,7 +32,7 @@ namespace CarRental.API.Controllers
             return Ok();
         }
 
-        [HttpPost("update")]
+        [HttpPost("user/update")]
         public async Task<IActionResult> AddUserToRole([FromBody]AddRoleRequest request)
         {
             var model = _mapper.Map<AddRoleRequest, UserRoleModel>(request);

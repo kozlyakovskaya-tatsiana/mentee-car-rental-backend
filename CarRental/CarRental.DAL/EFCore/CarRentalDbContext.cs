@@ -7,10 +7,6 @@ namespace CarRental.DAL.EFCore
 {
     public sealed class CarRentalDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
     {
-
-        public CarRentalDbContext(DbContextOptions options) : base(options)
-        { }
-
         public DbSet<CarBrandEntity> CarBrands { get; set; }
         public DbSet<CarEntity> Cars { get; set; }
         public DbSet<BookingReportEntity> Reports { get; set; }
@@ -21,7 +17,9 @@ namespace CarRental.DAL.EFCore
         public DbSet<RentalPointEntity> RentalPoints { get; set; }
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
 
-
+        public CarRentalDbContext(DbContextOptions options) : base(options)
+        { }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

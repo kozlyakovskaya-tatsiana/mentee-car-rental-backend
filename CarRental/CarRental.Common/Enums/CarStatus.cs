@@ -1,6 +1,6 @@
 ﻿namespace CarRental.Common.Enums
 {
-    public enum Status
+    public enum CarStatus
     {
         Free,
         Booked,
