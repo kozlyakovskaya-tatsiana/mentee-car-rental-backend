@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models.Role;
+using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -41,8 +42,7 @@ namespace CarRental.Business.Services.Implementation
             var user = _userManager.Users.SingleOrDefault(u => u.UserName == model.UserEmail);
             if (user == null)
             {
-                //User doesn't exist
-                throw new Exception();
+                throw new NotFoundException("User with this username doesn't exist.");
             }
             var result = await _userManager.AddToRoleAsync(user, model.RoleName);
             if (!result.Succeeded)

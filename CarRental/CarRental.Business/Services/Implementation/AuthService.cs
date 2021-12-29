@@ -7,6 +7,7 @@ using CarRental.Business.Identity.Role;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
 using CarRental.Business.Options;
+using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -76,8 +77,7 @@ namespace CarRental.Business.Services.Implementation
             var refresh = _refreshTokenRepository.Get(userId, model.RefreshToken);
             if (refresh == null || _tokenService.IsRefreshTokenExpired(refresh.Result.Expired))
             {
-                // Your refresh token expired, re-login pls
-                throw new Exception();
+                throw new TokenExpiredException("Refresh token expired.");
             }
 
             var newAccessToken = _tokenService.GenerateAccessToken(identity.Claims);
@@ -101,9 +101,7 @@ namespace CarRental.Business.Services.Implementation
             var verify = _userManager.CheckPasswordAsync(user, model.Password);
             if (!verify.Result)
             {
-                // Wrong password
-                // return Unauthorized();
-                throw new Exception();
+                throw new BadAuthorizeException("Wrong password entered.");
             }
 
             return user;
@@ -114,9 +112,9 @@ namespace CarRental.Business.Services.Implementation
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                throw new Exception();
+                throw new NotFoundException("User with this email doesn't exist.");
             }
-
+            
             return user;
         }
 
