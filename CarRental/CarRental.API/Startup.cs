@@ -25,7 +25,11 @@ namespace CarRental.API
 
             services.AddDbCollection(Configuration.GetSection(ConnectionOptions.SectionName).Get<ConnectionOptions>());
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(options =>
+                {
+                    options.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
 
             services.AddRepositories();
 
