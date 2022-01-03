@@ -19,6 +19,7 @@ namespace CarRental.Business.Mapping
                     xr => xr.MapFrom(az => az.Token));
             CreateMap<LoginModel, UserEntity>();
             CreateMap<RoleCreateModel, RoleEntity>();
+            CreateMap<UserEntity, UserInfoModel>();
         }
     }
 }
