@@ -1,5 +1,6 @@
 using CarRental.API.Extensions;
 using CarRental.Business.Options;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -37,8 +38,8 @@ namespace CarRental.API
 
             services.AddSwaggerEnvironment();
 
-            services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile));
-            services.AddAutoMapper(typeof(CarRental.Business.Mapping.BllMappingProfile));
+            services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile), typeof(CarRental.Business.Mapping.BllMappingProfile));
+            //services.AddAutoMapper();
 
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
