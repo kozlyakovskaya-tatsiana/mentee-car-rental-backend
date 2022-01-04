@@ -19,6 +19,7 @@ namespace CarRental.Business.Services.Implementation
         private readonly UserManager<UserEntity> _userManager;
 
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IUserRepository _userRepository;
 
         private readonly JwtOptions _jwtOptions;
 
@@ -28,12 +29,14 @@ namespace CarRental.Business.Services.Implementation
             UserManager<UserEntity> userManager,
             IRefreshTokenRepository refreshTokenRepository,
             IOptions<JwtOptions> jwtOptions,
-            IMapper mapper
-        )
+            IMapper mapper, 
+            IUserRepository userRepository
+            )
         {
             _userManager = userManager;
             _refreshTokenRepository = refreshTokenRepository;
             _mapper = mapper;
+            _userRepository = userRepository;
             _jwtOptions = jwtOptions.Value;
         }
 
@@ -105,6 +108,19 @@ namespace CarRental.Business.Services.Implementation
             await _userManager.UpdateAsync(user);
 
             var result = _mapper.Map<UserEntity, UserInfoModel>(user);
+            return result;
+        }
+
+        public async Task<List<UserInfoModel>> GetAllUsers()
+        {
+            var users = await _userRepository.GetAll();
+            var result = new List<UserInfoModel>();
+
+            foreach (var user in users)
+            {
+                result.Add(_mapper.Map<UserEntity, UserInfoModel>(user));
+            }
+
             return result;
         }
     }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarRental.API.Controllers
 {
-    [Route("api/management/user/{id}")]
+    [Route("api/management/users/")]
     [ApiController]
     public class UserManagementController : Controller
     {
@@ -19,15 +19,15 @@ namespace CarRental.API.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ShowInfo(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ShowUserInfo(Guid id)
         {
             var result = await _userService.GetUserInfo(id);
 
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveUser(Guid id)
         {
             var result = await _userService.RemoveUser(id);
@@ -35,12 +35,20 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [HttpPatch]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateExistingUser(Guid id, [FromBody] UserInfoModel model)
         {
             var result = await _userService.ModifyUser(id, model);
 
-            return Ok();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var result = await _userService.GetAllUsers();
+
+            return Ok(result);
         }
     }
 }

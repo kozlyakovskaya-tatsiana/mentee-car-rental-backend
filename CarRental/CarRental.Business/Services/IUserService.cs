@@ -14,5 +14,6 @@ namespace CarRental.Business.Services
         public Task<UserInfoModel> GetUserInfo(Guid id);
         public Task<UserInfoModel> RemoveUser(Guid id);
         public Task<UserInfoModel> ModifyUser(Guid id, UserInfoModel model);
+        public Task<List<UserInfoModel>> GetAllUsers();
     }
 }
