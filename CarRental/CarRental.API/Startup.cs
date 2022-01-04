@@ -21,8 +21,7 @@ namespace CarRental.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.SectionName));
-            services.Configure<ConnectionOptions>(Configuration.GetSection(ConnectionOptions.SectionName));
+            services.LoadConfigurations(Configuration);
 
             services.AddDbCollection(Configuration.GetSection(ConnectionOptions.SectionName).Get<ConnectionOptions>());
 
