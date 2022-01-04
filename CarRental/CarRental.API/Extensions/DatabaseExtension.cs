@@ -1,4 +1,4 @@
-﻿using CarRental.Business.Options;
+﻿using CarRental.Common.Options;
 using CarRental.DAL.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
