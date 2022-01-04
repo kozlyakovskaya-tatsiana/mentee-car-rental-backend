@@ -14,6 +14,7 @@ namespace CarRental.API.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICarService, CarService>();
 
             return services;
         }
