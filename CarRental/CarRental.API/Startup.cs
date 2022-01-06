@@ -1,5 +1,6 @@
 using CarRental.API.Extensions;
 using CarRental.Business.Options;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
