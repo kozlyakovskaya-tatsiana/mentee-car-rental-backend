@@ -36,7 +36,7 @@ namespace CarRental.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ShowCarInfo(Guid id)
+        public async Task<IActionResult> GetCarInfo(Guid id)
         {
             var result = await _carService.GetCarInfo(id);
 

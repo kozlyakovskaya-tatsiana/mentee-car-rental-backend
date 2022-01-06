@@ -13,8 +13,8 @@ namespace CarRental.Business.Models.Car
         public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
         public CarStatus Status { get; set; }
-        public List<AttachmentEntity> Photos { get; set; }
-        public CarBrandEntity Brand { get; set; }
+        public List<AttachmentDTO> Photos { get; set; }
+        public CarBrandModel Brand { get; set; }
         public RentalPointEntity RentalPoint { get; set; }
     }
 }

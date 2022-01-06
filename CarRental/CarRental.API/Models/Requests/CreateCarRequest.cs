@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CarRental.Business.Models;
+using CarRental.Business.Models.Car;
 using CarRental.Common.Enums;
-using CarRental.DAL.Entities;
 
 namespace CarRental.API.Models.Requests
 {
@@ -14,8 +14,8 @@ namespace CarRental.API.Models.Requests
         public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
         public CarStatus Status { get; set; }
-        public List<AttachmentEntity> Photos { get; set; }
-        public  CarBrandEntity Brand { get; set; }
-        public RentalPointEntity RentalPoint { get; set; }
+        public List<AttachmentDTO> Photos { get; set; }
+        public  CarBrandModel Brand { get; set; }
+        public RentalPointModel RentalPoint { get; set; }
     }
 }
