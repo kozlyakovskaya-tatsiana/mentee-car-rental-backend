@@ -19,9 +19,8 @@ namespace CarRental.API
 
             try
             {
-                Log.Information("Car rental backend started.");
+                Log.Information("Car rental service started.");
                 CreateHostBuilder(args).Build().Run();
-                Log.Information("Backend work ended.");
             }
             catch (Exception ex)
             {

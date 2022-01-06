@@ -2,6 +2,7 @@
 using CarRental.DAL.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace CarRental.DAL.EFCore
 {
@@ -22,9 +23,11 @@ namespace CarRental.DAL.EFCore
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            Log.Information("Init database...");
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarRentalDbContext).Assembly);
+            Log.Information("Complete.");
         }
     }
 }
