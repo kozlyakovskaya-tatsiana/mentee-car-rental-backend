@@ -47,7 +47,8 @@ namespace CarRental.API.Extensions
                     };
                 });
 
-            services.AddIdentity<UserEntity, RoleEntity>()
+            services.AddIdentityCore<UserEntity>()
+                .AddRoles<RoleEntity>()
                 .AddEntityFrameworkStores<CarRentalDbContext>()
                 .AddDefaultTokenProviders();
 
