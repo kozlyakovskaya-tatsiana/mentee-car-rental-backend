@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using CarRental.Business.Identity.Role;
 using CarRental.Common.Options;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -59,17 +61,56 @@ namespace CarRental.API.Extensions
 
         private static void SeedUsers(CarRentalDbContext context)
         {
-            var users = new List<UserEntity>()
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
+            DefaultUserOptions options = new DefaultUserOptions();
+            config.GetSection(DefaultUserOptions.SectionName).Bind(options);
+
+            var hasher = new PasswordHasher<UserEntity>();
+
+            var admin = new UserEntity()
             {
-                
+                FirstName = options.AdminFirstName,
+                LastName = options.AdminLastName,
+                Email = options.AdminEmail,
+                NormalizedEmail = options.AdminEmail.ToUpper(),
+                UserName = options.AdminEmail,
+                NormalizedUserName = options.AdminEmail.ToUpper(),
+                SecurityStamp = Guid.NewGuid().ToString()
             };
+            var adminPasswordHash = hasher.HashPassword(admin, options.AdminPassword);
+            admin.PasswordHash = adminPasswordHash;
 
-            foreach (var user in users)
+            var manager = new UserEntity()
             {
-                context.Users.Add(user);
-            }
+                FirstName = options.ManagerFirstName,
+                LastName = options.ManagerLastName,
+                Email = options.ManagerEmail,
+                NormalizedEmail = options.ManagerEmail.ToUpper(),
+                UserName = options.ManagerEmail,
+                NormalizedUserName = options.ManagerEmail.ToUpper(),
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+            var managerPasswordHash = hasher.HashPassword(manager, options.ManagerPassword);
+            manager.PasswordHash = managerPasswordHash;
 
+            var user = new UserEntity()
+            {
+                FirstName = options.UserFirstName,
+                LastName = options.UserLastName,
+                Email = options.UserEmail,
+                NormalizedEmail = options.UserEmail.ToUpper(),
+                UserName = options.UserEmail,
+                NormalizedUserName = options.UserEmail.ToUpper(),
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+            var userPasswordHash = hasher.HashPassword(user, options.UserPassword);
+            user.PasswordHash = userPasswordHash;
+
+            context.Users.Add(admin);
+            context.Users.Add(manager);
+            context.Users.Add(user);
 
         }
+
     }
 }
