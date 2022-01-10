@@ -1,4 +1,4 @@
-﻿namespace CarRental.Business.Options
+﻿namespace CarRental.Common.Options
 {
     public class JwtOptions
     {
