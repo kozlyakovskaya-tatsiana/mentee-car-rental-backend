@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CarRental.DAL.EFCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -41,9 +42,9 @@ namespace CarRental.DAL
             return await _dbSet.FindAsync(id);
         }
 
-        public Task<IQueryable<TEntity>> GetAll()
+        public async Task<IQueryable<TEntity>> GetAll()
         {
-            return Task.FromResult(_dbSet.AsQueryable());
+            return _dbSet.AsQueryable();
         }
 
         public async Task<TEntity> Update(TEntity entity)
