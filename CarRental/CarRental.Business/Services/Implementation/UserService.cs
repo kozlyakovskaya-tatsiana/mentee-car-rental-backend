@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using CarRental.Business.Options;
+using CarRental.Common.Options;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
