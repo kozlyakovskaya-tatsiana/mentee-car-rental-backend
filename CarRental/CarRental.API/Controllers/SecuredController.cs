@@ -9,13 +9,15 @@ namespace carRental.API.Controllers
     [ApiController]
     public class SecuredController : ControllerBase
     {
-        [HttpGet("auth"), Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize]
+        [HttpGet("auth")]
         public IActionResult GetSecuredData()
         {
             return Ok("Hello world");
         }
 
-        [HttpGet("Superadmin"), Authorize(AuthenticationSchemes = "Bearer", Policy = Policy.AdminPolicy)]
+        [Authorize (Policy = Policy.AdminPolicy)]
+        [HttpGet("Superadmin")]
         public IActionResult getSuperAdminData()
         {
             return Ok("Hello world");

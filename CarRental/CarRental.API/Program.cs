@@ -1,4 +1,5 @@
 using System;
+using CarRental.API.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +21,10 @@ namespace CarRental.API
             try
             {
                 Log.Information("Car rental service started.");
-                CreateHostBuilder(args).Build().Run();
+                CreateHostBuilder(args)
+                .Build()
+                .DataInitialize()
+                .Run();
             }
             catch (Exception ex)
             {
