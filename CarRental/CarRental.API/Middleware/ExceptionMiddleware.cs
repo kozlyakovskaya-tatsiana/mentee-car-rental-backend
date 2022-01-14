@@ -47,6 +47,9 @@ namespace CarRental.API.Middleware
                 case TokenExpiredException _ :
                     result.StatusCode = 401;
                     break;
+                case NotVerifiedException _:
+                    result.StatusCode = 401;
+                    break;
             }
 
             context.Response.StatusCode = result.StatusCode;

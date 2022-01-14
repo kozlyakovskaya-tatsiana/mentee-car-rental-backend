@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Identity.Role;
@@ -12,6 +14,7 @@ using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CarRental.Business.Services.Implementation
 {
@@ -92,6 +95,36 @@ namespace CarRental.Business.Services.Implementation
                 AccessToken = newAccessToken,
                 RefreshToken = refresh.Result.Token
             };
+        }
+
+        public UserIdModel VerifyAccessToken(TokenPairModel model)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                var key = Encoding.ASCII.GetBytes(_jwtOptions.Key);
+                tokenHandler.ValidateToken(model.AccessToken, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = _jwtOptions.ValidateIssuer,
+                    ValidateAudience = _jwtOptions.ValidateAudience,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken) validatedToken;
+                var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var result = new UserIdModel()
+                {
+                    Id = Guid.Parse(userId)
+                };
+
+                return result;
+            }
+            catch
+            {
+                throw new NotVerifiedException("Access Token invalid");
+            }
         }
 
         private async Task<UserEntity> IsUserAuthenticate(LoginModel model)

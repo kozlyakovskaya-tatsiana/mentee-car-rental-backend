@@ -50,6 +50,15 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost("token/verify")]
+        public async Task<IActionResult> VerifyAccessToken(GetTokenPairRequest pair)
+        {
+            var request = _mapper.Map<GetTokenPairRequest, TokenPairModel>(pair);
+            var result = _authService.VerifyAccessToken(request);
+
+            return Ok(result);
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> SignUp(RegisterRequest userSignUpRequest)
         {
@@ -78,5 +87,6 @@ namespace CarRental.API.Controllers
 
             return Ok(result);
         }
+
     }
 }
