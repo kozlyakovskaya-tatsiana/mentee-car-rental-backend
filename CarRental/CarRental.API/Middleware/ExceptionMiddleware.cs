@@ -32,7 +32,7 @@ namespace CarRental.API.Middleware
 
             var result = new ErrorDetails()
             {
-                StatusCode = context.Response.StatusCode,
+                StatusCode = 500,
                 Message = exception.Message
             };
 

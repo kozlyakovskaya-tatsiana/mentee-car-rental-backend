@@ -10,6 +10,7 @@ using CarRental.Business.Options;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace CarRental.Business.Services.Implementation
@@ -113,12 +114,14 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<List<UserInfoModel>> GetAllUsers()
         {
-            var users = await _userRepository.GetAll();
+            var users = (await _userRepository.GetAll()).ToArray();
             var result = new List<UserInfoModel>();
 
             foreach (var user in users)
             {
-                result.Add(_mapper.Map<UserEntity, UserInfoModel>(user));
+                var infoModel = _mapper.Map<UserEntity, UserInfoModel>(user);
+                infoModel.Roles = (List<string>) await _userManager.GetRolesAsync(user);
+                result.Add(infoModel);
             }
 
             return result;
