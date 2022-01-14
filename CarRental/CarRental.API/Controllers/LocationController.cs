@@ -11,6 +11,7 @@ namespace CarRental.API.Controllers
     [ApiController]
     public class LocationController : ControllerBase
     {
+        //TODO Unfinished controller, not implemented almost all methods
         private readonly IMapper _mapper;
 
         private readonly ILocationService _locationService;
@@ -31,14 +32,6 @@ namespace CarRental.API.Controllers
             var result = await _locationService.AddNewCountry(model);
 
             return Ok(result);
-        }
-
-        [HttpPost("city")]
-        public async Task<IActionResult> AddCity(AddCityRequest request)
-        {
-            
-
-            return Ok();
         }
     }
 }
