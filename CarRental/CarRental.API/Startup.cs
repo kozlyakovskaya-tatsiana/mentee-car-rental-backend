@@ -33,6 +33,8 @@ namespace CarRental.API
 
             services.AddRepositories();
 
+            services.AddCors();
+
             services.AddCarRentalServices();
 
             services.AddSwaggerEnvironment();
@@ -58,6 +60,12 @@ namespace CarRental.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder => builder.WithOrigins("https://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+            );
 
             app.ConfigureCustomExceptionMiddleware();
 
