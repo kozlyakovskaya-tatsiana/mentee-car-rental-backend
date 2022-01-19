@@ -10,6 +10,6 @@ namespace CarRental.Business.Services
         public Task<IdentityResult> Register(RegisterModel model);
         public Task<TokenPairModel> Login(LoginModel model);
         public TokenPairModel RefreshTokenPair(TokenPairModel model);
-        public UserIdModel VerifyAccessToken(TokenPairModel model);
+        public UserVerifyModel VerifyAccessToken(TokenValidationModel model);
     }
 }

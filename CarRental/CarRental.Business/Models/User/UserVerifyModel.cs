@@ -2,8 +2,9 @@
 
 namespace CarRental.Business.Models.User
 {
-    public class UserIdModel
+    public class UserVerifyModel
     {
         public Guid Id { get; set; }
+        public string Role { get; set; }
     }
 }
