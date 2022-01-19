@@ -61,7 +61,7 @@ namespace CarRental.API
 
             app.UseRouting();
 
-            app.UseCors(builder => builder.WithOrigins("https://localhost:3000")
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
