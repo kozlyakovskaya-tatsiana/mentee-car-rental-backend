@@ -51,10 +51,10 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost("token/verify")]
-        public async Task<IActionResult> VerifyAccessToken(GetTokenPairRequest pair)
+        public IActionResult VerifyAccessToken(ValidateAccessTokenRequest request)
         {
-            var request = _mapper.Map<GetTokenPairRequest, TokenPairModel>(pair);
-            var result = _authService.VerifyAccessToken(request);
+            var model = _mapper.Map<ValidateAccessTokenRequest, TokenValidationModel>(request);
+            var result = _authService.VerifyAccessToken(model);
 
             return Ok(result);
         }

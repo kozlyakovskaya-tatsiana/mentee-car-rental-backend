@@ -18,6 +18,7 @@ namespace CarRental.API.Mapping
             CreateMap<GetTokenPairRequest, TokenPairModel>();
             CreateMap<RoleCreateRequest, RoleCreateModel>();
             CreateMap<AddRoleRequest, UserRoleModel>();
+            CreateMap<ValidateAccessTokenRequest, TokenValidationModel>();
         }
     }
 }
