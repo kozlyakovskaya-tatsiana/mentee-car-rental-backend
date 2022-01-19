@@ -13,6 +13,7 @@ using CarRental.Common.Options;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -29,6 +30,7 @@ namespace CarRental.Business.Services.Implementation
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         private readonly IMapper _mapper;
+        private readonly ILogger<AuthService> _logger;
 
         private readonly JwtOptions _jwtOptions;
 
@@ -36,11 +38,12 @@ namespace CarRental.Business.Services.Implementation
             IMapper mapper,
             UserManager<UserEntity> userManager,
             RoleManager<RoleEntity> roleManager,
-            ITokenService tokenService, 
-            IUserService userService, 
-            IOptions<JwtOptions> jwtOptions, 
-            IRefreshTokenRepository refreshTokenRepository
-            )
+            ITokenService tokenService,
+            IUserService userService,
+            IOptions<JwtOptions> jwtOptions,
+            IRefreshTokenRepository refreshTokenRepository,
+            ILogger<AuthService> logger
+        )
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -48,6 +51,7 @@ namespace CarRental.Business.Services.Implementation
             _tokenService = tokenService;
             _userService = userService;
             _refreshTokenRepository = refreshTokenRepository;
+            _logger = logger;
             _jwtOptions = jwtOptions.Value;
         }
 
@@ -97,26 +101,32 @@ namespace CarRental.Business.Services.Implementation
             };
         }
 
-        public UserIdModel VerifyAccessToken(TokenPairModel model)
+        public UserVerifyModel VerifyAccessToken(TokenValidationModel model)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {
+                // _logger.LogInformation(model.AccessToken);
+
                 var key = Encoding.ASCII.GetBytes(_jwtOptions.Key);
                 tokenHandler.ValidateToken(model.AccessToken, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = _jwtOptions.ValidateIssuer,
+                    ValidIssuer = _jwtOptions.Issuer,
                     ValidateAudience = _jwtOptions.ValidateAudience,
+                    ValidAudience = _jwtOptions.Audience,
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-                var result = new UserIdModel()
+                var role = jwtToken.Claims.FirstOrDefault(x => x.Type == "roles")?.Value;
+                var result = new UserVerifyModel()
                 {
-                    Id = Guid.Parse(userId)
+                    Id = Guid.Parse(userId),
+                    Role = role
                 };
 
                 return result;
@@ -147,7 +157,7 @@ namespace CarRental.Business.Services.Implementation
             {
                 throw new NotFoundException("User with this email doesn't exist.");
             }
-            
+
             return user;
         }
 
