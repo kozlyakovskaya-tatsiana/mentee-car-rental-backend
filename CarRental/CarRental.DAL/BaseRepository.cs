@@ -10,48 +10,48 @@ namespace CarRental.DAL
     public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         where TEntity : class
     {
-        private readonly CarRentalDbContext _context;
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly CarRentalDbContext Context;
+        protected readonly DbSet<TEntity> DbSet;
 
         protected BaseRepository(CarRentalDbContext context)
         {
-            this._context = context;
-            this._dbSet = _context.Set<TEntity>();
+            this.Context = context;
+            this.DbSet = Context.Set<TEntity>();
         }
 
         public async Task<TEntity> Add(TEntity entity)
         {
-            _dbSet.Add(entity);
+            DbSet.Add(entity);
 
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
 
             return entity;
         }
 
         public async Task<TEntity> Delete(TEntity entity)
         {
-            _dbSet.Remove(entity);
+            DbSet.Remove(entity);
 
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
 
             return entity;
         }
 
         public async Task<TEntity> Get(Guid id)
         {
-            return await _dbSet.FindAsync(id);
+            return await DbSet.FindAsync(id);
         }
 
         public async Task<IQueryable<TEntity>> GetAll()
         {
-            return _dbSet.AsQueryable();
+            return DbSet.AsQueryable();
         }
 
         public async Task<TEntity> Update(TEntity entity)
         {
-            _dbSet.Update(entity);
+            DbSet.Update(entity);
 
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
 
             return entity;
         }
