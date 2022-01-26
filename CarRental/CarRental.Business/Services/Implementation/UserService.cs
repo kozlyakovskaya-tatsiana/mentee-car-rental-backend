@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using CarRental.Common.Options;
 using AutoMapper;
@@ -10,7 +8,6 @@ using CarRental.Business.Models.User;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace CarRental.Business.Services.Implementation
@@ -30,32 +27,15 @@ namespace CarRental.Business.Services.Implementation
             UserManager<UserEntity> userManager,
             IRefreshTokenRepository refreshTokenRepository,
             IOptions<JwtOptions> jwtOptions,
-            IMapper mapper, 
+            IMapper mapper,
             IUserRepository userRepository
-            )
+        )
         {
             _userManager = userManager;
             _refreshTokenRepository = refreshTokenRepository;
             _mapper = mapper;
             _userRepository = userRepository;
             _jwtOptions = jwtOptions.Value;
-        }
-
-        public async Task<IEnumerable<Claim>> GenerateUserClaims(UserEntity user)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-            var roleClaims = roles.Select(role => new Claim("roles", role)).ToList();
-
-            var claims = new List<Claim>
-            {
-
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            };
-            var result = claims.Union(roleClaims);
-
-            return result;
         }
 
         public async Task<String> AttachNewRefreshTokenToUser(Guid userId, string refresh)
@@ -82,7 +62,6 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<UserInfoModel> RemoveUser(Guid id)
         {
-
             var user = await _userManager.FindByIdAsync(id.ToString());
             var result = _mapper.Map<UserEntity, UserInfoModel>(user);
 
@@ -104,6 +83,7 @@ namespace CarRental.Business.Services.Implementation
                     userProp.SetValue(user, value);
                 }
             }
+
             user.NormalizedEmail = user.Email.ToUpper();
 
             await _userManager.UpdateAsync(user);

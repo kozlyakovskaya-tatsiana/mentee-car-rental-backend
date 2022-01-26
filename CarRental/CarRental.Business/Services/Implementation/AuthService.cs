@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -163,7 +164,7 @@ namespace CarRental.Business.Services.Implementation
 
         private async Task<TokenPairModel> CreateTokenPair(UserEntity user)
         {
-            var claims = await _userService.GenerateUserClaims(user);
+            var claims = await GenerateUserClaims(user);
             var access = _tokenService.GenerateAccessToken(claims);
             var refresh = _tokenService.GenerateRefreshToken();
             await _userService.AttachNewRefreshTokenToUser(user.Id, refresh);
@@ -173,6 +174,23 @@ namespace CarRental.Business.Services.Implementation
                 RefreshToken = refresh,
                 AccessToken = access,
             };
+        }
+
+        private async Task<IEnumerable<Claim>> GenerateUserClaims(UserEntity user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleClaims = roles.Select(role => new Claim("roles", role)).ToList();
+
+            var claims = new List<Claim>
+            {
+
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            };
+            var result = claims.Union(roleClaims);
+
+            return result;
         }
     }
 }
