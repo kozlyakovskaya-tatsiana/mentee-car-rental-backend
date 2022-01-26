@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarRental.Business.Models.Car;
+using CarRental.Business.Models.Location;
 using CarRental.Business.Models.Role;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
@@ -22,6 +23,15 @@ namespace CarRental.Business.Mapping
             CreateMap<RoleCreateModel, RoleEntity>();
             CreateMap<UserEntity, UserInfoModel>();
             CreateMap<CarEntity, CarInfoModel>();
+
+            CreateMap<CountryModel, CountryEntity>();
+            CreateMap<CountryEntity, CountryModel>();
+
+            CreateMap<CityModel, CityEntity>()
+                .ForMember(l => l.Locations, opt => opt.MapFrom(ls => ls.Locations));
+            CreateMap<CityEntity, CityModel>();
+            CreateMap<LocationModel, LocationEntity>();
+            CreateMap<LocationEntity, LocationModel>();
         }
     }
 }
