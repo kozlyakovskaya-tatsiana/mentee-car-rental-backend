@@ -3,6 +3,6 @@
     public class AttachmentDTO
     {
         public string FileFormat { get; set; }
-        public byte[] Content { get; set; }
+        public string Content { get; set; }
     }
 }

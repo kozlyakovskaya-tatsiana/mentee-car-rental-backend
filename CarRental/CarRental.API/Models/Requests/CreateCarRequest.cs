@@ -15,6 +15,6 @@ namespace CarRental.API.Models.Requests
         public double PricePerHour { get; set; }
         public List<AttachmentDTO> Photos { get; set; }
         public  CarBrandModel Brand { get; set; }
-        public RentalPointModel RentalPoint { get; set; }
+        public Guid RentalPointId { get; set; }
     }
 }
