@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Globalization;
+using AutoMapper;
+using CarRental.Business.Models;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Models.Location;
 using CarRental.Business.Models.Role;
@@ -28,10 +31,19 @@ namespace CarRental.Business.Mapping
             CreateMap<CountryEntity, CountryModel>();
 
             CreateMap<CityModel, CityEntity>()
-                .ForMember(l => l.Locations, opt => opt.MapFrom(ls => ls.Locations));
+                .ForMember(l => l.Locations, opt => opt
+                    .MapFrom(ls => ls.Locations));
             CreateMap<CityEntity, CityModel>();
+
             CreateMap<LocationModel, LocationEntity>();
             CreateMap<LocationEntity, LocationModel>();
+
+            CreateMap<RentalPointModel, RentalPointEntity>();
+            CreateMap<RentalPointEntity, RentalPointModel>();
+
+            CreateMap<RentalPointEntity, RentalPointWithCoordsModel>()
+                .ForMember(dest => dest.Location, opt => opt
+                    .MapFrom(res => res.Location));
         }
     }
 }

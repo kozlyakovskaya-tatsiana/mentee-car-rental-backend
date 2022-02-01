@@ -1,7 +1,12 @@
-﻿namespace CarRental.Business.Models
+﻿using System;
+using CarRental.Business.Models.Location;
+
+namespace CarRental.Business.Models
 {
     public class RentalPointModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
+        public LocationModel Location { get; set; }
     }
 }
