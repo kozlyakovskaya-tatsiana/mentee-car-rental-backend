@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace CarRental.Business.Models.Location
+namespace CarRental.API.Models.Requests
 {
-    public class LocationModel
+    public class AddNewLocationRequest
     {
-        public Guid Id { get; set; }
         public Guid CityId { get; set; }
         public string Address { get; set; }
         public double Latitude { get; set; }

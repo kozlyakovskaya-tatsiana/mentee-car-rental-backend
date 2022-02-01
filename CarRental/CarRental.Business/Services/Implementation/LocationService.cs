@@ -14,14 +14,15 @@ namespace CarRental.Business.Services.Implementation
         private readonly ICityRepository _cityRepository;
         private readonly ILocationRepository _locationRepository;
 
+
         private readonly IMapper _mapper;
 
         public LocationService(
-            ICityRepository cityRepository, 
-            ILocationRepository locationRepository, 
-            ICountryRepository countryRepository, 
+            ICityRepository cityRepository,
+            ILocationRepository locationRepository,
+            ICountryRepository countryRepository,
             IMapper mapper
-            )
+        )
         {
             _cityRepository = cityRepository;
             _locationRepository = locationRepository;
@@ -59,6 +60,7 @@ namespace CarRental.Business.Services.Implementation
 
             return result;
         }
+
         public async Task<IEnumerable<CityModel>> GetAllCities()
         {
             var cities = await _cityRepository.GetAll();
@@ -81,6 +83,19 @@ namespace CarRental.Business.Services.Implementation
             {
                 result.Add(_mapper.Map<CityEntity, CityModel>(city));
             }
+
+            return result;
+        }
+
+        public async Task<LocationModel> AddNewLocation(LocationModel model)
+        {
+            var location = _mapper.Map<LocationModel, LocationEntity>(model);
+            var city = await _cityRepository.Get(location.CityId);
+            location.City = city;
+            location.Id = new Guid();
+
+            var entity = await _locationRepository.Add(location);
+            var result = _mapper.Map<LocationEntity, LocationModel>(entity);
 
             return result;
         }

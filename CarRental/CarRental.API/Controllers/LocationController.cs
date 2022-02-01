@@ -5,6 +5,7 @@ using CarRental.API.Models.Requests;
 using CarRental.Business.Models.Location;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CarRental.API.Controllers
 {
@@ -12,22 +13,22 @@ namespace CarRental.API.Controllers
     [ApiController]
     public class LocationController : ControllerBase
     {
-        //TODO Unfinished controller, not implemented almost all methods
         private readonly IMapper _mapper;
+        private readonly ILogger<LocationController> _logger;
 
         private readonly ILocationService _locationService;
 
         public LocationController(
-            IMapper mapper, 
+            IMapper mapper,
             ILocationService locationService
-            )
+        )
         {
             _mapper = mapper;
             _locationService = locationService;
         }
 
         [HttpPost("country")]
-        public async Task<IActionResult>AddCountry(AddCountryRequest request)
+        public async Task<IActionResult> AddCountry(AddCountryRequest request)
         {
             var model = _mapper.Map<AddCountryRequest, CountryModel>(request);
             var result = await _locationService.AddNewCountry(model);
@@ -46,8 +47,10 @@ namespace CarRental.API.Controllers
         [HttpPost("city")]
         public async Task<IActionResult> AddCity(AddCityRequest request)
         {
-            var model = _mapper.Map<AddCityRequest, CityModel>(request); 
+            _logger.LogInformation("Try to create new city with name: {city}", request.Name);
+            var model = _mapper.Map<AddCityRequest, CityModel>(request);
             var result = await _locationService.AddNewCity(model);
+            _logger.LogInformation("city {city} created successful.", request.Name);
 
             return Ok(result);
         }
@@ -67,5 +70,6 @@ namespace CarRental.API.Controllers
 
             return Ok(result);
         }
+
     }
 }
