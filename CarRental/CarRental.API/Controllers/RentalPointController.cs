@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Models;
@@ -29,7 +30,7 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewRentalPoint(AddNewRentalPointRequest request)
+        public async Task<IActionResult> AddNewRentalPoint([FromBody] AddNewRentalPointRequest request)
         {
             var model = _mapper.Map<AddNewRentalPointRequest, RentalPointModel>(request);
             var result = await _rentalPointService.AddNewRentalPoint(model);
@@ -41,6 +42,14 @@ namespace CarRental.API.Controllers
         public async Task<IActionResult> GetAllRentalPoints()
         {
             var result = await _rentalPointService.GetAllRentalPoints();
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveRentalPoint(Guid id)
+        {
+            var result = await _rentalPointService.RemoveRentalPoint(id);
 
             return Ok(result);
         }

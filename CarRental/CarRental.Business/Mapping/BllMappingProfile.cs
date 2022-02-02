@@ -35,11 +35,13 @@ namespace CarRental.Business.Mapping
                     .MapFrom(ls => ls.Locations));
             CreateMap<CityEntity, CityModel>();
 
-            CreateMap<LocationModel, LocationEntity>();
+            CreateMap<LocationModel, LocationEntity>()
+                .ForPath(s => s.City, dest => dest.Ignore());
             CreateMap<LocationEntity, LocationModel>();
 
             CreateMap<RentalPointModel, RentalPointEntity>();
-            CreateMap<RentalPointEntity, RentalPointModel>();
+            CreateMap<RentalPointEntity, RentalPointModel>()
+                .ForPath(s => s.Location.City, dest => dest.MapFrom(d => d.Location.City.Name));
 
             CreateMap<RentalPointEntity, RentalPointWithCoordsModel>()
                 .ForMember(dest => dest.Location, opt => opt
