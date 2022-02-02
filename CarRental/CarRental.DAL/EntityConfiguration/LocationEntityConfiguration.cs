@@ -13,7 +13,9 @@ namespace CarRental.DAL.EntityConfiguration
             builder
                 .HasOne(rp => rp.RentalPoint)
                 .WithOne(l => l.Location)
-                .HasForeignKey<RentalPointEntity>(l => l.LocationId);
+                .HasForeignKey<RentalPointEntity>(l => l.LocationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder
                 .Property(l => l.Address)
                 .IsRequired();
