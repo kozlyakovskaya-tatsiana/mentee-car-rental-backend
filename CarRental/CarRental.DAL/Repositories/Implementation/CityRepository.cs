@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
 
@@ -10,7 +11,7 @@ namespace CarRental.DAL.Repositories.Implementation
         {
         }
 
-        public CityEntity GetCityByName(string name)
+        public async Task<CityEntity> GetCityByNameAsync(string name)
         {
             var entity = DbSet.SingleOrDefault(city => city.Name == name);
             
