@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models;
+using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,36 +16,59 @@ namespace CarRental.Business.Services.Implementation
         private readonly IRentalPointRepository _rentalPointRepository;
         private readonly ILocationRepository _locationRepository;
         private readonly ICityRepository _cityRepository;
+        private readonly ICountryRepository _countryRepository;
 
         private readonly IMapper _mapper;
 
         public RentalPointService(
             IRentalPointRepository rentalPointRepository,
             IMapper mapper,
-            ILocationRepository locationRepository, 
-            ICityRepository cityRepository
-            )
+            ILocationRepository locationRepository,
+            ICityRepository cityRepository,
+            ICountryRepository countryRepository
+        )
         {
             _rentalPointRepository = rentalPointRepository;
             _mapper = mapper;
             _locationRepository = locationRepository;
             _cityRepository = cityRepository;
+            _countryRepository = countryRepository;
         }
 
         public async Task<RentalPointModel> AddNewRentalPoint(RentalPointModel model)
         {
+            var country = await _countryRepository.GetCountryByNameAsync(model.Location.Country);
+            var city = await _cityRepository.GetCityByNameAsync(model.Location.City);
+
+            if (country == null)
+            {
+                var newCountryEntity = new CountryEntity
+                {
+                    Name = model.Location.Country,
+                    Id = Guid.NewGuid()
+                };
+                country = await _countryRepository.Add(newCountryEntity);
+            }
+
+            if (city == null)
+            {
+                var newCityEntity = new CityEntity()
+                {
+                    Name = model.Location.City,
+                    Id = Guid.NewGuid(),
+                    Country = country,
+                    CountryId = country.Id,
+                };
+                city = await _cityRepository.Add(newCityEntity);
+            }
+
             var rentalPoint = _mapper.Map<RentalPointModel, RentalPointEntity>(model);
 
-            var location = rentalPoint.Location;
+            rentalPoint.Location.Id = rentalPoint.LocationId = Guid.NewGuid();
+            rentalPoint.Location.City = city;
+            rentalPoint.Location.CityId = city.Id;
+            rentalPoint.Location.RentalPoint = rentalPoint;
 
-            location.Id = Guid.NewGuid();
-            rentalPoint.Id = Guid.NewGuid();
-            location.RentalPoint = rentalPoint;
-            location.City = await _cityRepository.Get(rentalPoint.Location.CityId);
-
-            rentalPoint.Location = location;
-            rentalPoint.LocationId = location.Id;
-            
             var entity = await _rentalPointRepository.Add(rentalPoint);
             var result = _mapper.Map<RentalPointEntity, RentalPointModel>(entity);
 
@@ -63,6 +87,20 @@ namespace CarRental.Business.Services.Implementation
 
                 result.Add(model);
             }
+
+            return result;
+        }
+
+        public async Task<RentalPointModel> RemoveRentalPoint(Guid id)
+        {
+            var rentalPoint = await _rentalPointRepository.Get(id);
+            var entity = await _rentalPointRepository.Delete(rentalPoint);
+            if (entity == null)
+            {
+                throw new NotFoundException("Rental Point doesn't exist");
+            }
+
+            var result = _mapper.Map<RentalPointEntity, RentalPointModel>(entity);
 
             return result;
         }
