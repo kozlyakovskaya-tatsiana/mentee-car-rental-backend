@@ -8,6 +8,7 @@ using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CarRental.Business.Services.Implementation
 {
@@ -94,10 +95,24 @@ namespace CarRental.Business.Services.Implementation
         public async Task<RentalPointModel> RemoveRentalPoint(Guid id)
         {
             var rentalPoint = await _rentalPointRepository.Get(id);
-            var entity = await _rentalPointRepository.Delete(rentalPoint);
-            if (entity == null)
+            if (rentalPoint == null)
             {
                 throw new NotFoundException("Rental Point doesn't exist");
+            }
+
+            var entity = await _rentalPointRepository.Delete(rentalPoint);
+            var location = await _locationRepository.Delete(rentalPoint.Location);
+
+            var city = entity.Location.City;
+            if (city.Locations.IsNullOrEmpty())
+            {
+                city = await _cityRepository.Delete(city);
+            }
+
+            var country = city.Country;
+            if (country.Cities.IsNullOrEmpty())
+            {
+                country = await _countryRepository.Delete(country);
             }
 
             var result = _mapper.Map<RentalPointEntity, RentalPointModel>(entity);

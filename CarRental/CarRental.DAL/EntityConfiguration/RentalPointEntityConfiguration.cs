@@ -13,10 +13,13 @@ namespace CarRental.DAL.EntityConfiguration
             builder
                 .HasMany(c => c.Cars)
                 .WithOne(p => p.RentalPoint)
-                .HasForeignKey(p => p.RentalPointId);
+                .HasForeignKey(p => p.RentalPointId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             builder
                 .Property(rp => rp.Name)
                 .IsRequired();
+
             builder
                 .HasOne<LocationEntity>(c => c.Location)
                 .WithOne(r => r.RentalPoint)
