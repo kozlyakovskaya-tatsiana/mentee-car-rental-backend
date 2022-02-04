@@ -38,37 +38,13 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<RentalPointModel> AddNewRentalPoint(RentalPointModel model)
         {
-            var country = await _countryRepository.GetCountryByNameAsync(model.Location.Country);
-            var city = await _cityRepository.GetCityByNameAsync(model.Location.City);
-
-            if (country == null)
-            {
-                var newCountryEntity = new CountryEntity
-                {
-                    Name = model.Location.Country,
-                    Id = Guid.NewGuid()
-                };
-                country = await _countryRepository.Add(newCountryEntity);
-            }
-
-            if (city == null)
-            {
-                var newCityEntity = new CityEntity()
-                {
-                    Name = model.Location.City,
-                    Id = Guid.NewGuid(),
-                    Country = country,
-                    CountryId = country.Id,
-                };
-                city = await _cityRepository.Add(newCityEntity);
-            }
+            var existingCountry = await _countryRepository.GetCountryByNameAsync(model.Location.Country);
+            var existingCity = await _cityRepository.GetCityByNameAsync(model.Location.City);
 
             var rentalPoint = _mapper.Map<RentalPointModel, RentalPointEntity>(model);
 
-            rentalPoint.Location.Id = rentalPoint.LocationId = Guid.NewGuid();
-            rentalPoint.Location.City = city;
-            rentalPoint.Location.CityId = city.Id;
-            rentalPoint.Location.RentalPoint = rentalPoint;
+            rentalPoint.Location.City = existingCity ?? rentalPoint.Location.City;
+            rentalPoint.Location.City.Country = existingCountry ?? rentalPoint.Location.City.Country;
 
             var entity = await _rentalPointRepository.Add(rentalPoint);
             var result = _mapper.Map<RentalPointEntity, RentalPointModel>(entity);
@@ -80,16 +56,10 @@ namespace CarRental.Business.Services.Implementation
         {
             var query = await _rentalPointRepository.GetAll();
             var rentalPoints = await query.ToArrayAsync();
-            var result = new List<RentalPointWithCoordsModel>();
 
-            foreach (var rentalPoint in rentalPoints)
-            {
-                var model = _mapper.Map<RentalPointEntity, RentalPointWithCoordsModel>(rentalPoint);
-
-                result.Add(model);
-            }
-
-            return result;
+            return rentalPoints
+                .Select(rentalPoint => _mapper.Map<RentalPointEntity, RentalPointWithCoordsModel>(rentalPoint))
+                .ToArray();
         }
 
         public async Task<RentalPointModel> RemoveRentalPoint(Guid id)
@@ -101,7 +71,7 @@ namespace CarRental.Business.Services.Implementation
             }
 
             var entity = await _rentalPointRepository.Delete(rentalPoint);
-            var location = await _locationRepository.Delete(rentalPoint.Location);
+            await _locationRepository.Delete(rentalPoint.Location);
 
             var city = entity.Location.City;
             if (city.Locations.IsNullOrEmpty())

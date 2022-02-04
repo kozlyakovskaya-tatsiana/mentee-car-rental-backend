@@ -39,7 +39,13 @@ namespace CarRental.Business.Mapping
                 .ForPath(s => s.City, dest => dest.Ignore());
             CreateMap<LocationEntity, LocationModel>();
 
-            CreateMap<RentalPointModel, RentalPointEntity>();
+            CreateMap<RentalPointModel, RentalPointEntity>()
+                .ForPath(entity => entity.Location.City.Name, opt => opt.MapFrom(source => source.Location.City))
+                .ForPath(entity => entity.Location.City.Country.Name,
+                    opt => opt.MapFrom(source => source.Location.Country))
+                .ForPath(entity => entity.Location.Latitude, opt => opt.MapFrom(source => source.Location.Latitude))
+                .ForPath(entity => entity.Location.Longitude, opt => opt.MapFrom(source => source.Location.Longitude))
+                .ForPath(entity => entity.Location.Address, opt => opt.MapFrom(source => source.Location.Address));
             CreateMap<RentalPointEntity, RentalPointModel>()
                 .ForPath(s => s.Location.City, dest => dest.MapFrom(d => d.Location.City.Name));
 
