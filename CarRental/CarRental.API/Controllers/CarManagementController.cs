@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Models.Car;
 using Microsoft.AspNetCore.Mvc;
@@ -11,14 +12,18 @@ namespace CarRental.API.Controllers
     [ApiController]
     public class CarManagementController : ControllerBase
     {
-        //TODO Unfinished controller, not implemented almost all methods
+        //TODO Unfinished controller, not implemented brands and models
         private readonly ICarService _carService;
 
+        private readonly IMapper _mapper;
+
         public CarManagementController(
-            ICarService carService
-            )
+            ICarService carService,
+            IMapper mapper
+        )
         {
             _carService = carService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -30,9 +35,8 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewCar([FromBody]CreateCarRequest request)
+        public async Task<IActionResult> CreateNewCar([FromBody] CreateCarRequest request)
         {
-            
             return Ok();
         }
 
@@ -56,6 +60,23 @@ namespace CarRental.API.Controllers
         public async Task<IActionResult> UpdateCarInfo(Guid id, [FromBody] CarInfoModel model)
         {
             var result = await _carService.ModifyCar(id, model);
+
+            return Ok(result);
+        }
+
+        [HttpGet("brand")]
+        public async Task<IActionResult> GetAllCarBrands()
+        {
+            var result = await _carService.GetCarBrands();
+
+            return Ok(result);
+        }
+
+        [HttpPost("brand")]
+        public async Task<IActionResult> AddNewBrand([FromBody] AddNewCarBrandRequest request)
+        {
+            var model = _mapper.Map<AddNewCarBrandRequest, CarBrandModel>(request);
+            var result = await _carService.AddNewCarBrand(model);
 
             return Ok(result);
         }
