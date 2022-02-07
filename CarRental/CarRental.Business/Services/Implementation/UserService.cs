@@ -38,7 +38,7 @@ namespace CarRental.Business.Services.Implementation
             _jwtOptions = jwtOptions.Value;
         }
 
-        public async Task<String> AttachNewRefreshTokenToUser(Guid userId, string refresh)
+        public async Task<string> AttachNewRefreshTokenToUser(Guid userId, string refresh)
         {
             var refreshEntity = new RefreshTokenEntity
             {

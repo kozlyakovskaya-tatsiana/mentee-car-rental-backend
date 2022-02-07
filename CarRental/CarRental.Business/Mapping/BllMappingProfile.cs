@@ -52,6 +52,9 @@ namespace CarRental.Business.Mapping
             CreateMap<RentalPointEntity, RentalPointWithCoordsModel>()
                 .ForMember(dest => dest.Location, opt => opt
                     .MapFrom(res => res.Location));
+
+            CreateMap<CarBrandEntity, CarBrandModel>();
+            CreateMap<CarBrandModel, CarBrandEntity>();
         }
     }
 }

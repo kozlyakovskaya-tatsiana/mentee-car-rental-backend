@@ -38,6 +38,10 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<RentalPointModel> AddNewRentalPoint(RentalPointModel model)
         {
+            model.Location.City = model.Location.City.Trim();
+            model.Location.Country = model.Location.Country.Trim();
+            model.Location.Address = model.Location.Address.Trim();
+
             var existingCountry = await _countryRepository.GetCountryByNameAsync(model.Location.Country);
             var existingCity = await _cityRepository.GetCityByNameAsync(model.Location.City);
 

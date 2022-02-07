@@ -43,14 +43,8 @@ namespace CarRental.Business.Services.Implementation
         public async Task<IEnumerable<CountryModel>> GetAllCountries()
         {
             var countries = await _countryRepository.GetAll();
-            var result = new List<CountryModel>();
 
-            foreach (var country in countries)
-            {
-                result.Add(_mapper.Map<CountryEntity, CountryModel>(country));
-            }
-
-            return result;
+            return countries.Select(country => _mapper.Map<CountryEntity, CountryModel>(country)).ToArray();
         }
 
         public async Task<CityModel> AddNewCity(CityModel model)
@@ -65,14 +59,8 @@ namespace CarRental.Business.Services.Implementation
         public async Task<IEnumerable<CityModel>> GetAllCities()
         {
             var cities = await _cityRepository.GetAll();
-            var result = new List<CityModel>();
 
-            foreach (var city in cities)
-            {
-                result.Add(_mapper.Map<CityEntity, CityModel>(city));
-            }
-
-            return result;
+            return cities.Select(city => _mapper.Map<CityEntity, CityModel>(city)).ToArray();
         }
 
         public async Task<IEnumerable<CityModel>> GetCitiesByCountryId(Guid countryId)

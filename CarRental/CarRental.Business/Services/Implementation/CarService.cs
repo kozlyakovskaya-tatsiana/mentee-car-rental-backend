@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models.Car;
@@ -11,29 +12,26 @@ namespace CarRental.Business.Services.Implementation
     public class CarService : ICarService
     {
         private readonly ICarRepository _carRepository;
+        private readonly ICarBrandRepository _carBrandRepository;
 
         private readonly IMapper _mapper;
 
         public CarService(
-            ICarRepository carRepository, 
-            IMapper mapper
-            )
+            ICarRepository carRepository,
+            IMapper mapper,
+            ICarBrandRepository carBrandRepository
+        )
         {
             _carRepository = carRepository;
             _mapper = mapper;
+            _carBrandRepository = carBrandRepository;
         }
 
-        public async Task<List<CarInfoModel>> GetAllCars()
+        public async Task<IEnumerable<CarInfoModel>> GetAllCars()
         {
             var cars = await _carRepository.GetAll();
-            var result = new List<CarInfoModel>();
 
-            foreach (var car in cars)
-            {
-                result.Add(_mapper.Map<CarEntity, CarInfoModel>(car));
-            }
-
-            return result;
+            return cars.Select(car => _mapper.Map<CarEntity, CarInfoModel>(car)).ToArray();
         }
 
         public async Task<CarInfoModel> GetCarInfo(Guid id)
@@ -76,6 +74,23 @@ namespace CarRental.Business.Services.Implementation
         public async Task<CarInfoModel> CreateCar(CreatingCarModel model)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<CarBrandModel>> GetCarBrands()
+        {
+            var carBrands = await _carBrandRepository.GetAll();
+
+            return carBrands.Select(brand => _mapper.Map<CarBrandEntity, CarBrandModel>(brand)).ToArray();
+        }
+
+        public async Task<CarBrandModel> AddNewCarBrand(CarBrandModel model)
+        {
+            var mappedCarBrand = _mapper.Map<CarBrandModel, CarBrandEntity>(model);
+            var carBrandEntity = await _carBrandRepository.Add(mappedCarBrand);
+
+            var result = _mapper.Map<CarBrandEntity, CarBrandModel>(carBrandEntity);
+
+            return result;
         }
     }
 }
