@@ -37,7 +37,10 @@ namespace CarRental.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewCar([FromBody] CreateCarRequest request)
         {
-            return Ok();
+            var model = _mapper.Map<CreateCarRequest, CreatingCarModel>(request);
+            var result = await _carService.CreateCar(model);
+            
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

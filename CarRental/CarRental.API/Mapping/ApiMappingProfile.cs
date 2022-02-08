@@ -27,6 +27,8 @@ namespace CarRental.API.Mapping
             CreateMap<AddNewLocationRequest, LocationModel>();
             CreateMap<AddNewRentalPointRequest, RentalPointModel>();
             CreateMap<AddNewCarBrandRequest, CarBrandModel>();
+            CreateMap<CreateCarRequest, CreatingCarModel>()
+                .ForPath(m => m.Brand.Name, opt => opt.MapFrom(req => req.Brand));
         }
     }
 }

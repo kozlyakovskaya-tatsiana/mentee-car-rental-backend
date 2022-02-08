@@ -13,18 +13,21 @@ namespace CarRental.Business.Services.Implementation
     {
         private readonly ICarRepository _carRepository;
         private readonly ICarBrandRepository _carBrandRepository;
+        private readonly IRentalPointRepository _rentalPointRepository;
 
         private readonly IMapper _mapper;
 
         public CarService(
             ICarRepository carRepository,
             IMapper mapper,
-            ICarBrandRepository carBrandRepository
+            ICarBrandRepository carBrandRepository,
+            IRentalPointRepository rentalPointRepository
         )
         {
             _carRepository = carRepository;
             _mapper = mapper;
             _carBrandRepository = carBrandRepository;
+            _rentalPointRepository = rentalPointRepository;
         }
 
         public async Task<IEnumerable<CarInfoModel>> GetAllCars()
@@ -73,7 +76,15 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<CarInfoModel> CreateCar(CreatingCarModel model)
         {
-            throw new NotImplementedException();
+            var existingBrand = _carBrandRepository.GetByName(model.Brand.Name);
+            var car = _mapper.Map<CreatingCarModel, CarEntity>(model);
+
+            car.Brand = existingBrand ?? car.Brand;
+
+            var carEntity = await _carRepository.Add(car);
+            var result = _mapper.Map<CarEntity, CarInfoModel>(carEntity);
+
+            return result;
         }
 
         public async Task<IEnumerable<CarBrandModel>> GetCarBrands()

@@ -55,6 +55,13 @@ namespace CarRental.Business.Mapping
 
             CreateMap<CarBrandEntity, CarBrandModel>();
             CreateMap<CarBrandModel, CarBrandEntity>();
+
+            CreateMap<string, byte[]>().ConvertUsing(s => Convert.FromBase64String(s));
+            CreateMap<byte[], string>().ConvertUsing(s => Convert.ToBase64String(s));
+
+            CreateMap<AttachmentDTO, AttachmentEntity>()
+                .ForMember(entity => entity.Content, opt => opt.MapFrom(source => source.Content));
+            CreateMap<CreatingCarModel, CarEntity>();
         }
     }
 }
