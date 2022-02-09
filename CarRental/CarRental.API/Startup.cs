@@ -29,7 +29,9 @@ namespace CarRental.API
                 .AddFluentValidation(options =>
                 {
                     options.RegisterValidatorsFromAssemblyContaining<Startup>();
-                });
+                })
+                .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddRepositories();
 
@@ -39,8 +41,8 @@ namespace CarRental.API
 
             services.AddSwaggerEnvironment();
 
-            services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile));
-            services.AddAutoMapper(typeof(CarRental.Business.Mapping.BllMappingProfile));
+            services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile), typeof(CarRental.Business.Mapping.BllMappingProfile));
+            //services.AddAutoMapper();
 
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
@@ -61,7 +63,7 @@ namespace CarRental.API
 
             app.UseRouting();
 
-            app.UseCors(builder => builder.WithOrigins("https://localhost:3000")
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()

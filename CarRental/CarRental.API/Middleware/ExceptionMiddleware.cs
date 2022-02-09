@@ -32,8 +32,8 @@ namespace CarRental.API.Middleware
 
             var result = new ErrorDetails()
             {
-                StatusCode = context.Response.StatusCode,
-                Message = exception.Message
+                StatusCode = 500,
+                Title = exception.Message
             };
 
             switch (exception)
@@ -45,6 +45,9 @@ namespace CarRental.API.Middleware
                     result.StatusCode = 400;
                     break;
                 case TokenExpiredException _ :
+                    result.StatusCode = 401;
+                    break;
+                case NotVerifiedException _:
                     result.StatusCode = 401;
                     break;
             }

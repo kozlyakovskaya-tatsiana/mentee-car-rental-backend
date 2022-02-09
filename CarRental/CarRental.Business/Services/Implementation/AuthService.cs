@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Identity.Role;
@@ -11,7 +14,9 @@ using CarRental.Common.Options;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CarRental.Business.Services.Implementation
 {
@@ -26,6 +31,7 @@ namespace CarRental.Business.Services.Implementation
         private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         private readonly IMapper _mapper;
+        private readonly ILogger<AuthService> _logger;
 
         private readonly JwtOptions _jwtOptions;
 
@@ -33,11 +39,12 @@ namespace CarRental.Business.Services.Implementation
             IMapper mapper,
             UserManager<UserEntity> userManager,
             RoleManager<RoleEntity> roleManager,
-            ITokenService tokenService, 
-            IUserService userService, 
-            IOptions<JwtOptions> jwtOptions, 
-            IRefreshTokenRepository refreshTokenRepository
-            )
+            ITokenService tokenService,
+            IUserService userService,
+            IOptions<JwtOptions> jwtOptions,
+            IRefreshTokenRepository refreshTokenRepository,
+            ILogger<AuthService> logger
+        )
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -45,6 +52,7 @@ namespace CarRental.Business.Services.Implementation
             _tokenService = tokenService;
             _userService = userService;
             _refreshTokenRepository = refreshTokenRepository;
+            _logger = logger;
             _jwtOptions = jwtOptions.Value;
         }
 
@@ -94,6 +102,42 @@ namespace CarRental.Business.Services.Implementation
             };
         }
 
+        public UserVerifyModel VerifyAccessToken(TokenValidationModel model)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                // _logger.LogInformation(model.AccessToken);
+
+                var key = Encoding.ASCII.GetBytes(_jwtOptions.Key);
+                tokenHandler.ValidateToken(model.AccessToken, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = _jwtOptions.ValidateIssuer,
+                    ValidIssuer = _jwtOptions.Issuer,
+                    ValidateAudience = _jwtOptions.ValidateAudience,
+                    ValidAudience = _jwtOptions.Audience,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken) validatedToken;
+                var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                var role = jwtToken.Claims.FirstOrDefault(x => x.Type == "roles")?.Value;
+                var result = new UserVerifyModel()
+                {
+                    Id = Guid.Parse(userId),
+                    Role = role
+                };
+
+                return result;
+            }
+            catch
+            {
+                throw new NotVerifiedException("Access Token invalid");
+            }
+        }
+
         private async Task<UserEntity> IsUserAuthenticate(LoginModel model)
         {
             var user = await IsUserExist(model.Email);
@@ -114,13 +158,13 @@ namespace CarRental.Business.Services.Implementation
             {
                 throw new NotFoundException("User with this email doesn't exist.");
             }
-            
+
             return user;
         }
 
         private async Task<TokenPairModel> CreateTokenPair(UserEntity user)
         {
-            var claims = await _userService.GenerateUserClaims(user);
+            var claims = await GenerateUserClaims(user);
             var access = _tokenService.GenerateAccessToken(claims);
             var refresh = _tokenService.GenerateRefreshToken();
             await _userService.AttachNewRefreshTokenToUser(user.Id, refresh);
@@ -130,6 +174,23 @@ namespace CarRental.Business.Services.Implementation
                 RefreshToken = refresh,
                 AccessToken = access,
             };
+        }
+
+        private async Task<IEnumerable<Claim>> GenerateUserClaims(UserEntity user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleClaims = roles.Select(role => new Claim("roles", role)).ToList();
+
+            var claims = new List<Claim>
+            {
+
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            };
+            var result = claims.Union(roleClaims);
+
+            return result;
         }
     }
 }

@@ -1,6 +1,9 @@
+using System;
 using CarRental.API.Extensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace CarRental.API
 {
@@ -8,14 +11,34 @@ namespace CarRental.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args)
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(config)
+                .CreateLogger();
+            // TODO Fix Data seeder with LazyLoader
+            try
+            {
+                Log.Information("Car rental service started.");
+                CreateHostBuilder(args)
                 .Build()
-                .DataInitialize()
+                //.DataInitialize()
                 .Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "The Application failed to start.");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
