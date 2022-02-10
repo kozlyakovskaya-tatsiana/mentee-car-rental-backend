@@ -94,7 +94,7 @@ namespace CarRental.Business.Services.Implementation
             return carBrands.Select(brand => _mapper.Map<CarBrandEntity, CarBrandModel>(brand)).ToArray();
         }
 
-        public async Task<CarBrandModel> AddNewCarBrand(CarBrandModel model)
+        public async Task<CarBrandModel> CreateBrand(CarBrandModel model)
         {
             var mappedCarBrand = _mapper.Map<CarBrandModel, CarBrandEntity>(model);
             var carBrandEntity = await _carBrandRepository.Add(mappedCarBrand);

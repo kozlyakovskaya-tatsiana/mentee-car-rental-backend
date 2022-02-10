@@ -36,7 +36,7 @@ namespace CarRental.Business.Services.Implementation
             _countryRepository = countryRepository;
         }
 
-        public async Task<RentalPointModel> AddNewRentalPoint(RentalPointModel model)
+        public async Task<RentalPointModel> CreateRentalPoint(RentalPointModel model)
         {
             model.Location.City = model.Location.City.Trim();
             model.Location.Country = model.Location.Country.Trim();

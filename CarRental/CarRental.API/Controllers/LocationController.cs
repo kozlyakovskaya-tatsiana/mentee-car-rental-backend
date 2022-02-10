@@ -20,11 +20,13 @@ namespace CarRental.API.Controllers
 
         public LocationController(
             IMapper mapper,
-            ILocationService locationService
-        )
+            ILocationService locationService, 
+            ILogger<LocationController> logger
+            )
         {
             _mapper = mapper;
             _locationService = locationService;
+            _logger = logger;
         }
 
         [HttpPost("country")]
@@ -61,10 +63,10 @@ namespace CarRental.API.Controllers
             var result = await _locationService.GetAllCities();
 
             return Ok(result);
-        }
+        }   
 
         [HttpGet("city/{countryId}")]
-        public async Task<IActionResult> GetCities(Guid countryId)
+        public async Task<IActionResult> GetCountryCities(Guid countryId)
         {
             var result = await _locationService.GetCitiesByCountryId(countryId);
 

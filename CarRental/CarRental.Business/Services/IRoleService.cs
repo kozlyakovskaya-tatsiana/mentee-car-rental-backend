@@ -5,7 +5,7 @@ namespace CarRental.Business.Services
 {
     public interface IRoleService
     {
-        public Task CreateRole(RoleCreateModel model);
+        public Task CreateRole(CreateRoleModel model);
         public Task UpdateUserRoles(UserRoleModel model);
     }
 }

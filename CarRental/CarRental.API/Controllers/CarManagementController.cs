@@ -12,7 +12,6 @@ namespace CarRental.API.Controllers
     [ApiController]
     public class CarManagementController : ControllerBase
     {
-        //TODO Unfinished controller, not implemented brands and models
         private readonly ICarService _carService;
 
         private readonly IMapper _mapper;
@@ -76,10 +75,10 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost("brand")]
-        public async Task<IActionResult> AddNewBrand([FromBody] AddNewCarBrandRequest request)
+        public async Task<IActionResult> CreateCarBrand([FromBody] CreateCarBrandRequest request)
         {
-            var model = _mapper.Map<AddNewCarBrandRequest, CarBrandModel>(request);
-            var result = await _carService.AddNewCarBrand(model);
+            var model = _mapper.Map<CreateCarBrandRequest, CarBrandModel>(request);
+            var result = await _carService.CreateBrand(model);
 
             return Ok(result);
         }

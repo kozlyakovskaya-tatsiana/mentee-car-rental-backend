@@ -7,7 +7,7 @@ namespace CarRental.Business.Services
 {
     public interface IRentalPointService
     {
-        public Task<RentalPointModel> AddNewRentalPoint(RentalPointModel model);
+        public Task<RentalPointModel> CreateRentalPoint(RentalPointModel model);
         public Task<IEnumerable<RentalPointWithCoordsModel>> GetAllRentalPoints();
         public Task<RentalPointModel> RemoveRentalPoint(Guid id);
     }

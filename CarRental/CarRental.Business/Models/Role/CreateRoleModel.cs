@@ -1,6 +1,6 @@
 ﻿namespace CarRental.Business.Models.Role
 {
-    public class RoleCreateModel
+    public class CreateRoleModel
     {
         public string Name { get; set; }
     }

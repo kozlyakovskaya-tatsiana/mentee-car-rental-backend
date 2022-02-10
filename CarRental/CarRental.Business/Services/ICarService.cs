@@ -14,6 +14,6 @@ namespace CarRental.Business.Services
         public Task<CarInfoModel> CreateCar(CreatingCarModel model);
 
         public Task<IEnumerable<CarBrandModel>> GetCarBrands();
-        public Task<CarBrandModel> AddNewCarBrand(CarBrandModel model);
+        public Task<CarBrandModel> CreateBrand(CarBrandModel model);
     }
 }

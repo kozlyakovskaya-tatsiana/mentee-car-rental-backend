@@ -56,7 +56,7 @@ namespace CarRental.API.Controllers
             var model = _mapper.Map<ValidateAccessTokenRequest, TokenValidationModel>(request);
             var result = _authService.VerifyAccessToken(model);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("register")]

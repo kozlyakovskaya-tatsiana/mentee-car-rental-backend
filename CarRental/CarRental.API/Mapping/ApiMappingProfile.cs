@@ -14,21 +14,29 @@ namespace CarRental.API.Mapping
         public ApiMappingProfile()
         {
             CreateMap<RegisterRequest, RegisterModel>()
-                .ForMember(u => u.Username,
+                .ForMember(model => model.Username,
                     opt => opt
-                        .MapFrom(ur => ur.Email));
+                        .MapFrom(source => source.Email));
+
             CreateMap<LoginRequest, LoginModel>();
+
             CreateMap<GetTokenPairRequest, TokenPairModel>();
-            CreateMap<RoleCreateRequest, RoleCreateModel>();
+
+            CreateMap<CreateRoleRequest, CreateRoleModel>();
             CreateMap<AddRoleRequest, UserRoleModel>();
+
             CreateMap<ValidateAccessTokenRequest, TokenValidationModel>();
+
             CreateMap<AddCountryRequest, CountryModel>();
             CreateMap<AddCityRequest, CityModel>();
-            CreateMap<AddNewLocationRequest, LocationModel>();
-            CreateMap<AddNewRentalPointRequest, RentalPointModel>();
-            CreateMap<AddNewCarBrandRequest, CarBrandModel>();
+            CreateMap<CreateLocationRequest, LocationModel>();
+
+            CreateMap<CreateRentalPointRequest, RentalPointModel>();
+            CreateMap<CreateCarBrandRequest, CarBrandModel>();
             CreateMap<CreateCarRequest, CreatingCarModel>()
-                .ForPath(m => m.Brand.Name, opt => opt.MapFrom(req => req.Brand));
+                .ForPath(model => model.Brand.Name, 
+                    opt => opt
+                        .MapFrom(source => source.Brand));
         }
     }
 }

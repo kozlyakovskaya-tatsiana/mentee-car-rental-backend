@@ -30,10 +30,10 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewRentalPoint([FromBody] AddNewRentalPointRequest request)
+        public async Task<IActionResult> CreateRentalPoint([FromBody] CreateRentalPointRequest request)
         {
-            var model = _mapper.Map<AddNewRentalPointRequest, RentalPointModel>(request);
-            var result = await _rentalPointService.AddNewRentalPoint(model);
+            var model = _mapper.Map<CreateRentalPointRequest, RentalPointModel>(request);
+            var result = await _rentalPointService.CreateRentalPoint(model);
 
             return Ok(result);
         }

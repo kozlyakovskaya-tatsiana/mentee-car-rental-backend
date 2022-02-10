@@ -27,9 +27,9 @@ namespace CarRental.Business.Services.Implementation
             _userManager = userManager;
         }
 
-        public async Task CreateRole(RoleCreateModel role)
+        public async Task CreateRole(CreateRoleModel createRole)
         {
-            var newRole = _mapper.Map<RoleCreateModel, RoleEntity>(role);
+            var newRole = _mapper.Map<CreateRoleModel, RoleEntity>(createRole);
             var roleResult = await _roleManager.CreateAsync(newRole);
             if (!roleResult.Succeeded)
             {
