@@ -18,7 +18,6 @@ namespace CarRental.API
 
         public IConfiguration Configuration { get; set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.LoadConfigurations(Configuration);
@@ -42,13 +41,10 @@ namespace CarRental.API
             services.AddSwaggerEnvironment();
 
             services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile), typeof(CarRental.Business.Mapping.BllMappingProfile));
-            //services.AddAutoMapper();
 
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
 
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
