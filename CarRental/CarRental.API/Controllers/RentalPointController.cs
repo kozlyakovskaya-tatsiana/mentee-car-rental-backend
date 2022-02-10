@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Models;
+using CarRental.Business.Models.RentalPoint;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

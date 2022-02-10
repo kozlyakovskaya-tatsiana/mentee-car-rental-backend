@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using CarRental.Business.Models.Attachment;
 using CarRental.Common.Enums;
-using CarRental.DAL.Entities;
 
 namespace CarRental.Business.Models.Car
 {
-    public class CreatingCarModel
+    public class CreateCarModel
     {
         public Guid Id { get; set; }
         public string Model { get; set; }

@@ -13,16 +13,19 @@ namespace CarRental.API.Controllers
     public class CarManagementController : ControllerBase
     {
         private readonly ICarService _carService;
+        private readonly ICarBrandService _carBrandService;
 
         private readonly IMapper _mapper;
 
         public CarManagementController(
             ICarService carService,
-            IMapper mapper
-        )
+            IMapper mapper, 
+            ICarBrandService carBrandService
+            )
         {
             _carService = carService;
             _mapper = mapper;
+            _carBrandService = carBrandService;
         }
 
         [HttpGet]
@@ -36,7 +39,7 @@ namespace CarRental.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewCar([FromBody] CreateCarRequest request)
         {
-            var model = _mapper.Map<CreateCarRequest, CreatingCarModel>(request);
+            var model = _mapper.Map<CreateCarRequest, CreateCarModel>(request);
             var result = await _carService.CreateCar(model);
             
             return Ok(result);
@@ -69,7 +72,7 @@ namespace CarRental.API.Controllers
         [HttpGet("brand")]
         public async Task<IActionResult> GetAllCarBrands()
         {
-            var result = await _carService.GetCarBrands();
+            var result = await _carBrandService.GetCarBrands();
 
             return Ok(result);
         }
@@ -78,7 +81,7 @@ namespace CarRental.API.Controllers
         public async Task<IActionResult> CreateCarBrand([FromBody] CreateCarBrandRequest request)
         {
             var model = _mapper.Map<CreateCarBrandRequest, CarBrandModel>(request);
-            var result = await _carService.CreateBrand(model);
+            var result = await _carBrandService.CreateBrand(model);
 
             return Ok(result);
         }

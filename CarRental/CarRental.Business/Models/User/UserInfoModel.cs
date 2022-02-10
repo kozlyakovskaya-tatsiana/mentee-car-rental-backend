@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CarRental.Business.Models.User
 {
@@ -10,6 +9,6 @@ namespace CarRental.Business.Models.User
         public string Email { get; set; }
         public bool? EmailConfirmed { get; set; }
         public string PhoneNumber { get; set; }
-        public List<String> Roles { get; set; }
+        public List<string> Roles { get; set; }
     }
 }
