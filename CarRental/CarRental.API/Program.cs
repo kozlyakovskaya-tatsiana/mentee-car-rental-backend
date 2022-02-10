@@ -17,13 +17,12 @@ namespace CarRental.API
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(config)
                 .CreateLogger();
-            // TODO Fix Data seeder with LazyLoader
             try
             {
                 Log.Information("Car rental service started.");
                 CreateHostBuilder(args)
                 .Build()
-                //.DataInitialize()
+                .DataInitialize()
                 .Run();
             }
             catch (Exception ex)
