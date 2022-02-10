@@ -107,8 +107,6 @@ namespace CarRental.Business.Services.Implementation
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {
-                // _logger.LogInformation(model.AccessToken);
-
                 var key = Encoding.ASCII.GetBytes(_jwtOptions.Key);
                 tokenHandler.ValidateToken(model.AccessToken, new TokenValidationParameters
                 {

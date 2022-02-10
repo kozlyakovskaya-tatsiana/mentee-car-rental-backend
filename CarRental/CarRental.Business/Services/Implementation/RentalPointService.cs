@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using CarRental.Business.Models;
+using CarRental.Business.Models.RentalPoint;
 using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
