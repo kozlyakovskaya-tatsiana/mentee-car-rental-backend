@@ -22,7 +22,6 @@ namespace CarRental.API
                 Log.Information("Car rental service started.");
                 CreateHostBuilder(args)
                 .Build()
-                .DataInitialize()
                 .Run();
             }
             catch (Exception ex)

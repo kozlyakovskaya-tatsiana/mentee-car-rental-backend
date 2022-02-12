@@ -1,58 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using CarRental.Business.Identity.Role;
 using CarRental.Common.Options;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CarRental.API.Extensions
 {
-    public static class DataInitializeExtension
+    public class DataInitializer
     {
-        private static Guid AdminRoleId { get; set; }
-        private static Guid AdminId { get; set; }
-        private static Guid ManagerRoleId { get; set; }
-        private static Guid ManagerId { get; set; }
-        private static Guid UserRoleId { get; set; }
-        private static Guid UserId { get; set; }
+        private readonly CarRentalDbContext _context;
 
-        public static IHost DataInitialize(this IHost host)
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly RoleManager<RoleEntity> _roleManager;
+
+        private readonly DefaultUserOptions _defaultUserOptions;
+
+        public DataInitializer(
+            CarRentalDbContext context, 
+            UserManager<UserEntity> userManager, 
+            RoleManager<RoleEntity> roleManager,
+            IOptions<DefaultUserOptions> defaultUserOptions
+            )
         {
-            using var scope = host.Services.CreateScope();
-            using var context = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
-
-            context.Database.Migrate();
-
-            if (context.Roles.IsNullOrEmpty())
-            {
-                SeedRoles(context);
-            }
-
-            if (context.Users.IsNullOrEmpty())
-            {
-                SeedUsers(context);
-            }
-
-            context.SaveChanges();
-
-            if (context.UserRoles.IsNullOrEmpty())
-            {
-                SeedUserRoles(context);
-            }
-
-            context.SaveChanges();
-
-            return host;
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _defaultUserOptions = defaultUserOptions.Value;
         }
 
-        private static void SeedRoles(CarRentalDbContext context)
+        // public async Task<IApplicationBuilder> DataInitializer(
+        //     UserManager<UserEntity> userManager
+        //     )
+        // { 
+        //     await context.Database.MigrateAsync();
+        //
+        //     if (context.Roles.IsNullOrEmpty())
+        //     {
+        //         await SeedRoles(context);
+        //     }
+        //
+        //     if (context.Users.IsNullOrEmpty())
+        //     {
+        //         await SeedUsers(context, userManager);
+        //     }
+        //
+        //     await context.SaveChangesAsync();
+        // }
+
+        private static async Task SeedRoles(CarRentalDbContext context)
         {
             var adminRole = new RoleEntity
             {
@@ -60,7 +64,6 @@ namespace CarRental.API.Extensions
                 Name = Role.AdminRole,
                 NormalizedName = Role.AdminRole.ToUpper()
             };
-            AdminRoleId = adminRole.Id;
 
             var managerRole = new RoleEntity
             {
@@ -68,7 +71,6 @@ namespace CarRental.API.Extensions
                 Name = Role.ManagerRole,
                 NormalizedName = Role.ManagerRole.ToUpper()
             };
-            ManagerRoleId = managerRole.Id;
 
             var userRole = new RoleEntity
             {
@@ -76,7 +78,6 @@ namespace CarRental.API.Extensions
                 Name = Role.UserRole,
                 NormalizedName = Role.UserRole.ToUpper()
             };
-            UserRoleId = userRole.Id;
 
             var roles = new List<RoleEntity>
             {
@@ -87,9 +88,14 @@ namespace CarRental.API.Extensions
             {
                 context.Roles.Add(role);
             }
+
+
         }
 
-        private static void SeedUsers(CarRentalDbContext context)
+        private static async Task SeedUsers(
+            CarRentalDbContext context,
+            UserManager<UserEntity> userManager
+            )
         {
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
             var options = new DefaultUserOptions();
@@ -97,7 +103,7 @@ namespace CarRental.API.Extensions
 
             var hasher = new PasswordHasher<UserEntity>();
 
-            var admin = new UserEntity()
+            var admin = new UserEntity
             {
                 Id = Guid.NewGuid(),
                 FirstName = options.AdminFirstName,
@@ -110,9 +116,10 @@ namespace CarRental.API.Extensions
             };
             var adminPasswordHash = hasher.HashPassword(admin, options.AdminPassword);
             admin.PasswordHash = adminPasswordHash;
-            AdminId = admin.Id;
 
-            var manager = new UserEntity()
+            await userManager.AddToRoleAsync(admin, Role.AdminRole);
+
+            var manager = new UserEntity
             {
                 Id = Guid.NewGuid(),
                 FirstName = options.ManagerFirstName,
@@ -125,9 +132,10 @@ namespace CarRental.API.Extensions
             };
             var managerPasswordHash = hasher.HashPassword(manager, options.ManagerPassword);
             manager.PasswordHash = managerPasswordHash;
-            ManagerId = manager.Id;
 
-            var user = new UserEntity()
+            await userManager.AddToRoleAsync(manager, Role.ManagerRole);
+
+            var user = new UserEntity
             {
                 Id = Guid.NewGuid(),
                 FirstName = options.UserFirstName,
@@ -140,40 +148,12 @@ namespace CarRental.API.Extensions
             };
             var userPasswordHash = hasher.HashPassword(user, options.UserPassword);
             user.PasswordHash = userPasswordHash;
-            UserId = user.Id;
+
+            await userManager.AddToRoleAsync(user, Role.UserRole);
 
             context.Users.Add(admin);
             context.Users.Add(manager);
             context.Users.Add(user);
-        }
-
-        private static void SeedUserRoles(CarRentalDbContext context)
-        {
-            var adminRoleUser = new IdentityUserRole<Guid>()
-            {
-                RoleId = AdminRoleId,
-                UserId = AdminId
-            };
-            var managerRoleUser = new IdentityUserRole<Guid>()
-            {
-                RoleId = ManagerRoleId,
-                UserId = ManagerId
-            };
-            var userRoleUser = new IdentityUserRole<Guid>()
-            {
-                RoleId = UserRoleId,
-                UserId = UserId
-            };
-
-            var seedRoles = new List<IdentityUserRole<Guid>>
-            {
-                adminRoleUser, managerRoleUser, userRoleUser
-            };
-
-            foreach (var role in seedRoles)
-            {
-                context.UserRoles.Add(role);
-            }
         }
     }
 }
