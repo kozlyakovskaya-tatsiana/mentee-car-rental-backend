@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using AutoMapper;
 using CarRental.Business.Models;
 using CarRental.Business.Models.Car;
@@ -25,8 +27,9 @@ namespace CarRental.Business.Mapping
             CreateMap<LoginModel, UserEntity>();
             CreateMap<RoleCreateModel, RoleEntity>();
             CreateMap<UserEntity, UserInfoModel>();
-            CreateMap<CarEntity, CarInfoModel>();
-
+            CreateMap<CreatingCarModel, CarEntity>()
+                .ForMember(entity => entity.Photos, opt => opt
+                    .MapFrom(source => source.Photos));
             CreateMap<CountryModel, CountryEntity>();
             CreateMap<CountryEntity, CountryModel>();
 
@@ -60,8 +63,16 @@ namespace CarRental.Business.Mapping
             CreateMap<byte[], string>().ConvertUsing(s => Convert.ToBase64String(s));
 
             CreateMap<AttachmentDTO, AttachmentEntity>()
-                .ForMember(entity => entity.Content, opt => opt.MapFrom(source => source.Content));
-            CreateMap<CreatingCarModel, CarEntity>();
+                .ForMember(entity => entity.Content, opt => opt
+                    .MapFrom(source => source.Content));
+            CreateMap<AttachmentEntity, AttachmentDTO>()
+                .ForMember(model => model.Content, opt => opt
+                    .MapFrom(source => source.Content));
+
+            CreateMap<CarEntity, CarInfoModel>();
+            CreateMap<CarEntity, CarExtendedInfoModel>()
+                .ForMember(model => model.Photos, opt => opt
+                    .MapFrom(source => source.Photos));
         }
     }
 }

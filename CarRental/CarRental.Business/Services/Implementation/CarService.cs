@@ -87,6 +87,16 @@ namespace CarRental.Business.Services.Implementation
             return result;
         }
 
+        public async Task<IEnumerable<CarExtendedInfoModel>> GetCarsWithPaginationAndSorting(CarParameters carParameters)
+        {
+            var carEntities = await _carRepository.GetAll();
+            var cars = carEntities.OrderBy(car => car.Brand.Name)
+                .Skip((carParameters.PageNumber - 1) * carParameters.PageSize)
+                .Take(carParameters.PageSize);
+
+            return cars.Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car)).ToArray();
+        }
+
         public async Task<IEnumerable<CarBrandModel>> GetCarBrands()
         {
             var carBrands = await _carBrandRepository.GetAll();
