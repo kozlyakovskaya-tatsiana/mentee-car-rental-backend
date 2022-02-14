@@ -1,159 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CarRental.Business.Identity.Role;
 using CarRental.Common.Options;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
-using Microsoft.AspNetCore.Builder;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CarRental.API.Extensions
 {
     public class DataInitializer
     {
-        private readonly CarRentalDbContext _context;
-
         private readonly UserManager<UserEntity> _userManager;
         private readonly RoleManager<RoleEntity> _roleManager;
 
         private readonly DefaultUserOptions _defaultUserOptions;
+        private readonly CarRentalDbContext _context;
 
         public DataInitializer(
-            CarRentalDbContext context, 
-            UserManager<UserEntity> userManager, 
+            UserManager<UserEntity> userManager,
             RoleManager<RoleEntity> roleManager,
-            IOptions<DefaultUserOptions> defaultUserOptions
-            )
+            IOptions<DefaultUserOptions> defaultUserOptions,
+            CarRentalDbContext context
+        )
         {
-            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _defaultUserOptions = defaultUserOptions.Value;
+            _context = context;
         }
 
-        // public async Task<IApplicationBuilder> DataInitializer(
-        //     UserManager<UserEntity> userManager
-        //     )
-        // { 
-        //     await context.Database.MigrateAsync();
-        //
-        //     if (context.Roles.IsNullOrEmpty())
-        //     {
-        //         await SeedRoles(context);
-        //     }
-        //
-        //     if (context.Users.IsNullOrEmpty())
-        //     {
-        //         await SeedUsers(context, userManager);
-        //     }
-        //
-        //     await context.SaveChangesAsync();
-        // }
+        public async Task SeedData()
+        {
+            await _context.Database.MigrateAsync();
+            if(_context.Roles.IsNullOrEmpty())
+            {
+                await SeedRoles();
+            }
+            if(_context.Users.IsNullOrEmpty())
+            {
+                await SeedUsers();
+            }
+        }
 
-        private static async Task SeedRoles(CarRentalDbContext context)
+        private async Task SeedRoles()
         {
             var adminRole = new RoleEntity
             {
-                Id = Guid.NewGuid(),
                 Name = Role.AdminRole,
                 NormalizedName = Role.AdminRole.ToUpper()
             };
+            await _roleManager.CreateAsync(adminRole);
 
             var managerRole = new RoleEntity
             {
-                Id = Guid.NewGuid(),
                 Name = Role.ManagerRole,
                 NormalizedName = Role.ManagerRole.ToUpper()
             };
+            await _roleManager.CreateAsync(managerRole);
 
             var userRole = new RoleEntity
             {
-                Id = Guid.NewGuid(),
                 Name = Role.UserRole,
                 NormalizedName = Role.UserRole.ToUpper()
             };
-
-            var roles = new List<RoleEntity>
-            {
-                adminRole, managerRole, userRole
-            };
-
-            foreach (var role in roles)
-            {
-                context.Roles.Add(role);
-            }
-
-
+            await _roleManager.CreateAsync(userRole);
         }
 
-        private static async Task SeedUsers(
-            CarRentalDbContext context,
-            UserManager<UserEntity> userManager
-            )
+        private async Task SeedUsers()
         {
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
-            var options = new DefaultUserOptions();
-            config.GetSection(DefaultUserOptions.SectionName).Bind(options);
-
             var hasher = new PasswordHasher<UserEntity>();
 
             var admin = new UserEntity
             {
-                Id = Guid.NewGuid(),
-                FirstName = options.AdminFirstName,
-                LastName = options.AdminLastName,
-                Email = options.AdminEmail,
-                NormalizedEmail = options.AdminEmail.ToUpper(),
-                UserName = options.AdminEmail,
-                NormalizedUserName = options.AdminEmail.ToUpper(),
+                FirstName = _defaultUserOptions.AdminFirstName,
+                LastName = _defaultUserOptions.AdminLastName,
+                Email = _defaultUserOptions.AdminEmail,
+                NormalizedEmail = _defaultUserOptions.AdminEmail.ToUpper(),
+                UserName = _defaultUserOptions.AdminEmail,
+                NormalizedUserName = _defaultUserOptions.AdminEmail.ToUpper(),
                 SecurityStamp = Guid.NewGuid().ToString()
             };
-            var adminPasswordHash = hasher.HashPassword(admin, options.AdminPassword);
-            admin.PasswordHash = adminPasswordHash;
+            admin.PasswordHash = hasher.HashPassword(admin, _defaultUserOptions.AdminPassword);
 
-            await userManager.AddToRoleAsync(admin, Role.AdminRole);
+            await _userManager.CreateAsync(admin);
+            await _userManager.AddToRoleAsync(admin, Role.AdminRole);
 
             var manager = new UserEntity
             {
-                Id = Guid.NewGuid(),
-                FirstName = options.ManagerFirstName,
-                LastName = options.ManagerLastName,
-                Email = options.ManagerEmail,
-                NormalizedEmail = options.ManagerEmail.ToUpper(),
-                UserName = options.ManagerEmail,
-                NormalizedUserName = options.ManagerEmail.ToUpper(),
+                FirstName = _defaultUserOptions.ManagerFirstName,
+                LastName = _defaultUserOptions.ManagerLastName,
+                Email = _defaultUserOptions.ManagerEmail,
+                NormalizedEmail = _defaultUserOptions.ManagerEmail.ToUpper(),
+                UserName = _defaultUserOptions.ManagerEmail,
+                NormalizedUserName = _defaultUserOptions.ManagerEmail.ToUpper(),
                 SecurityStamp = Guid.NewGuid().ToString()
             };
-            var managerPasswordHash = hasher.HashPassword(manager, options.ManagerPassword);
-            manager.PasswordHash = managerPasswordHash;
+            manager.PasswordHash = hasher.HashPassword(manager, _defaultUserOptions.ManagerPassword);
 
-            await userManager.AddToRoleAsync(manager, Role.ManagerRole);
+            await _userManager.CreateAsync(manager);
+            await _userManager.AddToRoleAsync(manager, Role.ManagerRole);
 
             var user = new UserEntity
             {
-                Id = Guid.NewGuid(),
-                FirstName = options.UserFirstName,
-                LastName = options.UserLastName,
-                Email = options.UserEmail,
-                NormalizedEmail = options.UserEmail.ToUpper(),
-                UserName = options.UserEmail,
-                NormalizedUserName = options.UserEmail.ToUpper(),
+                FirstName = _defaultUserOptions.UserFirstName,
+                LastName = _defaultUserOptions.UserLastName,
+                Email = _defaultUserOptions.UserEmail,
+                NormalizedEmail = _defaultUserOptions.UserEmail.ToUpper(),
+                UserName = _defaultUserOptions.UserEmail,
+                NormalizedUserName = _defaultUserOptions.UserEmail.ToUpper(),
                 SecurityStamp = Guid.NewGuid().ToString()
             };
-            var userPasswordHash = hasher.HashPassword(user, options.UserPassword);
-            user.PasswordHash = userPasswordHash;
+            user.PasswordHash = hasher.HashPassword(user, _defaultUserOptions.UserPassword);
 
-            await userManager.AddToRoleAsync(user, Role.UserRole);
-
-            context.Users.Add(admin);
-            context.Users.Add(manager);
-            context.Users.Add(user);
+            await _userManager.CreateAsync(user);
+            await _userManager.AddToRoleAsync(user, Role.UserRole);
         }
     }
 }

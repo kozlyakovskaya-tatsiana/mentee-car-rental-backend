@@ -1,10 +1,8 @@
 using CarRental.API.Extensions;
 using CarRental.Common.Options;
-using CarRental.DAL.Entities;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,6 +36,8 @@ namespace CarRental.API
 
             services.AddCors();
 
+            services.AddScoped<DataInitializer>();
+
             services.AddCarRentalServices();
 
             services.AddSwaggerEnvironment();
@@ -47,9 +47,11 @@ namespace CarRental.API
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            DataInitializer seeder)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -70,11 +72,15 @@ namespace CarRental.API
 
             app.ConfigureCustomExceptionMiddleware();
 
+            seeder.SeedData().GetAwaiter().GetResult();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+
         }
     }
 }
