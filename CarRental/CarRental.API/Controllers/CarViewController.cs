@@ -20,9 +20,12 @@ namespace CarRental.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCars([FromQuery] CarParameters carParameters)
+        public async Task<IActionResult> GetCars(
+            [FromQuery] CarPaginateParameters carPaginateParameters, 
+            [FromQuery] CarFilteringParameters carFilteringParameters
+            )
         {
-            var cars = await _carService.GetCarsWithPaginationAndSorting(carParameters);
+            var cars = await _carService.GetCarsWithPaginationAndSorting(carPaginateParameters, carFilteringParameters);
 
             return Ok(cars);
         }

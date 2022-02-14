@@ -1,6 +1,6 @@
 ﻿namespace CarRental.Business.Models.Car
 {
-    public class CarParameters
+    public class CarPaginateParameters
     {
         private const int MaxPageSize = 50;
         public int PageNumber { get; set; } = 1;

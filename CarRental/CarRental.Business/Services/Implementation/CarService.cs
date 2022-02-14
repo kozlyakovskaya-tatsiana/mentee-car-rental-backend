@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models.Car;
+using CarRental.Common.Helpers.PaginateHelper;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 
@@ -87,14 +88,39 @@ namespace CarRental.Business.Services.Implementation
             return result;
         }
 
-        public async Task<IEnumerable<CarExtendedInfoModel>> GetCarsWithPaginationAndSorting(CarParameters carParameters)
+        public async Task<IEnumerable<CarExtendedInfoModel>> GetFilteredCarsWithPagination(
+            CarPaginateParameters carPaginateParameters, 
+            CarFilteringParameters carFilteringParameters
+            )
         {
             var carEntities = await _carRepository.GetAll();
-            var cars = carEntities.OrderBy(car => car.Brand.Name)
-                .Skip((carParameters.PageNumber - 1) * carParameters.PageSize)
-                .Take(carParameters.PageSize);
 
-            return cars.Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car)).ToArray();
+            var cars = carEntities
+                .Where(car => carFilteringParameters.BrandId == null || car.BrandId == carFilteringParameters.BrandId)
+                .Where(car =>
+                    carFilteringParameters.CountryId == null ||
+                    car.RentalPoint.Location.City.CountryId == carFilteringParameters.CountryId)
+                .Where(car =>
+                    carFilteringParameters.CityId == null ||
+                    car.RentalPoint.Location.CityId == carFilteringParameters.CityId)
+                .Where(car =>
+                    carFilteringParameters.TransmissionType == null ||
+                    car.Transmission == carFilteringParameters.TransmissionType)
+                .Where(car => carFilteringParameters.FuelType == null || car.Fuel == carFilteringParameters.FuelType)
+                .Where(car =>
+                    carFilteringParameters.QuantityOfSeats == null ||
+                    car.QuantityOfSeats == carFilteringParameters.QuantityOfSeats)
+                .Where(car =>
+                    carFilteringParameters.LessThenPrice == null ||
+                    car.PricePerHour == carFilteringParameters.LessThenPrice)
+                .Where(car =>
+                    carFilteringParameters.FuelConsumption == null ||
+                    car.FuelConsumption == carFilteringParameters.FuelConsumption);
+
+            var result = await PaginatedList<CarEntity>
+                .PaginateList(cars, carPaginateParameters.PageNumber, carPaginateParameters.PageSize);
+
+            return result.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
         }
 
         public async Task<IEnumerable<CarBrandModel>> GetCarBrands()
