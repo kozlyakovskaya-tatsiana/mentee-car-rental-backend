@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CarRental.Business.Models.Car;
+using CarRental.Business.Models.Responses;
 
 namespace CarRental.Business.Services
 {
@@ -12,8 +13,10 @@ namespace CarRental.Business.Services
         public Task<CarInfoModel> RemoveCar(Guid id);
         public Task<CarInfoModel> ModifyCar(Guid id, CarInfoModel model);
         public Task<CarInfoModel> CreateCar(CreatingCarModel model);
-        public Task<IEnumerable<CarExtendedInfoModel>> GetFilteredCarsWithPagination(
-            CarPaginateParameters carPaginateParameters, CarFilteringParameters carFilteringParameters);
+        public Task<PaginatedCarsResponse> GetFilteredCarsWithPagination(
+            CarPaginateParameters carPaginateParameters, 
+            CarFilteringParameters carFilteringParameters
+            );
         public Task<IEnumerable<CarBrandModel>> GetCarBrands();
         public Task<CarBrandModel> AddNewCarBrand(CarBrandModel model);
     }

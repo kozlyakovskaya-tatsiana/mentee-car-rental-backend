@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models.Car;
+using CarRental.Business.Models.Responses;
 using CarRental.Common.Helpers.PaginateHelper;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
@@ -88,14 +89,14 @@ namespace CarRental.Business.Services.Implementation
             return result;
         }
 
-        public async Task<IEnumerable<CarExtendedInfoModel>> GetFilteredCarsWithPagination(
+        public async Task<PaginatedCarsResponse> GetFilteredCarsWithPagination(
             CarPaginateParameters carPaginateParameters, 
             CarFilteringParameters carFilteringParameters
             )
         {
             var carEntities = await _carRepository.GetAll();
 
-            var cars = carEntities
+            var filteredCars = carEntities
                 .Where(car => carFilteringParameters.BrandId == null || car.BrandId == carFilteringParameters.BrandId)
                 .Where(car =>
                     carFilteringParameters.CountryId == null ||
@@ -117,10 +118,18 @@ namespace CarRental.Business.Services.Implementation
                     carFilteringParameters.FuelConsumption == null ||
                     car.FuelConsumption == carFilteringParameters.FuelConsumption);
 
-            var result = await PaginatedList<CarEntity>
-                .PaginateList(cars, carPaginateParameters.PageNumber, carPaginateParameters.PageSize);
+            var paginatedCars = await PaginatedList<CarEntity>
+                .PaginateList(filteredCars, carPaginateParameters.PageNumber, carPaginateParameters.PageSize);
 
-            return result.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
+            var mappedFilteredPaginatedCars = paginatedCars.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
+
+            var result = new PaginatedCarsResponse
+            {
+                Cars = mappedFilteredPaginatedCars,
+                QuantityOfResults = filteredCars.Count()
+            };
+
+            return result;
         }
 
         public async Task<IEnumerable<CarBrandModel>> GetCarBrands()

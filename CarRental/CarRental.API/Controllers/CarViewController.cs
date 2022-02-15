@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Services;
 using CarRental.Business.Services.Implementation;
@@ -25,9 +26,12 @@ namespace CarRental.API.Controllers
             [FromQuery] CarFilteringParameters carFilteringParameters
             )
         {
-            var cars = await _carService.GetCarsWithPaginationAndSorting(carPaginateParameters, carFilteringParameters);
+            var result = await _carService.GetFilteredCarsWithPagination(
+                carPaginateParameters, 
+                carFilteringParameters
+                );
 
-            return Ok(cars);
+            return Ok(result);
         }
     }
 }

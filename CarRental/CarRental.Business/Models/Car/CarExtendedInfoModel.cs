@@ -5,6 +5,7 @@ namespace CarRental.Business.Models.Car
 {
     public class CarExtendedInfoModel
     {
+        public CarBrandModel Brand { get; set; }
         public string Model { get; set; }
         public FuelType Fuel { get; set; }
         public double FuelConsumption { get; set; }
