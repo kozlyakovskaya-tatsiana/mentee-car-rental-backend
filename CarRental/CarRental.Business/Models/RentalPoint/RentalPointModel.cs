@@ -1,7 +1,7 @@
 ﻿using System;
 using CarRental.Business.Models.Location;
 
-namespace CarRental.Business.Models
+namespace CarRental.Business.Models.RentalPoint
 {
     public class RentalPointModel
     {

@@ -13,7 +13,5 @@ namespace CarRental.Business.Services
         public Task<CityModel> AddNewCity(CityModel model);
         public Task<IEnumerable<CityModel>> GetAllCities();
         public Task<IEnumerable<CityModel>> GetCitiesByCountryId(Guid countryId);
-
-        public Task<LocationModel> AddNewLocation(LocationModel model);
     }
 }

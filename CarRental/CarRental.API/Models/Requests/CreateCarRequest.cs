@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CarRental.Business.Models;
+using CarRental.Business.Models.Attachment;
 using CarRental.Business.Models.Car;
 using CarRental.Common.Enums;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using CarRental.Common.Exceptions;
 using Microsoft.AspNetCore.Http;

@@ -15,7 +15,6 @@ namespace CarRental.Business.Services.Implementation
     {
         private readonly ICarRepository _carRepository;
         private readonly ICarBrandRepository _carBrandRepository;
-        private readonly IRentalPointRepository _rentalPointRepository;
 
         private readonly IMapper _mapper;
 
@@ -29,7 +28,6 @@ namespace CarRental.Business.Services.Implementation
             _carRepository = carRepository;
             _mapper = mapper;
             _carBrandRepository = carBrandRepository;
-            _rentalPointRepository = rentalPointRepository;
         }
 
         public async Task<IEnumerable<CarInfoModel>> GetAllCars()
@@ -76,10 +74,10 @@ namespace CarRental.Business.Services.Implementation
             return result;
         }
 
-        public async Task<CarInfoModel> CreateCar(CreatingCarModel model)
+        public async Task<CarInfoModel> CreateCar(CreateCarModel model)
         {
             var existingBrand = _carBrandRepository.GetByName(model.Brand.Name);
-            var car = _mapper.Map<CreatingCarModel, CarEntity>(model);
+            var car = _mapper.Map<CreateCarModel, CarEntity>(model);
 
             car.Brand = existingBrand ?? car.Brand;
 
@@ -132,21 +130,4 @@ namespace CarRental.Business.Services.Implementation
             return result;
         }
 
-        public async Task<IEnumerable<CarBrandModel>> GetCarBrands()
-        {
-            var carBrands = await _carBrandRepository.GetAll();
-
-            return carBrands.Select(brand => _mapper.Map<CarBrandEntity, CarBrandModel>(brand)).ToArray();
-        }
-
-        public async Task<CarBrandModel> AddNewCarBrand(CarBrandModel model)
-        {
-            var mappedCarBrand = _mapper.Map<CarBrandModel, CarBrandEntity>(model);
-            var carBrandEntity = await _carBrandRepository.Add(mappedCarBrand);
-
-            var result = _mapper.Map<CarBrandEntity, CarBrandModel>(carBrandEntity);
-
-            return result;
-        }
-    }
 }

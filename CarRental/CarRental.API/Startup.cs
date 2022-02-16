@@ -18,7 +18,6 @@ namespace CarRental.API
 
         public IConfiguration Configuration { get; set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.LoadConfigurations(Configuration);
@@ -37,19 +36,21 @@ namespace CarRental.API
 
             services.AddCors();
 
+            services.AddScoped<DataInitializer>();
+
             services.AddCarRentalServices();
 
             services.AddSwaggerEnvironment();
 
             services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile), typeof(CarRental.Business.Mapping.BllMappingProfile));
-            //services.AddAutoMapper();
 
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }
 
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            DataInitializer seeder)
         {
             if (env.IsDevelopment())
             {
@@ -71,11 +72,15 @@ namespace CarRental.API
 
             app.ConfigureCustomExceptionMiddleware();
 
+            seeder.SeedData().GetAwaiter().GetResult();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+
         }
     }
 }

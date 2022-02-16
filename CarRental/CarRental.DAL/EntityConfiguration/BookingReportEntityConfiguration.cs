@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CarRental.DAL.EntityConfiguration
 {
-    class BookingReportEntityConfiguration : IEntityTypeConfiguration<BookingReportEntity>
+    public class BookingReportEntityConfiguration : IEntityTypeConfiguration<BookingReportEntity>
     {
         public void Configure(EntityTypeBuilder<BookingReportEntity> builder)
         {
