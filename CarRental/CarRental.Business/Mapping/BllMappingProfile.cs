@@ -36,7 +36,7 @@ namespace CarRental.Business.Mapping
             CreateMap<CreateRoleModel, RoleEntity>();
 
             CreateMap<UserEntity, UserInfoModel>();
-            CreateMap<CreatingCarModel, CarEntity>()
+            CreateMap<CreateCarModel, CarEntity>()
                 .ForMember(entity => entity.Photos, opt => opt
                     .MapFrom(source => source.Photos));
             CreateMap<CountryModel, CountryEntity>();

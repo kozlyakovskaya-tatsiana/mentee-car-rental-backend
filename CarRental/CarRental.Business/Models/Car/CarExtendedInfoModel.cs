@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CarRental.Business.Models.Attachment;
 using CarRental.Common.Enums;
 
 namespace CarRental.Business.Models.Car
@@ -13,6 +14,6 @@ namespace CarRental.Business.Models.Car
         public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
         public CarStatus Status { get; set; }
-        public List<AttachmentDTO> Photos { get; set; }
+        public IEnumerable<AttachmentDTO> Photos { get; set; }
     }
 }

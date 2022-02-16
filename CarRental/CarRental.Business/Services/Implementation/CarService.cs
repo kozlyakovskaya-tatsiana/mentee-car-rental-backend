@@ -76,7 +76,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<CarInfoModel> CreateCar(CreateCarModel model)
         {
-            var existingBrand = _carBrandRepository.GetByName(model.Brand.Name);
+            var existingBrand = await _carBrandRepository.GetByName(model.Brand.Name);
             var car = _mapper.Map<CreateCarModel, CarEntity>(model);
 
             car.Brand = existingBrand ?? car.Brand;
@@ -87,10 +87,10 @@ namespace CarRental.Business.Services.Implementation
             return result;
         }
 
-        public async Task<PaginatedCarsResponse> GetFilteredCarsWithPagination(
-            CarPaginateParameters carPaginateParameters, 
+        public async Task<PaginatedCarsResult> GetFilteredCarsWithPagination(
+            CarPaginateParameters carPaginateParameters,
             CarFilteringParameters carFilteringParameters
-            )
+        )
         {
             var carEntities = await _carRepository.GetAll();
 
@@ -111,23 +111,26 @@ namespace CarRental.Business.Services.Implementation
                     car.QuantityOfSeats == carFilteringParameters.QuantityOfSeats)
                 .Where(car =>
                     carFilteringParameters.LessThenPrice == null ||
-                    car.PricePerHour == carFilteringParameters.LessThenPrice)
+                    car.PricePerHour.CompareTo(carFilteringParameters.LessThenPrice) == 0)
                 .Where(car =>
                     carFilteringParameters.FuelConsumption == null ||
-                    car.FuelConsumption == carFilteringParameters.FuelConsumption);
+                    car.FuelConsumption.CompareTo(carFilteringParameters.FuelConsumption) == 0);
 
             var paginatedCars = await PaginatedList<CarEntity>
                 .PaginateList(filteredCars, carPaginateParameters.PageNumber, carPaginateParameters.PageSize);
 
-            var mappedFilteredPaginatedCars = paginatedCars.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
+            var mappedFilteredPaginatedCars =
+                paginatedCars.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
 
-            var result = new PaginatedCarsResponse
+            var result = new PaginatedCarsResult
             {
                 Cars = mappedFilteredPaginatedCars,
-                QuantityOfResults = filteredCars.Count()
+                TotalCarsCount = filteredCars.Count()
             };
 
             return result;
         }
 
+        // private async Task<IQueryable<CarEntity>> FilterCars(IQueryable<CarEntity> )
+    }
 }

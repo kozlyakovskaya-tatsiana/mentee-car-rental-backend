@@ -75,7 +75,6 @@ namespace CarRental.Business.Services.Implementation
             }
 
             var entity = await _rentalPointRepository.Delete(rentalPoint);
-            await _locationRepository.Delete(rentalPoint.Location);
 
             var city = entity.Location.City;
             if (city.Locations.IsNullOrEmpty())

@@ -13,7 +13,7 @@ namespace CarRental.Business.Services
         public Task<CarInfoModel> RemoveCar(Guid id);
         public Task<CarInfoModel> ModifyCar(Guid id, CarInfoModel model);
         public Task<CarInfoModel> CreateCar(CreateCarModel model);
-        public Task<PaginatedCarsResponse> GetFilteredCarsWithPagination(
+        public Task<PaginatedCarsResult> GetFilteredCarsWithPagination(
             CarPaginateParameters carPaginateParameters, 
             CarFilteringParameters carFilteringParameters
             );
