@@ -25,10 +25,11 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateRole(RoleCreateRequest request)
+        public async Task<IActionResult> CreateRole(CreateRoleRequest request)
         {
-            var model = _mapper.Map<RoleCreateRequest, RoleCreateModel>(request);
+            var model = _mapper.Map<CreateRoleRequest, CreateRoleModel>(request);
             await _roleService.CreateRole(model);
+
             return Ok();
         }
 
@@ -37,6 +38,7 @@ namespace CarRental.API.Controllers
         {
             var model = _mapper.Map<AddRoleRequest, UserRoleModel>(request);
             await _roleService.UpdateUserRoles(model);
+
             return Ok();
         }
     }

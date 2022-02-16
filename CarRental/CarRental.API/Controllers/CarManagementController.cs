@@ -12,18 +12,20 @@ namespace CarRental.API.Controllers
     [ApiController]
     public class CarManagementController : ControllerBase
     {
-        //TODO Unfinished controller, not implemented brands and models
         private readonly ICarService _carService;
+        private readonly ICarBrandService _carBrandService;
 
         private readonly IMapper _mapper;
 
         public CarManagementController(
             ICarService carService,
-            IMapper mapper
-        )
+            IMapper mapper, 
+            ICarBrandService carBrandService
+            )
         {
             _carService = carService;
             _mapper = mapper;
+            _carBrandService = carBrandService;
         }
 
         [HttpGet]
@@ -37,7 +39,7 @@ namespace CarRental.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewCar([FromBody] CreateCarRequest request)
         {
-            var model = _mapper.Map<CreateCarRequest, CreatingCarModel>(request);
+            var model = _mapper.Map<CreateCarRequest, CreateCarModel>(request);
             var result = await _carService.CreateCar(model);
             
             return Ok(result);
@@ -70,16 +72,16 @@ namespace CarRental.API.Controllers
         [HttpGet("brand")]
         public async Task<IActionResult> GetAllCarBrands()
         {
-            var result = await _carService.GetCarBrands();
+            var result = await _carBrandService.GetCarBrands();
 
             return Ok(result);
         }
 
         [HttpPost("brand")]
-        public async Task<IActionResult> AddNewBrand([FromBody] AddNewCarBrandRequest request)
+        public async Task<IActionResult> CreateCarBrand([FromBody] CreateCarBrandRequest request)
         {
-            var model = _mapper.Map<AddNewCarBrandRequest, CarBrandModel>(request);
-            var result = await _carService.AddNewCarBrand(model);
+            var model = _mapper.Map<CreateCarBrandRequest, CarBrandModel>(request);
+            var result = await _carBrandService.CreateBrand(model);
 
             return Ok(result);
         }

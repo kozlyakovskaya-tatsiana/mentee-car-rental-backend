@@ -69,18 +69,5 @@ namespace CarRental.Business.Services.Implementation
 
             return country.Cities.Select(city => _mapper.Map<CityEntity, CityModel>(city)).ToArray();
         }
-
-        public async Task<LocationModel> AddNewLocation(LocationModel model)
-        {
-            var location = _mapper.Map<LocationModel, LocationEntity>(model);
-            var city = await _cityRepository.Get(location.CityId);
-            location.City = city;
-            location.Id = new Guid();
-
-            var entity = await _locationRepository.Add(location);
-            var result = _mapper.Map<LocationEntity, LocationModel>(entity);
-
-            return result;
-        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CarRental.Business.Models.Car
+namespace CarRental.Business.Models.Attachment
 {
     public class AttachmentDTO
     {

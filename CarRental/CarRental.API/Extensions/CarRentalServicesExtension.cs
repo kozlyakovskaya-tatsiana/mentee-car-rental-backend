@@ -17,6 +17,7 @@ namespace CarRental.API.Extensions
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ILocationService, LocationService>();
             services.AddScoped<IRentalPointService, RentalPointService>();
+            services.AddScoped<ICarBrandService, CarBrandService>();
 
             return services;
         }

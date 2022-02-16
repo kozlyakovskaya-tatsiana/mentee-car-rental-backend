@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using CarRental.Business.Models;
+using CarRental.Business.Models.RentalPoint;
 using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
@@ -36,7 +36,7 @@ namespace CarRental.Business.Services.Implementation
             _countryRepository = countryRepository;
         }
 
-        public async Task<RentalPointModel> AddNewRentalPoint(RentalPointModel model)
+        public async Task<RentalPointModel> CreateRentalPoint(RentalPointModel model)
         {
             model.Location.City = model.Location.City.Trim();
             model.Location.Country = model.Location.Country.Trim();

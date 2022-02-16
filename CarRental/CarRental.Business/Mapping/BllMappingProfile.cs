@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Globalization;
 using AutoMapper;
 using CarRental.Business.Models;
+using CarRental.Business.Models.Attachment;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Models.Location;
+using CarRental.Business.Models.RentalPoint;
 using CarRental.Business.Models.Role;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
@@ -17,13 +18,20 @@ namespace CarRental.Business.Mapping
 
         public BllMappingProfile()
         {
-            CreateMap<RegisterModel, UserEntity>().ForMember(u => u.UserName,
-                opt => opt.MapFrom(ur => ur.Email));
+            CreateMap<RegisterModel, UserEntity>()
+                .ForMember(entity => entity.UserName,
+                opt => opt
+                    .MapFrom(source => source.Email));
+            
             CreateMap<RefreshTokenEntity, TokenPairModel>()
-                .ForMember(x => x.RefreshToken,
-                    xr => xr.MapFrom(az => az.Token));
+                .ForMember(model => model.RefreshToken,
+                    opt => opt
+                        .MapFrom(source => source.Token));
+            
             CreateMap<LoginModel, UserEntity>();
-            CreateMap<RoleCreateModel, RoleEntity>();
+
+            CreateMap<CreateRoleModel, RoleEntity>();
+
             CreateMap<UserEntity, UserInfoModel>();
             CreateMap<CarEntity, CarInfoModel>();
 
@@ -31,27 +39,33 @@ namespace CarRental.Business.Mapping
             CreateMap<CountryEntity, CountryModel>();
 
             CreateMap<CityModel, CityEntity>()
-                .ForMember(l => l.Locations, opt => opt
-                    .MapFrom(ls => ls.Locations));
+                .ForMember(entity => entity.Locations, opt => opt
+                    .MapFrom(source => source.Locations));
             CreateMap<CityEntity, CityModel>();
 
             CreateMap<LocationModel, LocationEntity>()
-                .ForPath(s => s.City, dest => dest.Ignore());
+                .ForPath(entity => entity.City, opt => opt.Ignore());
             CreateMap<LocationEntity, LocationModel>();
 
             CreateMap<RentalPointModel, RentalPointEntity>()
-                .ForPath(entity => entity.Location.City.Name, opt => opt.MapFrom(source => source.Location.City))
+                .ForPath(entity => entity.Location.City.Name, opt => opt
+                    .MapFrom(source => source.Location.City))
                 .ForPath(entity => entity.Location.City.Country.Name,
-                    opt => opt.MapFrom(source => source.Location.Country))
-                .ForPath(entity => entity.Location.Latitude, opt => opt.MapFrom(source => source.Location.Latitude))
-                .ForPath(entity => entity.Location.Longitude, opt => opt.MapFrom(source => source.Location.Longitude))
-                .ForPath(entity => entity.Location.Address, opt => opt.MapFrom(source => source.Location.Address));
+                    opt => opt
+                        .MapFrom(source => source.Location.Country))
+                .ForPath(entity => entity.Location.Latitude, opt => opt
+                    .MapFrom(source => source.Location.Latitude))
+                .ForPath(entity => entity.Location.Longitude, opt => opt
+                    .MapFrom(source => source.Location.Longitude))
+                .ForPath(entity => entity.Location.Address, opt => opt
+                    .MapFrom(source => source.Location.Address));
             CreateMap<RentalPointEntity, RentalPointModel>()
-                .ForPath(s => s.Location.City, dest => dest.MapFrom(d => d.Location.City.Name));
+                .ForPath(model => model.Location.City, opt => opt
+                    .MapFrom(source => source.Location.City.Name));
 
             CreateMap<RentalPointEntity, RentalPointWithCoordsModel>()
-                .ForMember(dest => dest.Location, opt => opt
-                    .MapFrom(res => res.Location));
+                .ForMember(model => model.Location, opt => opt
+                    .MapFrom(source => source.Location));
 
             CreateMap<CarBrandEntity, CarBrandModel>();
             CreateMap<CarBrandModel, CarBrandEntity>();
@@ -60,8 +74,9 @@ namespace CarRental.Business.Mapping
             CreateMap<byte[], string>().ConvertUsing(s => Convert.ToBase64String(s));
 
             CreateMap<AttachmentDTO, AttachmentEntity>()
-                .ForMember(entity => entity.Content, opt => opt.MapFrom(source => source.Content));
-            CreateMap<CreatingCarModel, CarEntity>();
+                .ForMember(entity => entity.Content, opt => opt
+                    .MapFrom(source => source.Content));
+            CreateMap<CreateCarModel, CarEntity>();
         }
     }
 }

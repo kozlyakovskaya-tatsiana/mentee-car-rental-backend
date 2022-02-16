@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using CarRental.DAL.EFCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -15,8 +14,8 @@ namespace CarRental.DAL
 
         protected BaseRepository(CarRentalDbContext context)
         {
-            this.Context = context;
-            this.DbSet = Context.Set<TEntity>();
+            Context = context;
+            DbSet = Context.Set<TEntity>();
         }
 
         public async Task<TEntity> Add(TEntity entity)
