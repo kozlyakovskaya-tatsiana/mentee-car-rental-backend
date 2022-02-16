@@ -94,6 +94,24 @@ namespace CarRental.Business.Services.Implementation
         {
             var carEntities = await _carRepository.GetAll();
 
+            var filteredCars = await FilterCars(carEntities, carFilteringParameters);
+            var paginatedCars = await PaginateCars(filteredCars, carPaginateParameters);
+
+            var mappedFilteredPaginatedCars =
+                paginatedCars.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
+
+            var result = new PaginatedCarsResult
+            {
+                Cars = mappedFilteredPaginatedCars,
+                TotalCarsCount = filteredCars.Count()
+            };
+
+            return result;
+        }
+
+        private Task<IQueryable<CarEntity>> FilterCars(IQueryable<CarEntity> carEntities,
+            CarFilteringParameters carFilteringParameters)
+        {
             var filteredCars = carEntities
                 .Where(car => carFilteringParameters.BrandId == null || car.BrandId == carFilteringParameters.BrandId)
                 .Where(car =>
@@ -116,21 +134,16 @@ namespace CarRental.Business.Services.Implementation
                     carFilteringParameters.FuelConsumption == null ||
                     car.FuelConsumption.CompareTo(carFilteringParameters.FuelConsumption) == 0);
 
+            return Task.FromResult(filteredCars);
+        }
+
+        private async Task<PaginatedList<CarEntity>> PaginateCars(IQueryable<CarEntity> filteredCars,
+            CarPaginateParameters carPaginateParameters)
+        {
             var paginatedCars = await PaginatedList<CarEntity>
                 .PaginateList(filteredCars, carPaginateParameters.PageNumber, carPaginateParameters.PageSize);
 
-            var mappedFilteredPaginatedCars =
-                paginatedCars.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
-
-            var result = new PaginatedCarsResult
-            {
-                Cars = mappedFilteredPaginatedCars,
-                TotalCarsCount = filteredCars.Count()
-            };
-
-            return result;
+            return paginatedCars;
         }
-
-        // private async Task<IQueryable<CarEntity>> FilterCars(IQueryable<CarEntity> )
     }
 }
