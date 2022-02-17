@@ -28,8 +28,8 @@ namespace CarRental.API.Mapping
 
             CreateMap<ValidateAccessTokenRequest, TokenValidationModel>();
 
-            CreateMap<AddCountryRequest, CountryModel>();
-            CreateMap<AddCityRequest, CityModel>();
+            CreateMap<CreateCountryRequest, CountryModel>();
+            CreateMap<CreateCityRequest, CityModel>();
             CreateMap<CreateLocationRequest, LocationModel>();
 
             CreateMap<CreateRentalPointRequest, RentalPointModel>();

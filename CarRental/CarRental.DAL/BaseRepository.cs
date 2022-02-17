@@ -18,7 +18,7 @@ namespace CarRental.DAL
             DbSet = Context.Set<TEntity>();
         }
 
-        public async Task<TEntity> Add(TEntity entity)
+        public async Task<TEntity> Create(TEntity entity)
         {
             DbSet.Add(entity);
 

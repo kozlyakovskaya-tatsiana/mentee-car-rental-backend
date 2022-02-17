@@ -6,7 +6,7 @@ namespace CarRental.Business.Services
 {
     public interface ICountryService
     {
-        public Task<CountryModel> AddNewCountry(CountryModel model);
+        public Task<CountryModel> CreateNewCountry(CountryModel model);
         public Task<IEnumerable<CountryModel>> GetAllCountries();
     }
 }

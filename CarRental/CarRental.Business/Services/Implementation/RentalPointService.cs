@@ -50,7 +50,7 @@ namespace CarRental.Business.Services.Implementation
             rentalPoint.Location.City = existingCity ?? rentalPoint.Location.City;
             rentalPoint.Location.City.Country = existingCountry ?? rentalPoint.Location.City.Country;
 
-            var entity = await _rentalPointRepository.Add(rentalPoint);
+            var entity = await _rentalPointRepository.Create(rentalPoint);
             var result = _mapper.Map<RentalPointEntity, RentalPointModel>(entity);
 
             return result;

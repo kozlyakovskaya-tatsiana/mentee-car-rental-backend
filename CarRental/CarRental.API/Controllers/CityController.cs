@@ -30,11 +30,11 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCity(AddCityRequest request)
+        public async Task<IActionResult> CreateCity(CreateCityRequest request)
         {
             _logger.LogInformation("Try to create new city with name: {city}", request.Name);
-            var model = _mapper.Map<AddCityRequest, CityModel>(request);
-            var result = await _cityService.AddNewCity(model);
+            var model = _mapper.Map<CreateCityRequest, CityModel>(request);
+            var result = await _cityService.CreateNewCity(model);
             _logger.LogInformation("city {city} created successful.", request.Name);
 
             return Ok(result);

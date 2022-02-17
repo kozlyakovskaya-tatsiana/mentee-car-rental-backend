@@ -33,7 +33,7 @@ namespace CarRental.Business.Services.Implementation
         public async Task<CarBrandModel> CreateBrand(CarBrandModel model)
         {
             var mappedCarBrand = _mapper.Map<CarBrandModel, CarBrandEntity>(model);
-            var carBrandEntity = await _carBrandRepository.Add(mappedCarBrand);
+            var carBrandEntity = await _carBrandRepository.Create(mappedCarBrand);
 
             var result = _mapper.Map<CarBrandEntity, CarBrandModel>(carBrandEntity);
 

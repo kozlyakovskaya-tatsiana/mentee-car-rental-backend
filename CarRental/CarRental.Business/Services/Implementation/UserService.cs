@@ -47,7 +47,7 @@ namespace CarRental.Business.Services.Implementation
                 Expired = DateTime.UtcNow.AddMinutes(_jwtOptions.RefreshTokenDurationInMinutes)
             };
 
-            await _refreshTokenRepository.Add(refreshEntity);
+            await _refreshTokenRepository.Create(refreshEntity);
 
             return refresh;
         }

@@ -81,7 +81,7 @@ namespace CarRental.Business.Services.Implementation
 
             car.Brand = existingBrand ?? car.Brand;
 
-            var carEntity = await _carRepository.Add(car);
+            var carEntity = await _carRepository.Create(car);
             var result = _mapper.Map<CarEntity, CarInfoModel>(carEntity);
 
             return result;

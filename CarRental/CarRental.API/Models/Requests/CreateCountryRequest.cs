@@ -1,6 +1,6 @@
 ﻿namespace CarRental.API.Models.Requests
 {
-    public class AddCountryRequest
+    public class CreateCountryRequest
     {
         public string Name { get; set; }
     }

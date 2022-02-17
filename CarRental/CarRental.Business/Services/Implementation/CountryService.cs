@@ -23,10 +23,10 @@ namespace CarRental.Business.Services.Implementation
             _countryRepository = countryRepository;
         }
 
-        public async Task<CountryModel> AddNewCountry(CountryModel model)
+        public async Task<CountryModel> CreateNewCountry(CountryModel model)
         {
             var countryEntity = _mapper.Map<CountryModel, CountryEntity>(model);
-            var country = await _countryRepository.Add(countryEntity);
+            var country = await _countryRepository.Create(countryEntity);
             var result = _mapper.Map<CountryEntity, CountryModel>(country);
 
             return result;

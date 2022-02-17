@@ -24,10 +24,10 @@ namespace CarRental.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCountry(AddCountryRequest request)
+        public async Task<IActionResult> CreateCountry(CreateCountryRequest request)
         {
-            var model = _mapper.Map<AddCountryRequest, CountryModel>(request);
-            var result = await _countryService.AddNewCountry(model);
+            var model = _mapper.Map<CreateCountryRequest, CountryModel>(request);
+            var result = await _countryService.CreateNewCountry(model);
 
             return Ok(result);
         }
