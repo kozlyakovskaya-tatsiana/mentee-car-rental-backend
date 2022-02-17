@@ -11,8 +11,8 @@ namespace CarRental.Business.Models.Car
         public TransmissionType? TransmissionType { get; set; }
         public FuelType? FuelType { get; set; }
         public int? QuantityOfSeats { get; set; }
-        public DateTime? PickUpDateTime { get; set; }
-        public DateTime? DropOffDateTime { get; set; }
+        public DateTimeOffset? PickUpDateTime { get; set; }
+        public DateTimeOffset? DropOffDateTime { get; set; }
         public double? LessThenPrice { get; set; }
         public double? FuelConsumption { get; set; }
     }

@@ -82,7 +82,7 @@ namespace CarRental.Business.Services.Implementation
             return principal;
         }
 
-        public bool IsRefreshTokenExpired(DateTime expiredTime)
+        public bool IsRefreshTokenExpired(DateTimeOffset expiredTime)
         {
             return expiredTime < DateTime.UtcNow;
         }
