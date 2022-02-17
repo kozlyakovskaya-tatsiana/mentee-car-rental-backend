@@ -3,15 +3,17 @@ using System;
 using CarRental.DAL.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CarRental.DAL.Migrations
 {
     [DbContext(typeof(CarRentalDbContext))]
-    partial class CarRentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220217121045_updated car and booking entities")]
+    partial class updatedcarandbookingentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,11 +52,11 @@ namespace CarRental.DAL.Migrations
                     b.Property<Guid>("CarId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("EndTimeOfBooking")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("EndTimeOfBooking")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTimeOffset>("StartTimeOfBooking")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("StartTimeOfBooking")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -95,8 +97,8 @@ namespace CarRental.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("BookingRequestDateTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("BookingRequestDateTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("BrandId")
                         .HasColumnType("uuid");
@@ -201,8 +203,8 @@ namespace CarRental.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("Expired")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("Expired")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Token")
                         .HasColumnType("text");

@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Repositories.Implementation
 {
@@ -13,7 +13,7 @@ namespace CarRental.DAL.Repositories.Implementation
 
         public async Task<CountryEntity> GetCountryByNameAsync(string name)
         {
-            var entity = DbSet.SingleOrDefault(country => country.Name == name);
+            var entity = await DbSet.SingleOrDefaultAsync(country => country.Name == name);
 
             return entity;
         }

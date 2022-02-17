@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using System.Threading.Tasks;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Repositories.Implementation
 {
@@ -10,9 +11,9 @@ namespace CarRental.DAL.Repositories.Implementation
         public UserRepository(CarRentalDbContext context) : base(context)
         { }
 
-        public UserEntity Get(string email)
+        public async Task<UserEntity> Get(string email)
         {
-            return DbSet.FirstOrDefault(u => u.Email == email);
+            return await DbSet.FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }

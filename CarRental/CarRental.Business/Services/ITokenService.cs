@@ -11,6 +11,6 @@ namespace CarRental.Business.Services
         public string GenerateAccessToken(IEnumerable<Claim> claims);
         public string GenerateRefreshToken();
         public ClaimsPrincipal GetPrincipalFromToken(string token);
-        public bool IsRefreshTokenExpired(DateTime expiredTime);
+        public bool IsRefreshTokenExpired(DateTimeOffset expiredTime);
     }
 }

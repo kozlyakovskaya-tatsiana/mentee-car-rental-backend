@@ -15,7 +15,6 @@ namespace CarRental.Business.Services.Implementation
         private readonly IMapper _mapper;
 
         public CarBrandService(
-            IRentalPointRepository rentalPointRepository, 
             ICarBrandRepository carBrandRepository, 
             IMapper mapper
             )
@@ -26,7 +25,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<IEnumerable<CarBrandModel>> GetCarBrands()
         {
-            var carBrands = await _carBrandRepository.GetAll();
+            var carBrands = _carBrandRepository.GetAll();
 
             return carBrands.Select(brand => _mapper.Map<CarBrandEntity, CarBrandModel>(brand)).ToArray();
         }
@@ -34,7 +33,7 @@ namespace CarRental.Business.Services.Implementation
         public async Task<CarBrandModel> CreateBrand(CarBrandModel model)
         {
             var mappedCarBrand = _mapper.Map<CarBrandModel, CarBrandEntity>(model);
-            var carBrandEntity = await _carBrandRepository.Add(mappedCarBrand);
+            var carBrandEntity = await _carBrandRepository.Create(mappedCarBrand);
 
             var result = _mapper.Map<CarBrandEntity, CarBrandModel>(carBrandEntity);
 

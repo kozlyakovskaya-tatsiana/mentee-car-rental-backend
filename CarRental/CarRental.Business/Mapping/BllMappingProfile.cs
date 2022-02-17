@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using AutoMapper;
 using CarRental.Business.Models;
 using CarRental.Business.Models.Attachment;
@@ -33,8 +36,9 @@ namespace CarRental.Business.Mapping
             CreateMap<CreateRoleModel, RoleEntity>();
 
             CreateMap<UserEntity, UserInfoModel>();
-            CreateMap<CarEntity, CarInfoModel>();
-
+            CreateMap<CreateCarModel, CarEntity>()
+                .ForMember(entity => entity.Photos, opt => opt
+                    .MapFrom(source => source.Photos));
             CreateMap<CountryModel, CountryEntity>();
             CreateMap<CountryEntity, CountryModel>();
 
@@ -76,7 +80,14 @@ namespace CarRental.Business.Mapping
             CreateMap<AttachmentDTO, AttachmentEntity>()
                 .ForMember(entity => entity.Content, opt => opt
                     .MapFrom(source => source.Content));
-            CreateMap<CreateCarModel, CarEntity>();
+            CreateMap<AttachmentEntity, AttachmentDTO>()
+                .ForMember(model => model.Content, opt => opt
+                    .MapFrom(source => source.Content));
+
+            CreateMap<CarEntity, CarInfoModel>();
+            CreateMap<CarEntity, CarExtendedInfoModel>()
+                .ForPath(model => model.Photos, opt => opt
+                    .MapFrom(source => source.Photos));
         }
     }
 }

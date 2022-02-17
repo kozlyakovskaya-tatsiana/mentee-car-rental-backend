@@ -4,7 +4,6 @@ using CarRental.Business.Identity.Role;
 using CarRental.Common.Options;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
-using Castle.Core.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -35,11 +34,12 @@ namespace CarRental.API.Extensions
         public async Task SeedData()
         {
             await _context.Database.MigrateAsync();
-            if(_context.Roles.IsNullOrEmpty())
+            if (!await _context.Roles.AnyAsync())
             {
                 await SeedRoles();
             }
-            if(_context.Users.IsNullOrEmpty())
+
+            if (!await _context.Users.AnyAsync())
             {
                 await SeedUsers();
             }

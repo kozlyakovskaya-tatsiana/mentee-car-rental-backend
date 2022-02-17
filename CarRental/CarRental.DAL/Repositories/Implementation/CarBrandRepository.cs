@@ -1,6 +1,7 @@
-﻿using CarRental.DAL.EFCore;
+﻿using System.Threading.Tasks;
+using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Repositories.Implementation
 {
@@ -10,9 +11,9 @@ namespace CarRental.DAL.Repositories.Implementation
         {
         }
 
-        public CarBrandEntity GetByName(string name)
+        public async Task<CarBrandEntity> GetByName(string name)
         {
-            var entity = DbSet.SingleOrDefault(brand => brand.Name == name);
+            var entity = await DbSet.SingleOrDefaultAsync(brand => brand.Name == name);
 
             return entity;
         }

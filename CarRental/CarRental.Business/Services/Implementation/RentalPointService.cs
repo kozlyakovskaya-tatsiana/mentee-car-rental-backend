@@ -50,7 +50,7 @@ namespace CarRental.Business.Services.Implementation
             rentalPoint.Location.City = existingCity ?? rentalPoint.Location.City;
             rentalPoint.Location.City.Country = existingCountry ?? rentalPoint.Location.City.Country;
 
-            var entity = await _rentalPointRepository.Add(rentalPoint);
+            var entity = await _rentalPointRepository.Create(rentalPoint);
             var result = _mapper.Map<RentalPointEntity, RentalPointModel>(entity);
 
             return result;
@@ -58,7 +58,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<IEnumerable<RentalPointWithCoordsModel>> GetAllRentalPoints()
         {
-            var query = await _rentalPointRepository.GetAll();
+            var query = _rentalPointRepository.GetAll();
             var rentalPoints = await query.ToArrayAsync();
 
             return rentalPoints
@@ -75,7 +75,6 @@ namespace CarRental.Business.Services.Implementation
             }
 
             var entity = await _rentalPointRepository.Delete(rentalPoint);
-            await _locationRepository.Delete(rentalPoint.Location);
 
             var city = entity.Location.City;
             if (city.Locations.IsNullOrEmpty())

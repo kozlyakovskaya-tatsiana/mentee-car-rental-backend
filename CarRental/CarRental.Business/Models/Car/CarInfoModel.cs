@@ -1,4 +1,5 @@
-﻿using CarRental.Common.Enums;
+﻿using System.Collections.Generic;
+using CarRental.Common.Enums;
 
 namespace CarRental.Business.Models.Car
 {

@@ -47,7 +47,7 @@ namespace CarRental.Business.Services.Implementation
                 Expired = DateTime.UtcNow.AddMinutes(_jwtOptions.RefreshTokenDurationInMinutes)
             };
 
-            await _refreshTokenRepository.Add(refreshEntity);
+            await _refreshTokenRepository.Create(refreshEntity);
 
             return refresh;
         }
@@ -94,7 +94,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<List<UserInfoModel>> GetAllUsers()
         {
-            var users = (await _userRepository.GetAll()).ToArray();
+            var users = (_userRepository.GetAll()).ToArray();
             var result = new List<UserInfoModel>();
 
             foreach (var user in users)
