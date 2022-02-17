@@ -8,6 +8,7 @@ using CarRental.Business.Models.Responses;
 using CarRental.Common.Helpers.PaginateHelper;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Business.Services.Implementation
 {
@@ -93,8 +94,12 @@ namespace CarRental.Business.Services.Implementation
         {
             var carEntities = _carRepository.GetAll();
 
-            var filteredCars = FilterCars(carEntities, carFilteringParameters);
-            var paginatedCars = await PaginateCars(filteredCars, carPaginateParameters);
+            var filteredCars = carFilteringParameters != null
+                ? FilterCars(carEntities, carFilteringParameters)
+                : carEntities;
+            var paginatedCars = carPaginateParameters != null
+                ? await PaginateCars(filteredCars, carPaginateParameters)
+                : await filteredCars.ToListAsync();
 
             var mappedFilteredPaginatedCars =
                 paginatedCars.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
@@ -111,7 +116,7 @@ namespace CarRental.Business.Services.Implementation
         private IQueryable<CarEntity> FilterCars(IQueryable<CarEntity> carEntities,
             CarFilteringParameters carFilteringParameters)
         {
-            var filteredCars = carEntities
+            return carEntities
                 .Where(car => carFilteringParameters.BrandId == null || car.BrandId == carFilteringParameters.BrandId)
                 .Where(car =>
                     carFilteringParameters.CountryId == null ||
@@ -132,8 +137,6 @@ namespace CarRental.Business.Services.Implementation
                 .Where(car =>
                     carFilteringParameters.FuelConsumption == null ||
                     car.FuelConsumption - carFilteringParameters.FuelConsumption <= 0);
-
-            return filteredCars;
         }
 
         private async Task<PaginatedList<CarEntity>> PaginateCars(IQueryable<CarEntity> filteredCars,
