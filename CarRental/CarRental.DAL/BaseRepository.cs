@@ -41,7 +41,7 @@ namespace CarRental.DAL
             return await DbSet.FindAsync(id);
         }
 
-        public async Task<IQueryable<TEntity>> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
             return DbSet.AsQueryable();
         }

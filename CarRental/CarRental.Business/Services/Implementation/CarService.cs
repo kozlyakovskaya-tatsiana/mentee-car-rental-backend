@@ -21,8 +21,7 @@ namespace CarRental.Business.Services.Implementation
         public CarService(
             ICarRepository carRepository,
             IMapper mapper,
-            ICarBrandRepository carBrandRepository,
-            IRentalPointRepository rentalPointRepository
+            ICarBrandRepository carBrandRepository
         )
         {
             _carRepository = carRepository;
@@ -32,7 +31,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<IEnumerable<CarInfoModel>> GetAllCars()
         {
-            var cars = await _carRepository.GetAll();
+            var cars = _carRepository.GetAll();
 
             return cars.Select(car => _mapper.Map<CarEntity, CarInfoModel>(car)).ToArray();
         }
@@ -92,9 +91,9 @@ namespace CarRental.Business.Services.Implementation
             CarFilteringParameters carFilteringParameters
         )
         {
-            var carEntities = await _carRepository.GetAll();
+            var carEntities = _carRepository.GetAll();
 
-            var filteredCars = await FilterCars(carEntities, carFilteringParameters);
+            var filteredCars = FilterCars(carEntities, carFilteringParameters);
             var paginatedCars = await PaginateCars(filteredCars, carPaginateParameters);
 
             var mappedFilteredPaginatedCars =
@@ -109,7 +108,7 @@ namespace CarRental.Business.Services.Implementation
             return result;
         }
 
-        private Task<IQueryable<CarEntity>> FilterCars(IQueryable<CarEntity> carEntities,
+        private IQueryable<CarEntity> FilterCars(IQueryable<CarEntity> carEntities,
             CarFilteringParameters carFilteringParameters)
         {
             var filteredCars = carEntities
@@ -129,12 +128,12 @@ namespace CarRental.Business.Services.Implementation
                     car.QuantityOfSeats == carFilteringParameters.QuantityOfSeats)
                 .Where(car =>
                     carFilteringParameters.LessThenPrice == null ||
-                    car.PricePerHour.CompareTo(carFilteringParameters.LessThenPrice) == 0)
+                    car.PricePerHour - carFilteringParameters.LessThenPrice <= 0)
                 .Where(car =>
                     carFilteringParameters.FuelConsumption == null ||
-                    car.FuelConsumption.CompareTo(carFilteringParameters.FuelConsumption) == 0);
+                    car.FuelConsumption - carFilteringParameters.FuelConsumption <= 0);
 
-            return Task.FromResult(filteredCars);
+            return filteredCars;
         }
 
         private async Task<PaginatedList<CarEntity>> PaginateCars(IQueryable<CarEntity> filteredCars,

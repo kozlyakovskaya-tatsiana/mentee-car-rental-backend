@@ -38,7 +38,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<IEnumerable<CityModel>> GetAllCities()
         {
-            var cities = await _cityRepository.GetAll();
+            var cities = _cityRepository.GetAll();
 
             return cities.Select(city => _mapper.Map<CityEntity, CityModel>(city)).ToArray();
         }

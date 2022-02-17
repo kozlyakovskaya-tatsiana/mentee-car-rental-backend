@@ -7,7 +7,6 @@ namespace CarRental.DAL.Entities
     {
         public DateTime StartTimeOfBooking { get; set; }
         public DateTime EndTimeOfBooking { get; set; }
-        public DateTime BookingRequestDateTime { get; set; }
         public double TotalPrice { get; set; }
         public BookingStatus Status { get; set; }
 

@@ -58,7 +58,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<IEnumerable<RentalPointWithCoordsModel>> GetAllRentalPoints()
         {
-            var query = await _rentalPointRepository.GetAll();
+            var query = _rentalPointRepository.GetAll();
             var rentalPoints = await query.ToArrayAsync();
 
             return rentalPoints

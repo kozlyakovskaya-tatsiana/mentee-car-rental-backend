@@ -13,6 +13,7 @@ namespace CarRental.DAL.Entities
         public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
         public CarStatus Status { get; set; }
+        public DateTime? BookingRequestDateTime { get; set; }
 
         public virtual List<AttachmentEntity> Photos { get; set; }
 

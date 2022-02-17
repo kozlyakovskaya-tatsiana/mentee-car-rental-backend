@@ -34,7 +34,7 @@ namespace CarRental.Business.Services.Implementation
 
         public async Task<IEnumerable<CountryModel>> GetAllCountries()
         {
-            var countries = await _countryRepository.GetAll();
+            var countries = _countryRepository.GetAll();
 
             return countries.Select(country => _mapper.Map<CountryEntity, CountryModel>(country)).ToArray();
         }
