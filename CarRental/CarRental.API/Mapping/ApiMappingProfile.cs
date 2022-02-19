@@ -38,6 +38,12 @@ namespace CarRental.API.Mapping
                 .ForPath(model => model.Brand.Name, 
                     opt => opt
                         .MapFrom(source => source.Brand));
+
+            CreateMap<BookCarRequest, BookCarModel>()
+                .ForMember(model => model.StartTimeOfBooking, opt => opt
+                    .MapFrom(source => source.PickUpDateTime))
+                .ForMember(model => model.EndTimeOfBooking, opt => opt
+                    .MapFrom(source => source.DropOffDateTime));
         }
     }
 }
