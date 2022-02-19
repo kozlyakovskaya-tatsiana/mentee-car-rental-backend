@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Models.Responses;
+using CarRental.Common.Enums;
+using CarRental.Common.Exceptions;
 using CarRental.Common.Helpers.PaginateHelper;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
@@ -117,6 +119,7 @@ namespace CarRental.Business.Services.Implementation
             CarFilteringParameters carFilteringParameters)
         {
             return carEntities
+                .Where(car => car.Status == CarStatus.Free)
                 .Where(car => carFilteringParameters.BrandId == null || car.BrandId == carFilteringParameters.BrandId)
                 .Where(car =>
                     carFilteringParameters.CountryId == null ||

@@ -5,12 +5,14 @@ using System.Linq;
 using AutoMapper;
 using CarRental.Business.Models;
 using CarRental.Business.Models.Attachment;
+using CarRental.Business.Models.BookingReport;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
 using CarRental.Business.Models.Role;
 using CarRental.Business.Models.Token;
 using CarRental.Business.Models.User;
+using CarRental.Common.Enums;
 using CarRental.DAL.Entities;
 
 namespace CarRental.Business.Mapping
@@ -88,6 +90,14 @@ namespace CarRental.Business.Mapping
             CreateMap<CarEntity, CarExtendedInfoModel>()
                 .ForPath(model => model.Photos, opt => opt
                     .MapFrom(source => source.Photos));
+
+            CreateMap<BookingReportEntity, BookingReportInfoModel>()
+                .ForMember(model => model.UserId, opt => opt
+                    .MapFrom(source => source.UserId))
+                .ForMember(model => model.CarId, opt => opt
+                    .MapFrom(source => source.CarId))
+                .ForMember(model => model.Status, opt => opt
+                    .MapFrom(source => Enum.GetName(typeof(BookingStatus), source.Status)));
         }
     }
 }
