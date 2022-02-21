@@ -5,6 +5,7 @@ namespace CarRental.Business.Models.BookingReport
 {
     public class BookingReportInfoModel
     {
+        public Guid Id { get; set; }
         public DateTimeOffset StartTimeOfBooking { get; set; }
         public DateTimeOffset EndTimeOfBooking { get; set; }
         public double TotalPrice { get; set; }

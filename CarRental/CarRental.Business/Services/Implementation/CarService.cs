@@ -102,7 +102,7 @@ namespace CarRental.Business.Services.Implementation
 
             var result = new PaginatedCarsResult
             {
-                Cars = mappedFilteredPaginatedCars.OrderBy(s => s.Id),
+                Cars = mappedFilteredPaginatedCars.OrderBy(s => s.PricePerHour),
                 TotalCarsCount = filteredCars.Count()
             };
 
@@ -142,7 +142,10 @@ namespace CarRental.Business.Services.Implementation
                     car.PricePerHour - carFilteringParameters.LessThenPrice <= 0)
                 .Where(car =>
                     carFilteringParameters.FuelConsumption == null ||
-                    car.FuelConsumption - carFilteringParameters.FuelConsumption <= 0);
+                    car.FuelConsumption - carFilteringParameters.FuelConsumption <= 0)
+                .Where(car =>
+                    carFilteringParameters.RentalPointId == null ||
+                    car.RentalPointId == carFilteringParameters.RentalPointId);
         }
 
         private async Task<PaginatedList<CarEntity>> PaginateCars(IQueryable<CarEntity> filteredCars,
