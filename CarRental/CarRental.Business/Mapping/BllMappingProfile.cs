@@ -25,14 +25,14 @@ namespace CarRental.Business.Mapping
         {
             CreateMap<RegisterModel, UserEntity>()
                 .ForMember(entity => entity.UserName,
-                opt => opt
-                    .MapFrom(source => source.Email));
-            
+                    opt => opt
+                        .MapFrom(source => source.Email));
+
             CreateMap<RefreshTokenEntity, TokenPairModel>()
                 .ForMember(model => model.RefreshToken,
                     opt => opt
                         .MapFrom(source => source.Token));
-            
+
             CreateMap<LoginModel, UserEntity>();
 
             CreateMap<CreateRoleModel, RoleEntity>();
@@ -51,7 +51,9 @@ namespace CarRental.Business.Mapping
 
             CreateMap<LocationModel, LocationEntity>()
                 .ForPath(entity => entity.City, opt => opt.Ignore());
-            CreateMap<LocationEntity, LocationModel>();
+            CreateMap<LocationEntity, LocationModel>()
+                .ForMember(model => model.City, opt => opt
+                    .MapFrom(source => source.City.Name));
 
             CreateMap<RentalPointModel, RentalPointEntity>()
                 .ForPath(entity => entity.Location.City.Name, opt => opt
@@ -66,8 +68,8 @@ namespace CarRental.Business.Mapping
                 .ForPath(entity => entity.Location.Address, opt => opt
                     .MapFrom(source => source.Location.Address));
             CreateMap<RentalPointEntity, RentalPointModel>()
-                .ForPath(model => model.Location.City, opt => opt
-                    .MapFrom(source => source.Location.City.Name));
+                .ForMember(model => model.Location, opt => opt
+                    .MapFrom(source => source.Location));
 
             CreateMap<RentalPointEntity, RentalPointWithCoordsModel>()
                 .ForMember(model => model.Location, opt => opt

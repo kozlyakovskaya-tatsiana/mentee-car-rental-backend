@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Models;
+using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,6 @@ namespace CarRental.API.Controllers
         private readonly IRentalPointService _rentalPointService;
 
         private readonly IMapper _mapper;
-        private readonly ILogger<AuthController> _logger;
 
         public RentalPointController(
             IRentalPointService rentalPointService,
@@ -27,7 +27,6 @@ namespace CarRental.API.Controllers
         {
             _rentalPointService = rentalPointService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpPost]
@@ -43,6 +42,14 @@ namespace CarRental.API.Controllers
         public async Task<IActionResult> GetAllRentalPoints()
         {
             var result = await _rentalPointService.GetAllRentalPoints();
+
+            return Ok(result);
+        }
+
+        [HttpGet("city/{cityId}")]
+        public async Task<IActionResult> GetRentalPointsByCity(Guid cityId)
+        {
+            var result = await _rentalPointService.GetRentalPointsByCity(cityId);
 
             return Ok(result);
         }

@@ -52,10 +52,5 @@ namespace CarRental.DAL.Repositories.Implementation
 
             return bookingReportEntity;
         }
-
-        public async Task<IQueryable<BookingReportEntity>> GetBooksByCarId(Guid carId)
-        {
-            return DbSet.Where(report => report.CarId == carId);
-        }
     }
 }

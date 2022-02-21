@@ -12,7 +12,5 @@ namespace CarRental.DAL.Repositories
             CarEntity carEntity, 
             BookingReportEntity bookingReportEntity
             );
-
-        public Task<IQueryable<BookingReportEntity>> GetBooksByCarId(Guid carId);
     }
 }
