@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using CarRental.Common.Enums;
 using CarRental.Common.Exceptions;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Repositories.Implementation
 {
@@ -48,6 +51,11 @@ namespace CarRental.DAL.Repositories.Implementation
             }
 
             return bookingReportEntity;
+        }
+
+        public async Task<IQueryable<BookingReportEntity>> GetBooksByCarId(Guid carId)
+        {
+            return DbSet.Where(report => report.CarId == carId);
         }
     }
 }

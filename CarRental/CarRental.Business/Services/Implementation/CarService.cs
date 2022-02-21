@@ -6,7 +6,6 @@ using AutoMapper;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Models.Responses;
 using CarRental.Common.Enums;
-using CarRental.Common.Exceptions;
 using CarRental.Common.Helpers.PaginateHelper;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
@@ -18,25 +17,28 @@ namespace CarRental.Business.Services.Implementation
     {
         private readonly ICarRepository _carRepository;
         private readonly ICarBrandRepository _carBrandRepository;
+        private readonly IBookingReportRepository _bookingReportRepository;
 
         private readonly IMapper _mapper;
 
         public CarService(
             ICarRepository carRepository,
             IMapper mapper,
-            ICarBrandRepository carBrandRepository
+            ICarBrandRepository carBrandRepository,
+            IBookingReportRepository bookingReportRepository
         )
         {
             _carRepository = carRepository;
             _mapper = mapper;
             _carBrandRepository = carBrandRepository;
+            _bookingReportRepository = bookingReportRepository;
         }
 
         public async Task<IEnumerable<CarInfoModel>> GetAllCars()
         {
             var cars = _carRepository.GetAll();
 
-            return cars.Select(car => _mapper.Map<CarEntity, CarInfoModel>(car)).ToArray();
+            return await cars.Select(car => _mapper.Map<CarEntity, CarInfoModel>(car)).ToArrayAsync();
         }
 
         public async Task<CarInfoModel> GetCarInfo(Guid id)
@@ -59,18 +61,10 @@ namespace CarRental.Business.Services.Implementation
         public async Task<CarInfoModel> ModifyCar(Guid id, CarInfoModel model)
         {
             var car = await _carRepository.Get(id);
+            var updatedCar = _mapper.Map<CarInfoModel, CarEntity>(model);
+            updatedCar.Id = car.Id;
 
-            foreach (var prop in typeof(CarInfoModel).GetProperties())
-            {
-                var carProp = typeof(CarEntity).GetProperty(prop.Name);
-                var value = prop.GetValue(model);
-                if (value != null && carProp != null)
-                {
-                    carProp.SetValue(car, value);
-                }
-            }
-
-            var update = await _carRepository.Update(car);
+            var update = await _carRepository.Update(updatedCar);
             var result = _mapper.Map<CarEntity, CarInfoModel>(update);
 
             return result;
@@ -97,7 +91,7 @@ namespace CarRental.Business.Services.Implementation
             var carEntities = _carRepository.GetAll();
 
             var filteredCars = carFilteringParameters != null
-                ? FilterCars(carEntities, carFilteringParameters)
+                ? await FilterCars(carEntities, carFilteringParameters)
                 : carEntities;
             var paginatedCars = carPaginateParameters != null
                 ? await PaginateCars(filteredCars, carPaginateParameters)
@@ -108,19 +102,28 @@ namespace CarRental.Business.Services.Implementation
 
             var result = new PaginatedCarsResult
             {
-                Cars = mappedFilteredPaginatedCars,
+                Cars = mappedFilteredPaginatedCars.OrderBy(s => s.Id),
                 TotalCarsCount = filteredCars.Count()
             };
 
             return result;
         }
 
-        private IQueryable<CarEntity> FilterCars(IQueryable<CarEntity> carEntities,
+        private async Task<IQueryable<CarEntity>> FilterCars(IQueryable<CarEntity> carEntities,
             CarFilteringParameters carFilteringParameters)
         {
+            var unavailableBookedCars = await GetUnavailableBookings(
+                carFilteringParameters.PickUpDateTime,
+                carFilteringParameters.DropOffDateTime
+            );
+
             return carEntities
-                .Where(car => car.Status == CarStatus.Free)
-                .Where(car => carFilteringParameters.BrandId == null || car.BrandId == carFilteringParameters.BrandId)
+                .Where(car => car.Status == CarStatus.Free ||
+                              car.Status == CarStatus.Booked &&
+                              unavailableBookedCars.FirstOrDefault(report => report.CarId == car.Id) == null
+                )
+                .Where(car => carFilteringParameters.BrandId == null ||
+                              car.BrandId == carFilteringParameters.BrandId)
                 .Where(car =>
                     carFilteringParameters.CountryId == null ||
                     car.RentalPoint.Location.City.CountryId == carFilteringParameters.CountryId)
@@ -149,6 +152,18 @@ namespace CarRental.Business.Services.Implementation
                 .PaginateList(filteredCars, carPaginateParameters.PageNumber, carPaginateParameters.PageSize);
 
             return paginatedCars;
+        }
+
+        private async Task<IQueryable<BookingReportEntity>> GetUnavailableBookings(
+            DateTimeOffset? pickUpDateTime,
+            DateTimeOffset? dropOffDateTime
+        )
+        {
+            var reports = _bookingReportRepository.GetAll();
+
+            return reports.Where(report =>
+                pickUpDateTime < report.EndTimeOfBooking || pickUpDateTime < report.StartTimeOfBooking &&
+                dropOffDateTime > report.EndTimeOfBooking);
         }
     }
 }
