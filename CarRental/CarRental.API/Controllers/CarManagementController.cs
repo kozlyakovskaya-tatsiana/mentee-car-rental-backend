@@ -2,9 +2,12 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
+using CarRental.Business.Identity.Policy;
+using CarRental.Business.Identity.Role;
 using CarRental.Business.Models.Car;
 using Microsoft.AspNetCore.Mvc;
 using CarRental.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarRental.API.Controllers
 {
@@ -28,6 +31,7 @@ namespace CarRental.API.Controllers
             _carBrandService = carBrandService;
         }
 
+        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
         [HttpGet]
         public async Task<IActionResult> GetAllCars()
         {
@@ -36,6 +40,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
         [HttpPost]
         public async Task<IActionResult> CreateNewCar([FromBody] CreateCarRequest request)
         {
@@ -53,6 +58,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCar(Guid id)
         {
@@ -61,6 +67,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateCarInfo(Guid id, [FromBody] CarInfoModel model)
         {
@@ -77,6 +84,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
         [HttpPost("brand")]
         public async Task<IActionResult> CreateCarBrand([FromBody] CreateCarBrandRequest request)
         {

@@ -4,6 +4,7 @@ using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -29,6 +30,7 @@ namespace CarRental.API.Controllers
             _bookingService = bookingService;
         }
 
+        [Authorize]
         [HttpPatch("lock")]
         public async Task<IActionResult> LockCar([FromBody]LockCarRequest car)
         {
@@ -37,6 +39,8 @@ namespace CarRental.API.Controllers
 
             return Ok(result);
         }
+
+        [Authorize]
         [HttpPatch("unlock")]
         public async Task<IActionResult> UnlockCar([FromBody] UnlockCarRequest car)
         {
@@ -46,6 +50,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpPost("book")]
         public async Task<IActionResult> BookCar([FromBody] BookCarRequest request)
         {
