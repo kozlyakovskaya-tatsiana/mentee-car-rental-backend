@@ -17,5 +17,6 @@ namespace CarRental.Business.Models.Car
         public double PricePerHour { get; set; }
         public CarStatus Status { get; set; }
         public IEnumerable<AttachmentDTO> Photos { get; set; }
+        public Guid RentalPointId { get; set; }
     }
 }

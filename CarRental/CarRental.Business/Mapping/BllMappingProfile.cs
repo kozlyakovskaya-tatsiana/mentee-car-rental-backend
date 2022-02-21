@@ -91,7 +91,9 @@ namespace CarRental.Business.Mapping
             CreateMap<CarEntity, CarInfoModel>();
             CreateMap<CarEntity, CarExtendedInfoModel>()
                 .ForPath(model => model.Photos, opt => opt
-                    .MapFrom(source => source.Photos));
+                    .MapFrom(source => source.Photos))
+                .ForMember(model => model.RentalPointId, opt => opt
+                    .MapFrom(source => source.RentalPointId));
 
             CreateMap<BookingReportEntity, BookingReportInfoModel>()
                 .ForMember(model => model.UserId, opt => opt

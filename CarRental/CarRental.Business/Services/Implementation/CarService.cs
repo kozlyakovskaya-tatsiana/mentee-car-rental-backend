@@ -34,11 +34,11 @@ namespace CarRental.Business.Services.Implementation
             _bookingReportRepository = bookingReportRepository;
         }
 
-        public async Task<IEnumerable<CarInfoModel>> GetAllCars()
+        public async Task<IEnumerable<CarExtendedInfoModel>> GetAllCars()
         {
             var cars = _carRepository.GetAll();
 
-            return await cars.Select(car => _mapper.Map<CarEntity, CarInfoModel>(car)).ToArrayAsync();
+            return cars.ToArray().Select(car => _mapper.Map<CarEntity, CarExtendedInfoModel>(car));
         }
 
         public async Task<CarInfoModel> GetCarInfo(Guid id)
