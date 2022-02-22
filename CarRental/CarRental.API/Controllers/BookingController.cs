@@ -34,8 +34,8 @@ namespace CarRental.API.Controllers
         [HttpPatch("lock")]
         public async Task<IActionResult> LockCar([FromBody]LockCarRequest car)
         {
-            var result = await _bookingService.LockCar(car.Id);
-            _logger.LogInformation("Car with id {0} locked for booking", car.Id);
+            var result = await _bookingService.LockCar(car.CarId);
+            _logger.LogInformation("Car with id {0} locked for booking", car.CarId);
 
             return Ok(result);
         }
@@ -44,8 +44,8 @@ namespace CarRental.API.Controllers
         [HttpPatch("unlock")]
         public async Task<IActionResult> UnlockCar([FromBody] UnlockCarRequest car)
         {
-            var result = await _bookingService.UnlockCar(car.Id);
-            _logger.LogInformation("Car with id {0} unlocked for booking", car.Id);
+            var result = await _bookingService.UnlockCar(car.CarId);
+            _logger.LogInformation("Car with id {0} unlocked for booking", car.CarId);
 
             return Ok(result);
         }
