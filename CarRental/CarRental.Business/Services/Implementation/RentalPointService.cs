@@ -102,5 +102,12 @@ namespace CarRental.Business.Services.Implementation
 
             return result;
         }
+
+        public async Task<RentalPointModel> GetRentalPointById(Guid id)
+        {
+            var rentalPoint = await _rentalPointRepository.Get(id);
+            
+            return _mapper.Map<RentalPointEntity, RentalPointModel>(rentalPoint);
+        }
     }
 }

@@ -66,5 +66,13 @@ namespace CarRental.API.Controllers
 
             return Ok(result);
         }
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRentalPointById(Guid id)
+        {
+            var result = await _rentalPointService.RemoveRentalPoint(id);
+
+            return Ok(result);
+        }
     }
 }
