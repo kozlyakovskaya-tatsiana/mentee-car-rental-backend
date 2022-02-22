@@ -8,7 +8,7 @@ namespace CarRental.Business.Services
 {
     public interface ICarService
     {
-        public Task<IEnumerable<CarInfoModel>> GetAllCars();
+        public Task<IEnumerable<CarExtendedInfoModel>> GetAllCars();
         public Task<CarInfoModel> GetCarInfo(Guid id);
         public Task<CarInfoModel> RemoveCar(Guid id);
         public Task<CarInfoModel> ModifyCar(Guid id, CarInfoModel model);

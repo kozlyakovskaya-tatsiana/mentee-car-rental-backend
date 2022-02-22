@@ -2,9 +2,13 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
+using CarRental.Business.Identity.Policy;
+using CarRental.Business.Identity.Role;
 using CarRental.Business.Models;
+using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
 using CarRental.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -17,7 +21,6 @@ namespace CarRental.API.Controllers
         private readonly IRentalPointService _rentalPointService;
 
         private readonly IMapper _mapper;
-        private readonly ILogger<AuthController> _logger;
 
         public RentalPointController(
             IRentalPointService rentalPointService,
@@ -27,9 +30,9 @@ namespace CarRental.API.Controllers
         {
             _rentalPointService = rentalPointService;
             _mapper = mapper;
-            _logger = logger;
         }
 
+        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
         [HttpPost]
         public async Task<IActionResult> CreateRentalPoint([FromBody] CreateRentalPointRequest request)
         {
@@ -47,6 +50,15 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("city/{cityId}")]
+        public async Task<IActionResult> GetRentalPointsByCity(Guid cityId)
+        {
+            var result = await _rentalPointService.GetRentalPointsByCity(cityId);
+
+            return Ok(result);
+        }
+
+        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveRentalPoint(Guid id)
         {

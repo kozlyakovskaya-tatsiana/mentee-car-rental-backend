@@ -183,7 +183,7 @@ namespace CarRental.Business.Services.Implementation
             {
 
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+                new Claim("name", $"{user.FirstName} {user.LastName}"),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
             var result = claims.Union(roleClaims);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
 using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
@@ -15,7 +16,6 @@ namespace CarRental.Business.Services.Implementation
     public class RentalPointService : IRentalPointService
     {
         private readonly IRentalPointRepository _rentalPointRepository;
-        private readonly ILocationRepository _locationRepository;
         private readonly ICityRepository _cityRepository;
         private readonly ICountryRepository _countryRepository;
 
@@ -24,14 +24,12 @@ namespace CarRental.Business.Services.Implementation
         public RentalPointService(
             IRentalPointRepository rentalPointRepository,
             IMapper mapper,
-            ILocationRepository locationRepository,
             ICityRepository cityRepository,
             ICountryRepository countryRepository
         )
         {
             _rentalPointRepository = rentalPointRepository;
             _mapper = mapper;
-            _locationRepository = locationRepository;
             _cityRepository = cityRepository;
             _countryRepository = countryRepository;
         }
@@ -64,6 +62,18 @@ namespace CarRental.Business.Services.Implementation
             return rentalPoints
                 .Select(rentalPoint => _mapper.Map<RentalPointEntity, RentalPointWithCoordsModel>(rentalPoint))
                 .ToArray();
+        }
+
+        public async Task<IEnumerable<RentalPointWithCoordsModel>> GetRentalPointsByCity(Guid cityId)
+        {
+            var query = _rentalPointRepository.GetAll();
+            var rentalPoints = await query.Where(point => point.Location.CityId == cityId)
+                .ToArrayAsync();
+
+            return rentalPoints
+                .Select(rentalPoint => _mapper.Map<RentalPointEntity, RentalPointWithCoordsModel>(rentalPoint))
+                .ToArray();
+            ;
         }
 
         public async Task<RentalPointModel> RemoveRentalPoint(Guid id)

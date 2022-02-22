@@ -15,5 +15,6 @@ namespace CarRental.Business.Models.Car
         public DateTimeOffset? DropOffDateTime { get; set; }
         public double? LessThenPrice { get; set; }
         public double? FuelConsumption { get; set; }
+        public Guid? RentalPointId { get; set; }
     }
 }

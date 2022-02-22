@@ -2,8 +2,8 @@
 {
     public enum BookingStatus
     {
-        Request,
-        Approved,
+        Active,
+        Completed,
         RejectedByUser,
         RejectedByManager
     }

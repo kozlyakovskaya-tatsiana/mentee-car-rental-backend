@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CarRental.Business.Models.Attachment;
 using CarRental.Common.Enums;
 
@@ -6,6 +7,7 @@ namespace CarRental.Business.Models.Car
 {
     public class CarExtendedInfoModel
     {
+        public Guid Id { get; set; }
         public CarBrandModel Brand { get; set; }
         public string Model { get; set; }
         public FuelType Fuel { get; set; }
@@ -15,5 +17,6 @@ namespace CarRental.Business.Models.Car
         public double PricePerHour { get; set; }
         public CarStatus Status { get; set; }
         public IEnumerable<AttachmentDTO> Photos { get; set; }
+        public Guid RentalPointId { get; set; }
     }
 }
