@@ -40,7 +40,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost]
         public async Task<IActionResult> CreateNewCar([FromBody] CreateCarRequest request)
         {

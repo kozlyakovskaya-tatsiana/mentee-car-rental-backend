@@ -30,7 +30,7 @@ namespace CarRental.API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost]
         public async Task<IActionResult> CreateRentalPoint([FromBody] CreateRentalPointRequest request)
         {
@@ -56,7 +56,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveRentalPoint(Guid id)
         {

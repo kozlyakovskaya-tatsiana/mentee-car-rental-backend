@@ -26,7 +26,7 @@ namespace CarRental.API.Controllers
             _countryService = countryService;
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost]
         public async Task<IActionResult> CreateCountry(CreateCountryRequest request)
         {

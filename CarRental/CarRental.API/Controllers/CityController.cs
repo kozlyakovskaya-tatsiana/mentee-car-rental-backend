@@ -32,7 +32,7 @@ namespace CarRental.API.Controllers
             _logger = logger;
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost]
         public async Task<IActionResult> CreateCity(CreateCityRequest request)
         {

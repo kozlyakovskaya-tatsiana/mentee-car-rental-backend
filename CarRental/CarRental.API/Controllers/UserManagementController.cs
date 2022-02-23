@@ -30,7 +30,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveUser(Guid id)
         {
@@ -39,7 +39,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateExistingUser(Guid id, [FromBody] UserInfoModel model)
         {
@@ -48,7 +48,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {

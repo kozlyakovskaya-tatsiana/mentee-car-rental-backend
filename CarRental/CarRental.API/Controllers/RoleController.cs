@@ -27,7 +27,7 @@ namespace CarRental.API.Controllers
             _roleService = roleService;
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost("create")]
         public async Task<IActionResult> CreateRole(CreateRoleRequest request)
         {
@@ -37,7 +37,7 @@ namespace CarRental.API.Controllers
             return Ok();
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost("user/update")]
         public async Task<IActionResult> AddUserToRole([FromBody]AddRoleRequest request)
         {
