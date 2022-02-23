@@ -1,20 +1,12 @@
 ﻿using CarRental.Common.Options;
-using Microsoft.Extensions.Options;
 
 namespace CarRental.Business.Models.Car
 {
     public class CarPaginateParameters
     {
-        private readonly int _maxPageSize;
+        private readonly int _maxPageSize = BasePaginationOptions.MaxAvailablePageSize;
         public int PageNumber { get; set; } = 1;
-        private int _pageSize;
-
-        public CarPaginateParameters(IOptions<PaginationOptions> paginationOptions)
-        {
-            var paginationOptionsValue = paginationOptions.Value;
-            _maxPageSize = paginationOptionsValue.MaxAvailablePageSize;
-            _pageSize = paginationOptionsValue.DefaultPageSize;
-        }
+        private int _pageSize = BasePaginationOptions.DefaultPageSize;
 
         public int PageSize
         {
