@@ -31,7 +31,7 @@ namespace CarRental.API.Controllers
             _carBrandService = carBrandService;
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpGet]
         public async Task<IActionResult> GetAllCars()
         {
@@ -58,7 +58,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCar(Guid id)
         {
@@ -67,7 +67,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateCarInfo(Guid id, [FromBody] CarInfoModel model)
         {
@@ -84,7 +84,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost("brand")]
         public async Task<IActionResult> CreateCarBrand([FromBody] CreateCarBrandRequest request)
         {

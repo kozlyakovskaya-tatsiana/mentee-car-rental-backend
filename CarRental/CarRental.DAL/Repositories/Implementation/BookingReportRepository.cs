@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CarRental.Common.Enums;
 using CarRental.Common.Exceptions;
 using CarRental.DAL.EFCore;
 using CarRental.DAL.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL.Repositories.Implementation
 {

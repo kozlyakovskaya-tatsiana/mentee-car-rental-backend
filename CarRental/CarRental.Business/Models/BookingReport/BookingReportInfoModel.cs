@@ -1,5 +1,4 @@
 ﻿using System;
-using CarRental.Common.Enums;
 
 namespace CarRental.Business.Models.BookingReport
 {

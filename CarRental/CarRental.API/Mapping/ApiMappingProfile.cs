@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CarRental.API.Models.Requests;
-using CarRental.Business.Models;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
