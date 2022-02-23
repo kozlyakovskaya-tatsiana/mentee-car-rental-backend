@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CarRental.Business.Identity.Policy;
-using CarRental.Business.Identity.Role;
 using CarRental.Business.Models.User;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Authorization;

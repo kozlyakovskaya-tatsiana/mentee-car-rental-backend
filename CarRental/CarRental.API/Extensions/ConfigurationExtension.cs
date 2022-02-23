@@ -14,6 +14,7 @@ namespace CarRental.API.Extensions
             services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
             services.Configure<ConnectionOptions>(configuration.GetSection(ConnectionOptions.SectionName));
             services.Configure<DefaultUserOptions>(configuration.GetSection(DefaultUserOptions.SectionName));
+            services.Configure<PaginationOptions>(configuration.GetSection(PaginationOptions.SectionName));
 
             return services;
         }
