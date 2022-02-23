@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CarRental.API.Models.Requests
+﻿namespace CarRental.API.Models.Requests
 {
     public class CreateLocationRequest
     {

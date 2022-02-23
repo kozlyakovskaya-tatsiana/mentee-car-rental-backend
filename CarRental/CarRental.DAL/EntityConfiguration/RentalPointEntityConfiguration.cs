@@ -21,7 +21,7 @@ namespace CarRental.DAL.EntityConfiguration
                 .IsRequired();
 
             builder
-                .HasOne<LocationEntity>(c => c.Location)
+                .HasOne(c => c.Location)
                 .WithOne(r => r.RentalPoint)
                 .OnDelete(DeleteBehavior.Cascade);
         }

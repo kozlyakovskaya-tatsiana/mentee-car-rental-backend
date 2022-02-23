@@ -1,6 +1,6 @@
-﻿using CarRental.Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using CarRental.Common.Enums;
 
 namespace CarRental.DAL.Entities
 {

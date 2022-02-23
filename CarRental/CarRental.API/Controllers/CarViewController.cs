@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Services;
-using CarRental.Business.Services.Implementation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRental.API.Controllers

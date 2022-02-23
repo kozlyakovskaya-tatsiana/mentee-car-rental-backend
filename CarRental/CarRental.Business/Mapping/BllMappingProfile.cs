@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using AutoMapper;
-using CarRental.Business.Models;
 using CarRental.Business.Models.Attachment;
 using CarRental.Business.Models.BookingReport;
 using CarRental.Business.Models.Car;

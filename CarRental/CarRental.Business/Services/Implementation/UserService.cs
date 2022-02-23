@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CarRental.Common.Options;
 using AutoMapper;
 using CarRental.Business.Models.User;
+using CarRental.Common.Options;
 using CarRental.DAL.Entities;
 using CarRental.DAL.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -100,7 +100,7 @@ namespace CarRental.Business.Services.Implementation
             foreach (var user in users)
             {
                 var infoModel = _mapper.Map<UserEntity, UserInfoModel>(user);
-                infoModel.Roles = (List<string>) await _userManager.GetRolesAsync(user);
+                infoModel.Roles = await _userManager.GetRolesAsync(user);
                 result.Add(infoModel);
             }
 

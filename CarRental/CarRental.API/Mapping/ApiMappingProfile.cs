@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CarRental.API.Models.Requests;
-using CarRental.Business.Models;
 using CarRental.Business.Models.Car;
 using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
@@ -35,7 +34,7 @@ namespace CarRental.API.Mapping
             CreateMap<CreateRentalPointRequest, RentalPointModel>();
             CreateMap<CreateCarBrandRequest, CarBrandModel>();
             CreateMap<CreateCarRequest, CreateCarModel>()
-                .ForPath(model => model.Brand.Name, 
+                .ForPath(model => model.Brand, 
                     opt => opt
                         .MapFrom(source => source.Brand));
 

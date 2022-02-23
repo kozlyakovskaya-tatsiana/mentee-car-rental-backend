@@ -1,4 +1,6 @@
 using CarRental.API.Extensions;
+using CarRental.API.Mapping;
+using CarRental.Business.Mapping;
 using CarRental.Common.Options;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace CarRental.API
 {
@@ -30,7 +33,7 @@ namespace CarRental.API
                     options.RegisterValidatorsFromAssemblyContaining<Startup>();
                 })
                 .AddNewtonsoftJson(options =>
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddRepositories();
 
@@ -42,7 +45,7 @@ namespace CarRental.API
 
             services.AddSwaggerEnvironment();
 
-            services.AddAutoMapper(typeof(CarRental.API.Mapping.ApiMappingProfile), typeof(CarRental.Business.Mapping.BllMappingProfile));
+            services.AddAutoMapper(typeof(ApiMappingProfile), typeof(BllMappingProfile));
 
             services.AddUserAuthentication(Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>());
         }

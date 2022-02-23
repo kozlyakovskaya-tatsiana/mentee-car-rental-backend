@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
 using CarRental.Common.Exceptions;
 using CarRental.DAL.Entities;
@@ -101,6 +100,13 @@ namespace CarRental.Business.Services.Implementation
             var result = _mapper.Map<RentalPointEntity, RentalPointModel>(entity);
 
             return result;
+        }
+
+        public async Task<RentalPointModel> GetRentalPointById(Guid id)
+        {
+            var rentalPoint = await _rentalPointRepository.Get(id);
+            
+            return _mapper.Map<RentalPointEntity, RentalPointModel>(rentalPoint);
         }
     }
 }

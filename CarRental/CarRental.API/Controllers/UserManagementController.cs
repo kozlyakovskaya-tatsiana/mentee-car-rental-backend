@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CarRental.Business.Identity.Policy;
-using CarRental.Business.Identity.Role;
 using CarRental.Business.Models.User;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +29,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveUser(Guid id)
         {
@@ -39,7 +38,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateExistingUser(Guid id, [FromBody] UserInfoModel model)
         {
@@ -48,7 +47,7 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {

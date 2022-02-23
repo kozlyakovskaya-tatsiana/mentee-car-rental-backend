@@ -2,7 +2,6 @@
 using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Identity.Policy;
-using CarRental.Business.Identity.Role;
 using CarRental.Business.Models.Location;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +25,7 @@ namespace CarRental.API.Controllers
             _countryService = countryService;
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost]
         public async Task<IActionResult> CreateCountry(CreateCountryRequest request)
         {

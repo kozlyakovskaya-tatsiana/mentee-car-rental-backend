@@ -3,9 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Identity.Policy;
-using CarRental.Business.Identity.Role;
-using CarRental.Business.Models;
-using CarRental.Business.Models.Location;
 using CarRental.Business.Models.RentalPoint;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +29,7 @@ namespace CarRental.API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpPost]
         public async Task<IActionResult> CreateRentalPoint([FromBody] CreateRentalPointRequest request)
         {
@@ -58,9 +55,17 @@ namespace CarRental.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Policy = Policy.AdminPolicy, Roles = Role.AdminRole)]
+        [Authorize(Policy = Policy.AdminPolicy)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveRentalPoint(Guid id)
+        {
+            var result = await _rentalPointService.RemoveRentalPoint(id);
+
+            return Ok(result);
+        }
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRentalPointById(Guid id)
         {
             var result = await _rentalPointService.RemoveRentalPoint(id);
 
