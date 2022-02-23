@@ -1,8 +1,8 @@
 ﻿using System;
-using CarRental.DAL.EFCore;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using CarRental.DAL.EFCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.DAL
 {

@@ -29,7 +29,7 @@ namespace CarRental.API.Middleware
         {
             context.Response.ContentType = "application/json";
 
-            var result = new ErrorDetails()
+            var result = new ErrorDetails
             {
                 StatusCode = 500,
                 Title = exception.Message

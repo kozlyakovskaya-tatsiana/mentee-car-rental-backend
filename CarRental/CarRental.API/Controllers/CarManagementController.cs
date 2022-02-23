@@ -4,9 +4,9 @@ using AutoMapper;
 using CarRental.API.Models.Requests;
 using CarRental.Business.Identity.Policy;
 using CarRental.Business.Models.Car;
-using Microsoft.AspNetCore.Mvc;
 using CarRental.Business.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarRental.API.Controllers
 {

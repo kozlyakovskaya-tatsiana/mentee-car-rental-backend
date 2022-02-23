@@ -122,7 +122,7 @@ namespace CarRental.Business.Services.Implementation
                 var jwtToken = (JwtSecurityToken) validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
                 var role = jwtToken.Claims.FirstOrDefault(x => x.Type == "roles")?.Value;
-                var result = new UserVerifyModel()
+                var result = new UserVerifyModel
                 {
                     Id = Guid.Parse(userId),
                     Role = role
