@@ -14,7 +14,7 @@ namespace CarRental.API.Models.Requests
         public TransmissionType Transmission { get; set; }
         public int QuantityOfSeats { get; set; }
         public double PricePerHour { get; set; }
-        public List<AttachmentDTO> Photos { get; set; }
+        public IEnumerable<AttachmentDTO> Photos { get; set; }
         public CarBrandModel Brand { get; set; }
         public Guid RentalPointId { get; set; }
     }

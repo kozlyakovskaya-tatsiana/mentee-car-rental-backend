@@ -100,7 +100,7 @@ namespace CarRental.Business.Services.Implementation
             foreach (var user in users)
             {
                 var infoModel = _mapper.Map<UserEntity, UserInfoModel>(user);
-                infoModel.Roles = (List<string>) await _userManager.GetRolesAsync(user);
+                infoModel.Roles = await _userManager.GetRolesAsync(user);
                 result.Add(infoModel);
             }
 
